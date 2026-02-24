@@ -1,83 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Camm Studios — iOS Apps</title>
-  <meta name="description" content="Camm Studios builds beautifully crafted iOS apps for everyday life. Discover our apps for manifesting, productivity, and personal growth.">
-  <meta name="keywords" content="Camm Studios, iOS apps, iPhone apps, manifesting app, affirmations, vision board, productivity">
+  <meta name="description" content="Camm Studios builds focused iOS apps for personal growth and everyday productivity.">
   <meta property="og:title" content="Camm Studios — iOS Apps">
-  <meta property="og:description" content="Beautifully crafted iOS apps for everyday life.">
+  <meta property="og:description" content="Focused iOS apps for personal growth and everyday productivity.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://cammstudios.com">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Camm Studios — iOS Apps">
-  <meta name="twitter:description" content="Beautifully crafted iOS apps for everyday life.">
   <link rel="canonical" href="https://cammstudios.com">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
   <!-- Navigation -->
-  <nav class="nav">
-    <div class="container nav-inner">
-      <a href="/" class="nav-brand">Camm Studios</a>
-      <button class="nav-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">&#9776;</button>
-      <ul class="nav-links">
-        <li><a href="/" class="active">Apps</a></li>
-        <li><a href="/support.html">Support</a></li>
-        <li><a href="/privacy-policy.html">Privacy</a></li>
-        <li><a href="/terms-of-service.html">Terms</a></li>
-      </ul>
-    </div>
-  </nav>
+  <div class="nav-wrapper container">
+    <nav class="nav glass-panel">
+      <div class="nav-inner">
+        <a href="/" class="nav-brand">
+          <div class="brand-icon">C</div>
+          Camm Studios
+        </a>
+        <button class="nav-toggle" aria-label="Toggle menu"
+          onclick="document.querySelector('.nav-links').classList.toggle('open')">
+          &#9776;
+        </button>
+        <ul class="nav-links">
+          <li><a href="/" class="active">Apps</a></li>
+          <li><a href="/support.html">Support</a></li>
+          <li><a href="/privacy-policy.html">Privacy</a></li>
+          <li><a href="/terms-of-service.html">Terms</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
 
   <!-- Hero -->
-  <section class="hero">
-    <div class="container">
-      <h1>Apps crafted with care</h1>
-      <p>We build focused iOS apps that help you grow, stay productive, and live intentionally.</p>
+  <section class="hero container">
+    <div class="main-hero glass-panel">
+      <div class="hero-content-wrapper">
+        <div class="hero-text-area">
+          <div class="hero-badge">iOS APPS</div>
+          <h1 class="hero-text">Apps built to help you grow</h1>
+          <p>Focused tools for personal growth, productivity, and intentional living. Designed for iOS, crafted with care.</p>
+          <a href="#apps" class="btn btn-black">View Apps</a>
+        </div>
+        <div class="hero-visual-area">
+          <div class="hero-product-shot">
+            <!-- Replace with app showcase image -->
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- Apps -->
-  <section class="container">
+  <section class="apps-section container" id="apps">
+    <div class="section-header">
+      <h2>Our Apps</h2>
+      <p class="text-muted">Privacy-first design. Built natively for iOS.</p>
+    </div>
+
     <div class="apps-grid">
 
       <!-- Manifest App -->
-      <a href="/apps/manifest/" class="app-card" style="text-decoration:none; color:inherit;">
-        <div class="app-icon">&#10024;</div>
-        <h3>Manifest</h3>
-        <p>Daily affirmations, vision board, and 369 journal to help you manifest your dream life.</p>
-        <span class="app-badge">Lifestyle</span>
-        <div class="app-links">
-          <a href="/apps/manifest/privacy.html">Privacy</a>
-          <a href="/apps/manifest/terms.html">Terms</a>
+      <a href="/apps/manifest/" class="app-card white-panel biomorphic">
+        <div class="app-card-inner">
+          <div class="app-card-top">
+            <div class="app-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5e6a78" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg>
+            </div>
+            <div class="app-feature-badge">LIFESTYLE</div>
+          </div>
+          <div class="app-info">
+            <h3>Manifest</h3>
+            <p>Daily affirmations, vision board, and 369 journal. Build a daily ritual to manifest your goals.</p>
+          </div>
+          <div class="app-footer">
+            <span class="meta-link"
+              onclick="window.location='/apps/manifest/privacy.html'; event.preventDefault();">Privacy</span>
+            <span class="meta-link"
+              onclick="window.location='/apps/manifest/terms.html'; event.preventDefault();">Terms</span>
+          </div>
         </div>
       </a>
 
-      <!-- Placeholder for future apps -->
-      <div class="app-card" style="border-style: dashed; opacity: 0.5;">
-        <div class="app-icon" style="background: var(--border);">+</div>
-        <h3>More coming soon</h3>
-        <p>We're working on new apps. Stay tuned.</p>
+      <!-- Coming Soon -->
+      <div class="app-card white-panel biomorphic" style="opacity: 0.5; border-style: dashed;">
+        <div class="app-card-inner" style="align-items: center; justify-content: center; text-align: center;">
+          <div class="app-info">
+            <h3>More coming soon</h3>
+            <p>New apps are in development.</p>
+          </div>
+        </div>
       </div>
 
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
+  <footer class="footer container">
+    <div class="footer-inner white-panel pill">
       <ul class="footer-links">
         <li><a href="/">Apps</a></li>
         <li><a href="/support.html">Support</a></li>
-        <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-        <li><a href="/terms-of-service.html">Terms of Service</a></li>
+        <li><a href="/privacy-policy.html">Privacy</a></li>
+        <li><a href="/terms-of-service.html">Terms</a></li>
       </ul>
-      <p>&copy; 2026 Camm Studios. All rights reserved.</p>
+      <p>&copy; 2026 Camm Studios</p>
     </div>
   </footer>
 
 </body>
+
 </html>

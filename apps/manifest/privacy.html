@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,32 +8,49 @@
   <meta name="description" content="Privacy Policy for the Manifest app by Camm Studios.">
   <link rel="canonical" href="https://cammstudios.com/apps/manifest/privacy.html">
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
   <!-- Navigation -->
-  <nav class="nav">
-    <div class="container nav-inner">
-      <a href="/" class="nav-brand">Camm Studios</a>
-      <button class="nav-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">&#9776;</button>
-      <ul class="nav-links">
-        <li><a href="/">Apps</a></li>
-        <li><a href="/support.html">Support</a></li>
-        <li><a href="/privacy-policy.html">Privacy</a></li>
-        <li><a href="/terms-of-service.html">Terms</a></li>
-      </ul>
-    </div>
-  </nav>
+  <div class="nav-wrapper container">
+    <nav class="nav glass-panel">
+      <div class="nav-inner">
+        <a href="/" class="nav-brand">
+          <div class="brand-icon">C</div>
+          Camm Studios
+        </a>
+        <button class="nav-toggle" aria-label="Toggle menu"
+          onclick="document.querySelector('.nav-links').classList.toggle('open')">
+          &#9776;
+        </button>
+        <ul class="nav-links">
+          <li><a href="/">Apps</a></li>
+          <li><a href="/support.html">Support</a></li>
+          <li><a href="/privacy-policy.html" class="active">Privacy</a></li>
+          <li><a href="/terms-of-service.html">Terms</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
 
   <div class="container">
     <div class="page-header">
-      <h1>Privacy Policy — Manifest</h1>
-      <p class="subtitle">Last updated: February 24, 2026</p>
+      <h1>Privacy Policy</h1>
+      <p class="subtitle">Manifest — Last updated: February 24, 2026</p>
     </div>
 
     <div class="legal-content">
 
-      <p>This Privacy Policy applies specifically to the <strong>Manifest - Daily Affirmations</strong> app ("Manifest") developed by Camm Studios. This supplements our <a href="/privacy-policy.html">general Privacy Policy</a>.</p>
+      <p>This Privacy Policy applies specifically to the <strong>Manifest - Daily Affirmations</strong> app ("Manifest") developed by Camm Studios. This supplements our <a href="/privacy-policy.html" style="color: var(--text-dark); text-decoration: underline;">general Privacy Policy</a>.</p>
 
       <h2>1. What Data Manifest Stores</h2>
       <p>All of the following data is stored <strong>locally on your device only</strong>:</p>
@@ -47,7 +65,7 @@
       <p>We do not have access to any of this data. It never leaves your device.</p>
 
       <h2>2. Photos and Camera</h2>
-      <p>Manifest allows you to add photos to your vision board using the iOS Photo Picker. We only access photos you explicitly select — we do not access your full photo library. Selected photos are stored locally within the app's data container.</p>
+      <p>Manifest allows you to add photos to your vision board using the iOS Photo Picker. We only access photos you explicitly select. We do not access your full photo library. Selected photos are stored locally within the app's data container.</p>
 
       <h2>3. Notifications</h2>
       <p>If you enable reminders, Manifest schedules local notifications on your device. These are processed entirely by iOS and do not involve any external servers.</p>
@@ -66,23 +84,24 @@
       <p>To delete all your Manifest data, simply delete the app from your device. Since all data is stored locally, this permanently removes everything.</p>
 
       <h2>7. Contact</h2>
-      <p>Questions about Manifest's privacy practices? Email us at <a href="mailto:support@cammstudios.com">support@cammstudios.com</a>.</p>
+      <p>Questions about Manifest's privacy practices? Email us at <a href="mailto:support@cammstudios.com" style="color: var(--text-dark); text-decoration: underline;">support@cammstudios.com</a>.</p>
 
     </div>
   </div>
 
   <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
+  <footer class="footer container">
+    <div class="footer-inner white-panel pill">
       <ul class="footer-links">
         <li><a href="/apps/manifest/">Manifest</a></li>
         <li><a href="/support.html">Support</a></li>
-        <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-        <li><a href="/terms-of-service.html">Terms of Service</a></li>
+        <li><a href="/privacy-policy.html">Privacy</a></li>
+        <li><a href="/terms-of-service.html">Terms</a></li>
       </ul>
-      <p>&copy; 2026 Camm Studios. All rights reserved.</p>
+      <p>&copy; 2026 Camm Studios</p>
     </div>
   </footer>
 
 </body>
+
 </html>
