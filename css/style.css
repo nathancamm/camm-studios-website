@@ -381,7 +381,7 @@ h3 {
 }
 
 .card-front::after {
-  content: 'MANIFEST';
+  content: 'STELLAR';
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 1.25rem;
@@ -890,6 +890,13 @@ h3 {
   font-size: 0.9rem;
 }
 
+.app-screenshot {
+  width: 260px;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--glass-border);
+}
+
 /* Features Grid */
 .features-section {
   padding-top: 60px;
@@ -1170,6 +1177,10 @@ a {
     height: 400px;
   }
 
+  .app-screenshot {
+    width: 200px;
+  }
+
   .app-landing-links {
     justify-content: center;
   }
@@ -1303,6 +1314,10 @@ a {
   .app-screenshot-placeholder {
     width: 160px;
     height: 320px;
+  }
+
+  .app-screenshot {
+    width: 160px;
   }
 
   .app-landing-links {
