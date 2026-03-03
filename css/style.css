@@ -573,6 +573,7 @@ h3 {
   border: 1px solid var(--glass-border);
   padding: 6px 14px;
   border-radius: var(--radius-pill);
+  width: fit-content;
 }
 
 .app-info {
