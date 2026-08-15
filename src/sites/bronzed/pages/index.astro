@@ -102,22 +102,31 @@ const faqs = [
     <!-- hero -->
     <section class="hero band--night" style={`background-image: url(${heroBg.src})`}>
       <div class="hero-scrim"></div>
+      <svg class="sun-rings" viewBox="0 0 600 600" aria-hidden="true">
+        <g class="rings-spin">
+          <circle cx="300" cy="300" r="150" stroke="rgba(245,240,229,0.35)" stroke-width="1.2" stroke-dasharray="2 10" fill="none" />
+          <circle cx="300" cy="300" r="210" stroke="rgba(245,240,229,0.22)" stroke-width="1" stroke-dasharray="2 14" fill="none" />
+          <circle cx="300" cy="300" r="272" stroke="rgba(245,240,229,0.14)" stroke-width="1" stroke-dasharray="2 18" fill="none" />
+        </g>
+        <circle class="ring-glow" cx="300" cy="300" r="90" fill="rgba(228,87,26,0.18)" />
+      </svg>
       <div class="shell hero-inner">
         <div class="hero-copy">
-          <p class="kicker reveal">Bronzed — Tan timer &amp; UV index</p>
-          <h1 class="display-xl ink-fade--night reveal" style="--reveal-delay: 80ms">
-            Tan smart,<br />never burn.
+          <p class="kicker rise" style="--d: 150ms">Bronzed — Tan timer &amp; UV index</p>
+          <h1 class="display-xl ink-fade--night">
+            <span class="rise" style="--d: 280ms">Tan smart,</span><br />
+            <span class="rise" style="--d: 420ms">never burn.</span>
           </h1>
-          <p class="lede reveal" style="--reveal-delay: 160ms">
-            Your personal safe tanning time, calculated from the live UV index, your skin type, and
-            your SPF. Deepest tan, no burn.
+          <p class="lede rise" style="--d: 580ms">
+            Your skin, the live UV index, and your SPF — turned into one number: how long you can
+            stay in the sun today.
           </p>
-          <div class="hero-cta reveal" style="--reveal-delay: 240ms">
+          <div class="hero-cta rise" style="--d: 720ms">
             <AppStoreBadge href={bronzed.appStoreUrl} tone="paper" />
             <p class="mono-note">iOS {bronzed.minimumOs}+ · Powered by Apple Weather</p>
           </div>
         </div>
-        <div class="hero-shot reveal" style="--reveal-delay: 300ms">
+        <div class="hero-shot rise" style="--d: 860ms">
           <div data-parallax="0.06">
             <Image
               src={shot01}
@@ -313,6 +322,16 @@ const faqs = [
     inset: 0;
     background: color-mix(in srgb, var(--night) 44%, transparent);
   }
+  .sun-rings {
+    position: absolute;
+    right: -8%;
+    top: 4%;
+    width: min(720px, 70vw);
+    height: auto;
+    pointer-events: none;
+  }
+  .rings-spin { transform-origin: 300px 300px; animation: spin-slow 60s linear infinite; }
+  .ring-glow { transform-origin: 300px 300px; animation: glow-pulse 6s var(--ease-fluid) infinite; }
   .hero-inner {
     position: relative;
     display: grid;

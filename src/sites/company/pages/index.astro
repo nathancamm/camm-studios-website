@@ -1,16 +1,21 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import Base from '@shared/layouts/Base.astro';
 import SiteNav from '@shared/components/SiteNav.astro';
 import SiteFooter from '@shared/components/SiteFooter.astro';
 import WordReveal from '@shared/components/WordReveal.astro';
+import Instruments from '@shared/components/Instruments.astro';
 import Mark from '@shared/components/Mark.astro';
 import { apps, company } from '@shared/data/apps';
 import heroArt from '@shared/assets/art/company-hero.png';
-import processArt from '@shared/assets/art/company-process.png';
+import craftArt from '@shared/assets/art/company-craft.png';
+import bronzedArt from '@shared/assets/art/bronzed-hero.png';
+import stellarArt from '@shared/assets/art/stellar-hero.png';
 import bronzedIcon from '@shared/assets/icons/bronzed-icon.png';
 import stellarIcon from '@shared/assets/icons/stellar-icon.png';
 
+const heroBg = await getImage({ src: heroArt, format: 'avif', quality: 62, width: 2400 });
+const panelArt = { bronzed: bronzedArt, stellar: stellarArt };
 const icons = { bronzed: bronzedIcon, stellar: stellarIcon };
 
 const jsonld = [
@@ -37,37 +42,50 @@ const jsonld = [
   })),
 ];
 
+const heroWords = ['The', 'overlooked', 'frontier.'];
+
 const chapters = [
   {
     no: '01',
-    title: 'Discover',
-    body: 'We hunt for the problems big studios step over: the search nobody serves well, the daily annoyance nobody thought was worth an app. Real demand, verified before a line of code.',
-    diagram: 'discover',
+    title: 'Find',
+    body: 'Most studios chase the charts. We ride the other way — into live store data, search trails, and one-star reviews, looking for the problems everyone else stepped past. If real people are searching and nobody serves them well, we stake the claim.',
   },
   {
     no: '02',
     title: 'Build',
-    body: 'One problem, one focused native app. SwiftUI, small surface area, no feature sprawl. If a screen does not serve the core job, it does not ship.',
-    diagram: 'build',
+    body: 'One problem, one app. Native SwiftUI, small on purpose: a tool you open, use, and put back in your pocket. If a screen does not serve the core job, it does not ship.',
   },
   {
     no: '03',
     title: 'Launch',
-    body: 'Every app launches worldwide with real localization, not machine-translated word salad. Store pages, screenshots, and copy tuned market by market.',
-    diagram: 'launch',
+    body: 'Worldwide on day one. Store pages, screenshots, and copy tuned language by language — because somebody in Lisbon checks the UV index too.',
   },
   {
     no: '04',
-    title: 'Learn',
-    body: 'Live apps are not finished apps. We watch how people actually use them, keep what earns its place, and cut what does not. Every version gets a little sharper.',
-    diagram: 'learn',
+    title: 'Tend',
+    body: 'Software is a garden, not a monument. We watch how each app is really used, prune what fails to earn its place, and let the good parts grow. Every version comes back a little sharper.',
   },
+];
+
+const dials = [
+  { n: '02', label: 'apps in orbit' },
+  { n: '01', label: 'sun, measured daily' },
+  { n: '18', label: 'intentions a day, the 369 way' },
+  { n: '∞', label: 'overlooked problems left' },
+];
+
+const marquee = [
+  'Bronzed — tan smart, never burn',
+  'Stellar — speak it, write it, see it',
+  'Independent app studio',
+  'Launched worldwide',
+  'AI-native, human-judged',
 ];
 ---
 
 <Base
   title="Camm Studios — Focused apps for overlooked problems"
-  description="Camm Studios is an independent app studio. We find overlooked problems and build focused apps that earn their place on your phone."
+  description="Camm Studios is an independent app studio. We find the problems everyone rides past and build small, focused apps that earn their place on your phone."
   jsonld={jsonld}
 >
   <div class="intro" id="intro" aria-hidden="true">
@@ -81,6 +99,7 @@ const chapters = [
     brandName="Camm Studios"
     items={[
       { label: 'Process', href: '/#process' },
+      { label: 'Instruments', href: '/#instruments' },
       { label: 'Apps', href: '/#apps' },
       { label: 'Support', href: '/support' },
     ]}
@@ -88,95 +107,77 @@ const chapters = [
   />
 
   <main id="main">
-    <!-- hero -->
-    <section class="hero">
-      <div class="shell">
-        <p class="kicker kicker--rule reveal">Independent app studio</p>
-        <h1 class="display-xl ink-fade reveal" style="--reveal-delay: 80ms">
-          We find overlooked problems<br />and build focused apps that<br />earn their place on your
-          phone.
+    <!-- animated hero -->
+    <section class="hero band--night">
+      <div class="hero-bg" aria-hidden="true">
+        <img src={heroBg.src} alt="" class="hero-img" fetchpriority="high" />
+        <svg class="stars" viewBox="0 0 1440 600" preserveAspectRatio="xMidYMin slice">
+          {[
+            [90, 80, 1.6, 0], [220, 180, 1.2, 1.3], [340, 60, 1.8, 2.1], [470, 140, 1.1, 0.6],
+            [610, 90, 1.5, 2.8], [760, 200, 1.2, 1.9], [880, 70, 1.9, 0.4], [1010, 160, 1.3, 2.4],
+            [1130, 100, 1.6, 1.1], [1260, 190, 1.2, 3.1], [1370, 80, 1.7, 0.8], [540, 250, 1.1, 3.6],
+            [160, 280, 1.3, 2.6], [960, 280, 1.4, 1.6], [1320, 300, 1.1, 0.2],
+          ].map(([x, y, r, d]) => (
+            <circle cx={x} cy={y} r={r} fill="#f5f0e5" style={`animation: twinkle ${3 + (d % 2)}s var(--ease-fluid) ${d}s infinite`} />
+          ))}
+        </svg>
+        <div class="hero-scrim"></div>
+      </div>
+      <div class="shell hero-content">
+        <p class="kicker rise" style="--d: 200ms">Camm Studios — independent app studio</p>
+        <h1 class="display-xl hero-title">
+          {heroWords.map((word, i) => (
+            <span class="rise" style={`--d: ${320 + i * 130}ms`}>{word} </span>
+          ))}
         </h1>
-        <div class="hero-row reveal" style="--reveal-delay: 160ms">
+        <p class="lede rise" style="--d: 780ms">
+          We find the problems everyone rides past and build small, focused apps that earn their
+          place on your phone.
+        </p>
+        <div class="hero-row rise" style="--d: 920ms">
           <a class="btn btn--primary" href="/#process">
             Read our process
             <span class="btn-arrow" aria-hidden="true">→</span>
           </a>
-          <p class="mono-note">Two apps live on the App Store</p>
+          <p class="mono-note">Two apps in orbit, live on the App Store</p>
         </div>
       </div>
-      <div class="hero-art">
-        <div data-parallax="0.08">
-          <Image
-            src={heroArt}
-            alt="A huge signal-orange sphere structure on a dark cradle in a calm industrial coastal landscape"
-            widths={[640, 1080, 1600, 2200]}
-            sizes="100vw"
-            format="avif"
-            quality={62}
-            loading="eager"
-          />
+      <div class="marquee hero-marquee" aria-hidden="true">
+        <div class="marquee-track">
+          {[...marquee, ...marquee].map((item) => (
+            <span class="marquee-item">{item}</span>
+          ))}
         </div>
-        <p class="hero-caption mono-note shell">Fig. 01 — Carry the idea carefully.</p>
       </div>
     </section>
 
-    <!-- process chapters -->
-    <section class="band" id="process" aria-labelledby="process-title">
+    <!-- manifesto -->
+    <section class="band" aria-labelledby="manifesto-title">
+      <div class="shell manifesto">
+        <p class="kicker kicker--rule reveal">Why we exist</p>
+        <h2 id="manifesto-title" class="display-lg ink-fade reveal">
+          Giants need big problems.<br />We take everything<br />they leave behind.
+        </h2>
+        <p class="lede reveal" style="--reveal-delay: 100ms">
+          The ideas we build look too small to matter — a tan timer, a nightly journal — until you
+          meet the person who opens them every single day. That person is who we work for. We make
+          small apps into serious businesses.
+        </p>
+      </div>
+    </section>
+
+    <!-- process: zigzag trajectory -->
+    <section class="band band--deep" id="process" aria-labelledby="process-title">
       <div class="shell">
         <p class="kicker kicker--rule reveal">The operating model</p>
-        <h2 id="process-title" class="display-lg reveal">
-          Four chapters,<br />repeated forever.
-        </h2>
-        <div class="chapters">
-          {chapters.map((ch) => (
-            <article class="chapter">
-              <div class="chapter-rail">
-                <p class="index-no">{ch.no}</p>
+        <h2 id="process-title" class="display-lg reveal">Find. Build.<br />Launch. Tend.</h2>
+        <div class="trajectory">
+          {chapters.map((ch, i) => (
+            <article class={`waypoint reveal ${i % 2 === 1 ? 'waypoint--right' : ''}`}>
+              <p class="waypoint-no" aria-hidden="true">{ch.no}</p>
+              <div class="waypoint-card card">
                 <h3 class="display-md">{ch.title}</h3>
-              </div>
-              <div class="chapter-body reveal">
-                <div class="chapter-diagram" aria-hidden="true">
-                  {ch.diagram === 'discover' && (
-                    <svg viewBox="0 0 280 140" fill="none">
-                      {[
-                        [30, 40], [70, 96], [116, 30], [160, 108], [196, 60], [244, 90], [252, 28], [90, 62],
-                      ].map(([x, y]) => (
-                        <circle cx={x} cy={y} r="5" fill="var(--line-strong)" />
-                      ))}
-                      <circle cx="140" cy="72" r="11" fill="var(--orange)" />
-                      <circle cx="140" cy="72" r="22" stroke="var(--orange)" stroke-width="1.5" />
-                    </svg>
-                  )}
-                  {ch.diagram === 'build' && (
-                    <svg viewBox="0 0 280 140" fill="none">
-                      <path d="M20 126 A120 120 0 0 1 260 126" stroke="var(--line-strong)" stroke-width="1.5" />
-                      <path d="M56 126 A84 84 0 0 1 224 126" stroke="var(--line-strong)" stroke-width="1.5" />
-                      <path d="M92 126 A48 48 0 0 1 188 126" stroke="var(--cobalt)" stroke-width="2" />
-                      <circle cx="140" cy="112" r="12" fill="var(--orange)" />
-                    </svg>
-                  )}
-                  {ch.diagram === 'launch' && (
-                    <svg viewBox="0 0 280 140" fill="none">
-                      <circle cx="140" cy="70" r="48" stroke="var(--cobalt)" stroke-width="1.5" />
-                      <ellipse cx="140" cy="70" rx="20" ry="48" stroke="var(--cobalt)" stroke-width="1.5" />
-                      <path d="M92 70 H188" stroke="var(--cobalt)" stroke-width="1.5" />
-                      <circle cx="140" cy="22" r="8" fill="var(--orange)" />
-                    </svg>
-                  )}
-                  {ch.diagram === 'learn' && (
-                    <svg viewBox="0 0 280 140" fill="none">
-                      <path
-                        d="M140 22 A48 48 0 1 1 96 46"
-                        stroke="var(--cobalt)"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                      />
-                      <path d="M96 24 L96 48 L120 48" stroke="var(--cobalt)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-                      <circle cx="140" cy="22" r="8" fill="var(--orange)" />
-                    </svg>
-                  )}
-                </div>
-                <p class="chapter-text">{ch.body}</p>
+                <p>{ch.body}</p>
               </div>
             </article>
           ))}
@@ -184,89 +185,77 @@ const chapters = [
       </div>
     </section>
 
-    <!-- process artwork interlude -->
+    <!-- craft interlude -->
     <section class="interlude" aria-hidden="true">
       <div data-parallax="0.06">
         <Image
-          src={processArt}
+          src={craftArt}
           alt=""
-          widths={[640, 1080, 1600, 2200]}
+          widths={[640, 1080, 1600, 2400]}
           sizes="100vw"
           format="avif"
           quality={60}
         />
       </div>
-      <p class="hero-caption mono-note shell">Fig. 02 — Same sphere, better polish.</p>
+      <p class="interlude-caption mono-note shell">Fig. 02 — Tend the small things.</p>
     </section>
 
-    <!-- AI-native -->
-    <section class="band band--night" aria-labelledby="ai-title">
+    <!-- instruments -->
+    <section class="band band--night" id="instruments" aria-labelledby="instruments-title">
       <div class="shell">
         <p class="kicker kicker--rule reveal">AI-native, human-judged</p>
-        <h2 id="ai-title" class="display-lg ink-fade--night reveal">
-          Machines do the reading.<br />People do the deciding.
-        </h2>
-        <p class="lede reveal" style="--reveal-delay: 80ms">
-          We use AI through the whole pipeline: reading demand at a scale no human could, drafting,
-          localizing, testing. Then a person looks at every result and asks the only question that
-          matters: would this earn a place on your phone?
+        <h2 id="instruments-title" class="display-lg ink-fade--night reveal">Our instruments.</h2>
+        <p class="lede reveal" style="--reveal-delay: 100ms">
+          Machines read the frontier at a scale no human could — demand, reviews, languages,
+          numbers. Then a person picks up every result and asks the only question that matters:
+          would this earn a place on your phone? AI proposes. We decide.
         </p>
-        <ul class="cap-grid">
-          {[
-            {
-              t: 'Research at machine scale',
-              d: 'Thousands of niches read and ranked, so we only build where real demand already exists.',
-            },
-            {
-              t: 'Native craft',
-              d: 'SwiftUI, Lock Screen, widgets, Dynamic Island. Apps that feel like they belong on iOS, because they do.',
-            },
-            {
-              t: 'Localized from day one',
-              d: 'Store pages and app copy shipped in many languages at launch, reviewed for tone, not just translated.',
-            },
-            {
-              t: 'Judged by humans',
-              d: 'Every screen, every word, every price gets a human veto. AI proposes. We decide.',
-            },
-          ].map((cap, i) => (
-            <li class="cap reveal" style={`--reveal-delay: ${i * 70}ms`}>
-              <h3>{cap.t}</h3>
-              <p>{cap.d}</p>
+        <Instruments />
+        <ul class="dials" aria-label="Studio dials">
+          {dials.map((dial) => (
+            <li class="dial reveal">
+              <span class="dial-n">{dial.n}</span>
+              <span class="mono-note">{dial.label}</span>
             </li>
           ))}
         </ul>
       </div>
     </section>
 
-    <!-- portfolio -->
-    <section class="band" id="apps" aria-labelledby="apps-title">
-      <div class="shell">
-        <p class="kicker kicker--rule reveal">The portfolio</p>
-        <h2 id="apps-title" class="display-lg reveal">Two apps, live today.</h2>
-        <div class="apps-grid">
-          {apps.map((app, i) => (
-            <article class={`app-card app-card--${app.id} reveal`} style={`--reveal-delay: ${i * 90}ms`}>
-              <div class="app-head">
-                <Image src={icons[app.id]} alt={`${app.name} app icon`} width={72} height={72} class="app-icon" />
-                <div>
-                  <h3>{app.name}</h3>
-                  <p class="mono-note">{app.genres.join(' · ')} — iOS {app.minimumOs}+</p>
-                </div>
+    <!-- portfolio panels -->
+    <section id="apps" aria-labelledby="apps-title">
+      <h2 id="apps-title" class="visually-hidden">Our apps</h2>
+      {apps.map((app, i) => (
+        <article class={`panel panel--${app.id}`}>
+          <div class="shell panel-inner">
+            <div class={`panel-copy reveal ${i % 2 === 1 ? 'panel-copy--right' : ''}`}>
+              <div class="panel-head">
+                <Image src={icons[app.id]} alt={`${app.name} app icon`} width={64} height={64} class="panel-icon" />
+                <p class="kicker">{app.genres.join(' · ')} — iOS {app.minimumOs}+</p>
               </div>
-              <p class="app-tagline">{app.tagline}</p>
-              <p class="app-desc">{app.oneLiner}</p>
-              <div class="app-actions">
-                <a class="btn btn--primary btn--sm" href={app.site} rel="noopener">
-                  Visit site
+              <h3 class="display-lg">{app.tagline}</h3>
+              <p class="panel-desc">{app.oneLiner}</p>
+              <div class="panel-actions">
+                <a class="btn btn--primary" href={app.site} rel="noopener">
+                  Visit {app.name}
                   <span class="btn-arrow" aria-hidden="true">→</span>
                 </a>
-                <a class="btn btn--ghost btn--sm" href={app.appStoreUrl} rel="noopener">App Store</a>
+                <a class="btn btn--ghost" href={app.appStoreUrl} rel="noopener">App Store</a>
               </div>
-            </article>
-          ))}
-        </div>
-      </div>
+            </div>
+          </div>
+          <div class="panel-art" data-parallax="0.05">
+            <Image
+              src={panelArt[app.id]}
+              alt=""
+              widths={[640, 1080, 1600, 2400]}
+              sizes="100vw"
+              format="avif"
+              quality={58}
+            />
+          </div>
+        </article>
+      ))}
     </section>
 
     <!-- tagline moment -->
@@ -279,14 +268,12 @@ const chapters = [
 
   <SiteFooter
     columns={[
-      {
-        title: 'Apps',
-        links: apps.map((app) => ({ label: app.name, href: app.site })),
-      },
+      { title: 'Apps', links: apps.map((app) => ({ label: app.name, href: app.site })) },
       {
         title: 'Studio',
         links: [
           { label: 'Process', href: '/#process' },
+          { label: 'Instruments', href: '/#instruments' },
           { label: 'Support', href: '/support' },
         ],
       },
@@ -302,6 +289,14 @@ const chapters = [
 </Base>
 
 <style>
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
   /* intro — once per session, skipped for reduced motion */
   .intro {
     position: fixed;
@@ -313,11 +308,7 @@ const chapters = [
     background: var(--paper);
     transition: transform 900ms var(--ease-fluid), visibility 0s linear 900ms;
   }
-  .intro-inner {
-    display: grid;
-    justify-items: center;
-    gap: var(--sp-300);
-  }
+  .intro-inner { display: grid; justify-items: center; gap: var(--sp-300); }
   .intro-inner :global(svg),
   .intro-word {
     opacity: 0;
@@ -332,126 +323,139 @@ const chapters = [
     transition-delay: 250ms;
   }
   html.intro-play .intro-inner :global(svg),
-  html.intro-play .intro-word {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  html.intro-done .intro {
-    transform: translateY(-100%);
-    visibility: hidden;
-  }
+  html.intro-play .intro-word { opacity: 1; transform: translateY(0); }
+  html.intro-done .intro { transform: translateY(-100%); visibility: hidden; }
   html.intro-off .intro { display: none; }
 
   /* hero */
-  .hero { padding-top: calc(var(--sp-900) + var(--sp-600)); }
-  .hero h1 { margin-top: var(--sp-300); }
-  .hero-row {
+  .hero {
+    position: relative;
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--sp-300);
-    margin-top: var(--sp-500);
-    padding-bottom: var(--sp-700);
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100svh;
+    overflow: clip;
   }
-  .hero-art { overflow: clip; }
-  .hero-art :global(img),
-  .interlude :global(img) {
+  .hero-bg { position: absolute; inset: 0; }
+  .hero-img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center bottom;
+    animation: drift-pan 44s var(--ease-fluid) infinite alternate;
   }
-  .hero-caption { padding-block: var(--sp-100); }
+  .stars { position: absolute; inset: 0 0 auto 0; width: 100%; height: 60%; }
+  .hero-scrim { position: absolute; inset: 0; }
+  .hero-content {
+    position: relative;
+    display: grid;
+    gap: var(--sp-300);
+    justify-items: start;
+    padding-top: calc(var(--sp-900) + var(--sp-500));
+    padding-bottom: var(--sp-900);
+  }
+  .hero-scrim {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--night) 52%, transparent) 0%, transparent 55%);
+  }
+  .hero-title { max-width: 680px; color: var(--night-text); }
+  .hero .kicker { color: color-mix(in srgb, var(--night-text) 80%, transparent); }
+  .hero .lede { color: color-mix(in srgb, var(--night-text) 90%, transparent); }
+  .hero-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-300); }
+  .hero .mono-note { color: color-mix(in srgb, var(--night-text) 70%, transparent); }
+  .hero-marquee { position: relative; color: var(--night-soft); }
 
-  /* chapters */
-  .chapters {
+  /* manifesto */
+  .manifesto { display: grid; gap: var(--sp-300); }
+  .manifesto .lede { max-width: 620px; }
+
+  /* trajectory */
+  .trajectory {
     margin-top: var(--sp-700);
     display: grid;
-    gap: var(--sp-800);
+    gap: var(--sp-500);
+    position: relative;
   }
-  .chapter {
+  @media (min-width: 900px) {
+    .trajectory {
+      gap: var(--sp-700);
+      background-image: linear-gradient(var(--line-strong) 33%, transparent 0);
+      background-size: 1px 12px;
+      background-repeat: repeat-y;
+      background-position: 50% 0;
+    }
+  }
+  .waypoint {
+    position: relative;
     display: grid;
-    gap: var(--sp-300);
-    border-top: 1px solid var(--line);
-    padding-top: var(--sp-400);
+    gap: var(--sp-100);
   }
-  @media (min-width: 768px) {
-    .chapter { grid-template-columns: 280px 1fr; gap: var(--sp-700); }
-    .chapter-rail { position: sticky; top: 120px; align-self: start; }
+  @media (min-width: 900px) {
+    .waypoint { width: calc(50% - var(--sp-500)); }
+    .waypoint--right { justify-self: end; }
   }
-  .chapter-rail { display: grid; gap: var(--sp-100); }
-  .chapter-diagram {
-    max-width: 420px;
-    margin-bottom: var(--sp-300);
+  .waypoint-no {
+    font-family: var(--font-mono);
+    font-size: var(--text-5xl);
+    line-height: 1;
+    color: var(--orange);
   }
-  .chapter-text {
-    font-size: var(--text-lg);
-    line-height: var(--lh-lg);
-    color: var(--ink-soft);
-    max-width: 560px;
+  .waypoint-card {
+    padding: var(--sp-400);
+    display: grid;
+    gap: var(--sp-200);
   }
+  .waypoint-card p { color: var(--ink-soft); }
 
-  .interlude { overflow: clip; }
+  /* interlude */
+  .interlude { overflow: clip; position: relative; }
+  .interlude :global(img) { width: 100%; height: auto; }
+  .interlude-caption { padding-block: var(--sp-100); }
 
-  /* AI-native */
-  .band--night h2 { margin-top: var(--sp-300); }
-  .band--night .lede { margin-top: var(--sp-300); }
-  .cap-grid {
+  /* instruments band */
+  #instruments h2 { margin-top: var(--sp-300); }
+  #instruments .lede { margin-top: var(--sp-300); }
+
+  .dials {
     list-style: none;
     margin: var(--sp-700) 0 0;
-    padding: 0;
-    display: grid;
-    gap: var(--sp-400);
-  }
-  @media (min-width: 768px) {
-    .cap-grid { grid-template-columns: repeat(2, 1fr); gap: var(--sp-500); }
-  }
-  .cap {
+    padding: var(--sp-400) 0 0;
     border-top: 1px solid var(--night-line);
-    padding-top: var(--sp-300);
-  }
-  .cap h3 { font-size: var(--text-xl); line-height: var(--lh-xl); }
-  .cap p { margin-top: var(--sp-100); color: var(--night-soft); }
-
-  /* portfolio */
-  .apps-grid {
-    margin-top: var(--sp-700);
     display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--sp-400);
   }
-  @media (min-width: 768px) {
-    .apps-grid { grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 900px) {
+    .dials { grid-template-columns: repeat(4, 1fr); }
   }
-  .app-card {
-    background: var(--paper-raised);
-    border: 1px solid var(--line);
-    border-radius: 24px;
-    padding: var(--sp-500);
-    display: grid;
-    gap: var(--sp-300);
-    align-content: start;
-    transition: transform 700ms var(--ease-fluid), box-shadow 700ms var(--ease-fluid);
+  .dial { display: grid; gap: var(--sp-50); justify-items: start; }
+  .dial-n {
+    font-family: var(--font-mono);
+    font-size: var(--text-4xl);
+    line-height: var(--lh-4xl);
+    color: var(--night-text);
   }
-  .app-card:hover {
-    transform: translateY(-6px) rotate(-0.4deg);
-    box-shadow: 0 24px 48px -24px color-mix(in srgb, var(--ink) 30%, transparent);
+
+  /* portfolio panels */
+  .panel { overflow: clip; }
+  .panel--bronzed { background: var(--paper-deep); }
+  .panel--stellar { background: var(--night); color: var(--night-text); }
+  .panel-inner { padding-block: var(--sp-800) 0; }
+  .panel-copy { display: grid; gap: var(--sp-300); justify-items: start; max-width: 560px; }
+  @media (min-width: 900px) {
+    .panel-copy--right { justify-self: end; }
   }
-  .app-card--stellar { background: var(--night); border-color: var(--night-line); color: var(--night-text); }
-  .app-card--stellar .mono-note { color: var(--night-soft); }
-  .app-card--stellar .app-desc { color: var(--night-soft); }
-  .app-head { display: flex; align-items: center; gap: var(--sp-200); }
-  .app-head h3 { font-size: var(--text-2xl); line-height: var(--lh-2xl); }
-  .app-icon { border-radius: 16px; }
-  .app-tagline {
-    font-size: var(--text-3xl);
-    line-height: var(--lh-3xl);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-  .app-card--bronzed .app-tagline { color: var(--orange); }
-  .app-card--stellar .app-tagline { color: #9fb0ff; }
-  .app-desc { color: var(--ink-soft); max-width: 420px; }
-  .app-actions { display: flex; flex-wrap: wrap; gap: var(--sp-200); margin-top: var(--sp-100); }
-  .app-card--stellar .btn--primary { background: var(--paper); color: var(--ink); }
-  .app-card--stellar .btn--ghost { border-color: var(--night-line); color: var(--night-text); }
+  .panel-head { display: flex; align-items: center; gap: var(--sp-200); }
+  .panel-icon { border-radius: 14px; }
+  .panel--bronzed h3 { color: var(--orange-deep); }
+  .panel--stellar h3 { color: #9fb0ff; }
+  .panel-desc { font-size: var(--text-lg); line-height: var(--lh-lg); color: var(--ink-soft); max-width: 460px; }
+  .panel--stellar .panel-desc { color: var(--night-soft); }
+  .panel--stellar .kicker { color: var(--night-soft); }
+  .panel-actions { display: flex; flex-wrap: wrap; gap: var(--sp-200); }
+  .panel--stellar .btn--primary { background: var(--paper); color: var(--ink); }
+  .panel--stellar .btn--ghost { border-color: var(--night-line); color: var(--night-text); }
+  .panel-art { margin-top: var(--sp-600); }
+  .panel-art :global(img) { width: 100%; height: auto; display: block; }
 
   .motto { max-width: 680px; }
 </style>

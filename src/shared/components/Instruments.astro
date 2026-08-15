@@ -1,0 +1,162 @@
+---
+/**
+ * The studio instruments: six dark cards, each with an abstract animated
+ * SVG illustration. Every instrument symbolizes one real capability.
+ * Ambient motion only — everything freezes under prefers-reduced-motion.
+ */
+const items = [
+  { key: 'survey', title: 'The Survey', caption: 'Demand research at machine scale' },
+  { key: 'assay', title: 'The Assay', caption: 'Ideas tested before a line of code' },
+  { key: 'bench', title: 'The Bench', caption: 'Native craft, polished by hand' },
+  { key: 'prism', title: 'The Prism', caption: 'One launch, many languages' },
+  { key: 'orrery', title: 'The Orrery', caption: 'Every app reviewed, every week' },
+  { key: 'ledger', title: 'The Ledger', caption: 'A human verdict on every change' },
+];
+---
+
+<ul class="instruments">
+  {items.map((item, i) => (
+    <li class="instrument reveal" style={`--reveal-delay: ${(i % 2) * 90}ms`}>
+      <h3>{item.title}</h3>
+      <p class="mono-note">{item.caption}</p>
+      <div class="stage" aria-hidden="true">
+        {item.key === 'survey' && (
+          <svg viewBox="0 0 320 240" fill="none">
+            {[
+              [46, 176], [84, 64], [128, 150], [190, 52], [236, 140], [272, 88], [150, 96], [220, 196], [60, 110],
+            ].map(([x, y]) => (
+              <circle cx={x} cy={y} r="3" fill="#5c564a" />
+            ))}
+            <g class="sweep">
+              <path d="M160 120 L300 74 A150 150 0 0 1 306 132 Z" fill="rgba(228,87,26,0.14)" />
+              <path d="M160 120 L300 74" stroke="var(--orange)" stroke-width="1.5" />
+            </g>
+            <circle cx="160" cy="120" r="86" stroke="#3b372d" stroke-width="1" stroke-dasharray="3 6" />
+            <circle cx="160" cy="120" r="130" stroke="#2c2921" stroke-width="1" stroke-dasharray="3 6" />
+            <circle cx="160" cy="120" r="4" fill="var(--paper)" />
+            <circle class="ping" cx="236" cy="140" r="6" fill="var(--orange)" />
+          </svg>
+        )}
+        {item.key === 'assay' && (
+          <svg viewBox="0 0 320 240" fill="none">
+            <g class="hover">
+              <ellipse cx="160" cy="52" rx="34" ry="10" stroke="var(--paper)" stroke-width="1.5" stroke-dasharray="4 5" />
+              <ellipse cx="160" cy="96" rx="62" ry="10" stroke="#8a8272" stroke-width="1.2" stroke-dasharray="4 5" />
+              <ellipse cx="160" cy="140" rx="92" ry="10" stroke="#5c564a" stroke-width="1" stroke-dasharray="4 5" />
+              <ellipse cx="160" cy="186" rx="120" ry="10" stroke="#3b372d" stroke-width="1" />
+            </g>
+            <circle class="fall" cx="160" cy="52" r="6" fill="var(--orange)" />
+          </svg>
+        )}
+        {item.key === 'bench' && (
+          <svg viewBox="0 0 320 240" fill="none">
+            <circle cx="160" cy="128" r="34" fill="var(--orange)" />
+            <circle cx="149" cy="116" r="9" fill="rgba(255,255,255,0.35)" />
+            <g class="ring-a">
+              <ellipse cx="160" cy="128" rx="76" ry="26" stroke="var(--paper)" stroke-width="1.2" stroke-dasharray="5 7" />
+            </g>
+            <g class="ring-b">
+              <ellipse cx="160" cy="128" rx="104" ry="40" stroke="#5c564a" stroke-width="1" stroke-dasharray="3 7" />
+            </g>
+            <path d="M64 206 H256" stroke="#3b372d" stroke-width="1.5" />
+          </svg>
+        )}
+        {item.key === 'prism' && (
+          <svg viewBox="0 0 320 240" fill="none">
+            <path class="beam" d="M20 120 H128" stroke="var(--paper)" stroke-width="1.6" stroke-dasharray="6 6" />
+            <path d="M128 84 L188 120 L128 156 Z" stroke="var(--paper)" stroke-width="1.4" fill="rgba(245,240,229,0.05)" />
+            <path class="beam" d="M188 120 C230 118 258 96 300 60" stroke="var(--orange)" stroke-width="1.4" stroke-dasharray="6 6" />
+            <path class="beam beam-2" d="M188 120 C232 118 262 108 300 92" stroke="#c9a24a" stroke-width="1.4" stroke-dasharray="6 6" />
+            <path class="beam beam-3" d="M188 120 H300" stroke="var(--paper)" stroke-width="1.4" stroke-dasharray="6 6" />
+            <path class="beam beam-4" d="M188 120 C232 122 262 132 300 148" stroke="#7c9a5a" stroke-width="1.4" stroke-dasharray="6 6" />
+            <path class="beam beam-5" d="M188 120 C230 122 258 144 300 180" stroke="#6b83e8" stroke-width="1.4" stroke-dasharray="6 6" />
+          </svg>
+        )}
+        {item.key === 'orrery' && (
+          <svg viewBox="0 0 320 240" fill="none">
+            <circle cx="160" cy="120" r="16" fill="var(--orange)" />
+            <g class="orbit-a">
+              <ellipse cx="160" cy="120" rx="66" ry="42" stroke="#8a8272" stroke-width="1.2" stroke-dasharray="4 6" />
+              <circle cx="226" cy="120" r="7" fill="var(--paper)" />
+            </g>
+            <g class="orbit-b">
+              <ellipse cx="160" cy="120" rx="112" ry="72" stroke="#5c564a" stroke-width="1" stroke-dasharray="4 6" />
+              <circle cx="48" cy="120" r="5" fill="#6b83e8" />
+            </g>
+          </svg>
+        )}
+        {item.key === 'ledger' && (
+          <svg viewBox="0 0 320 240" fill="none">
+            {[64, 96, 128, 160, 192].map((y, row) => (
+              <path d={`M64 ${y} H256`} stroke={row === 2 ? '#8a8272' : '#3b372d'} stroke-width="1.2" stroke-dasharray="2 6" />
+            ))}
+            <circle class="tick" cx="72" cy="64" r="6" fill="var(--orange)" />
+            <path d="M232 52 l8 10 14 -18" stroke="var(--paper)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="check" />
+          </svg>
+        )}
+      </div>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .instruments {
+    list-style: none;
+    margin: var(--sp-700) 0 0;
+    padding: 0;
+    display: grid;
+    gap: var(--sp-300);
+  }
+  @media (min-width: 768px) {
+    .instruments { grid-template-columns: repeat(2, 1fr); gap: var(--sp-400); }
+  }
+  .instrument {
+    background: #181818;
+    border: 1px solid var(--night-line);
+    border-radius: 24px;
+    padding: var(--sp-500) var(--sp-400) var(--sp-300);
+    text-align: center;
+    transition: transform 700ms var(--ease-fluid), border-color 700ms var(--ease-fluid);
+  }
+  .instrument:hover { transform: translateY(-4px); border-color: #55503f; }
+  .instrument h3 {
+    font-size: var(--text-2xl);
+    line-height: var(--lh-2xl);
+    color: var(--night-text);
+  }
+  .instrument .mono-note { margin-top: var(--sp-50); }
+  .stage { max-width: 340px; margin: var(--sp-300) auto 0; }
+
+  /* ambient motion, one personality per instrument */
+  .sweep { transform-origin: 160px 120px; animation: spin-slow 14s linear infinite; }
+  .ping { animation: glow-pulse 2.4s var(--ease-fluid) infinite; transform-origin: 236px 140px; }
+  .hover { animation: float-y 7s var(--ease-fluid) infinite; }
+  .fall { animation: assay-fall 5s var(--ease-fluid) infinite; }
+  .ring-a { transform-origin: 160px 128px; animation: spin-slow 18s linear infinite; }
+  .ring-b { transform-origin: 160px 128px; animation: spin-slow-reverse 30s linear infinite; }
+  .beam { animation: dash-flow 3s linear infinite; }
+  .beam-2 { animation-duration: 3.6s; }
+  .beam-3 { animation-duration: 4.2s; }
+  .beam-4 { animation-duration: 3.3s; }
+  .beam-5 { animation-duration: 3.9s; }
+  .orbit-a { transform-origin: 160px 120px; animation: spin-slow 16s linear infinite; }
+  .orbit-b { transform-origin: 160px 120px; animation: spin-slow-reverse 40s linear infinite; }
+  .tick { animation: ledger-tick 6s steps(1) infinite; }
+  .check { animation: twinkle 6s var(--ease-fluid) infinite; }
+
+  @keyframes assay-fall {
+    0% { transform: translateY(0); opacity: 1; }
+    70% { transform: translateY(134px); opacity: 1; }
+    82% { transform: translateY(134px); opacity: 0; }
+    83% { transform: translateY(0); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes ledger-tick {
+    0% { transform: translateY(0); }
+    20% { transform: translateY(32px); }
+    40% { transform: translateY(64px); }
+    60% { transform: translateY(96px); }
+    80% { transform: translateY(128px); }
+    100% { transform: translateY(0); }
+  }
+</style>

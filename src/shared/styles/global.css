@@ -300,6 +300,77 @@ button { font: inherit; }
   filter: blur(0);
 }
 
+/* ambient keyframes — decorative motion, killed under reduced motion */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes spin-slow-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.9; }
+}
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+@keyframes dash-flow {
+  to { stroke-dashoffset: -48; }
+}
+@keyframes drift-pan {
+  0% { transform: scale(1.06) translateX(0); }
+  100% { transform: scale(1.12) translateX(-2%); }
+}
+@keyframes marquee-x {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(48px); filter: blur(10px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+/* staggered hero entrance: <span class="rise" style="--d: 120ms"> */
+.rise {
+  opacity: 0;
+  animation: rise-in 1100ms var(--ease-fluid) both;
+  animation-delay: var(--d, 0ms);
+}
+
+/* marquee ticker */
+.marquee {
+  overflow: clip;
+  border-top: 1px solid var(--night-line);
+  border-bottom: 1px solid var(--night-line);
+}
+.marquee-track {
+  display: flex;
+  gap: var(--sp-600);
+  width: max-content;
+  padding-block: var(--sp-100);
+  animation: marquee-x 36s linear infinite;
+}
+.marquee:hover .marquee-track { animation-play-state: paused; }
+.marquee-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-600);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.marquee-item::after { content: '✦'; color: var(--orange); }
+
 /* word-by-word tagline reveal */
 .wordreveal .w {
   color: color-mix(in srgb, currentColor 28%, transparent);
