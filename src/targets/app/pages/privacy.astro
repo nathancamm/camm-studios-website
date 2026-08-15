@@ -1,0 +1,55 @@
+---
+import LegalLayout from '@shared/layouts/LegalLayout.astro';
+import { getCurrentApp } from '@shared/data/apps';
+const app = getCurrentApp();
+const isBronzed = app.target === 'bronzed';
+---
+
+<LegalLayout title={`Privacy Policy — ${app.name}`} description={`How ${app.name} handles your data.`} canonical={new URL('/privacy', Astro.site)} heading="Privacy Policy" updated="August 16, 2026" product={app.name}>
+  <h2>About this policy</h2>
+  <p>This policy applies to <strong>{app.appStoreTitle}</strong>, developed by Camm Studios.</p>
+
+  {isBronzed ? (
+    <>
+      <h2>Information stored on your device</h2>
+      <p>Bronzed stores your skin type, skin response, current and goal shade, SPF, units, vitamin D goal, session history, streaks, progress, notification settings, and onboarding state on your device.</p>
+      <p>Progress photos use photos you choose through the iOS photo library or take with the camera. The app stores those photos locally. Camm Studios does not receive them.</p>
+      <h2>Location and weather</h2>
+      <p>With permission, Bronzed uses your location to request local UV, temperature, conditions, and forecasts from Apple WeatherKit. Apple MapKit supports place search. You can choose a location manually. Apple processes these requests under its privacy terms.</p>
+      <h2>Analytics</h2>
+      <p>PostHog receives app and device details, screen views, onboarding progress, feature use, settings changes, session actions, subscription events, and app lifecycle events. Session analytics can include skin profile inputs, UV, weather, SPF, duration, and estimated vitamin D. PostHog does not receive your progress photos or precise location.</p>
+      <h2>Attribution and advertising measurement</h2>
+      <p>AppsFlyer measures installs and campaign performance. It may process device information, install and app events, IP based coarse location, Apple Ads attribution, device identifiers, and an advertising identifier when you permit tracking through App Tracking Transparency. Attribution identifiers may be linked with RevenueCat subscription information to measure campaign outcomes.</p>
+      <h2>Subscriptions</h2>
+      <p>Apple processes billing. RevenueCat receives an app user identifier, purchase receipts, product information, and subscription status so Bronzed can unlock paid features.</p>
+    </>
+  ) : (
+    <>
+      <h2>Information stored on your device</h2>
+      <p>Stellar stores journal text, custom and favorite affirmations, focus text, confrontation responses, vision board images and goals, daily check ins, streaks, reminders, and app settings on your device. Camm Studios does not receive this content.</p>
+      <p>The iOS photo picker only provides the images you select for your vision board. Those images stay on your device.</p>
+      <h2>Profile and analytics information</h2>
+      <p>During onboarding, Stellar may ask for your first name, age range, gender, relationship and work status, belief level, and areas you want to improve.</p>
+      <p>PostHog receives usage events, device and app details, and selected profile attributes including age range, gender, and belief level. Event data can show screens viewed, onboarding progress, affirmation actions, journal completion and time slot, vision board actions, streak milestones, subscription events, and app lifecycle. It does not receive journal text, custom affirmation text, or vision board content.</p>
+      <h2>Subscriptions and personalization</h2>
+      <p>Apple processes billing. Superwall receives an app user identifier, purchase and subscription information, paywall interactions, and profile attributes used for in app presentation. These attributes can include first name, demographics, belief level, and selected improvement areas. Superwall does not receive journal text, photos, or vision board content.</p>
+      <h2>Attribution and tracking</h2>
+      <p>TikTok Events SDK measures installs, app opens, product interactions, and purchase events. It may process device identifiers, device information, IP based coarse location, product interaction, and purchase history. Its integration declares this information as linked tracking data. An advertising identifier is available only when you permit tracking through App Tracking Transparency.</p>
+    </>
+  )}
+
+  <h2>Notifications</h2>
+  <p>If enabled, the app schedules reminders through iOS. Notification settings remain under your device controls.</p>
+  <h2>How we use information</h2>
+  <ul><li>Provide and personalize app features.</li><li>Understand use and improve the app.</li><li>Manage subscription access.</li><li>Measure installs and campaign performance.</li><li>Maintain reliability and prevent misuse.</li></ul>
+  <h2>Sharing, tracking, and sale</h2>
+  <p>We do not sell personal information for money. Attribution activity may meet broad legal definitions of sharing or targeted advertising. You can limit supported tracking through iOS privacy controls.</p>
+  <h2>Retention and deletion</h2>
+  <p>Local data remains until you delete it through app controls or delete the app. Service providers retain information under their own settings and policies. To request deletion of provider data connected to an app identifier, contact us.</p>
+  <h2>Your rights</h2>
+  <p>Depending on where you live, you may have rights to access, correct, delete, restrict, object, or request a copy of personal information. California residents can ask what information is collected and opt out of covered sharing. Australian users can seek access and correction under applicable law.</p>
+  <h2>Children</h2>
+  <p>{app.name} is intended for people aged 18 and over. We do not knowingly collect personal information from children.</p>
+  <h2>Security, changes, and contact</h2>
+  <p>We use reasonable safeguards, but no system can guarantee complete security. We may update this policy and will change the date above. Email privacy questions or requests to <a href="mailto:info@cammstudios.com">info@cammstudios.com</a>.</p>
+</LegalLayout>

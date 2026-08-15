@@ -1,0 +1,128 @@
+---
+import { Image, Picture } from 'astro:assets';
+import BaseLayout from '@shared/layouts/BaseLayout.astro';
+import Nav from '@shared/components/Nav.astro';
+import Footer from '@shared/components/Footer.astro';
+import StoreButton from '@shared/components/StoreButton.astro';
+import blogUv from '@shared/assets/art/blog-uv.png';
+import blog369 from '@shared/assets/art/blog-369.png';
+import { getCurrentApp } from '@shared/data/apps';
+import '@shared/styles/app.css';
+
+const app = getCurrentApp();
+const canonical = new URL('/', Astro.site);
+const socialImage = new URL(app.artwork.src, Astro.site);
+const blogImage = app.target === 'bronzed' ? blogUv : blog369;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'MobileApplication',
+  name: app.appStoreTitle,
+  operatingSystem: 'iOS',
+  applicationCategory: `${app.category}Application`,
+  description: app.seoDescription,
+  url: canonical.toString(),
+  downloadUrl: app.storeUrl,
+  softwareVersion: app.version,
+  author: { '@type': 'Organization', name: 'Camm Studios', url: 'https://www.cammstudios.com' },
+};
+const privacyCopy = app.target === 'bronzed'
+  ? 'Your profile, session history, and progress photos stay on your device. Location is optional. Analytics, attribution, weather, and subscription services receive only the data explained in our policy.'
+  : 'Your journal text, custom affirmations, and vision board content stay on your device. Limited profile, analytics, attribution, and subscription data is processed as explained in our policy.';
+---
+
+<BaseLayout
+  title={`${app.name} — ${app.tagline}`}
+  description={app.seoDescription}
+  canonical={canonical}
+  image={socialImage}
+  themeClass={app.themeClass}
+  structuredData={structuredData}
+>
+  <Nav
+    product={app.name}
+    links={[{ href: '#features', label: 'Features' }, { href: '/blog', label: 'Journal' }, { href: '/support', label: 'Support' }]}
+    storeUrl={app.storeUrl}
+  />
+  <main id="main">
+    <section class="app-hero shell">
+      <div class="app-hero__grid">
+        <div class="app-hero__copy">
+          <div class="app-identity" data-reveal>
+            <Image src={app.icon} alt={`${app.name} app icon`} width={64} height={64} format="webp" />
+            <div><p class="app-identity__name">{app.name}</p><p class="app-identity__meta">{app.eyebrow}</p></div>
+          </div>
+          <p class="eyebrow">{app.eyebrow}</p>
+          <h1 data-word-reveal>{app.tagline}</h1>
+          <p class="app-hero__lede" data-reveal>{app.description}</p>
+          <StoreButton href={app.storeUrl} />
+          {app.target === 'bronzed' && <p class="app-hero__notice">No app can prevent sunburn. Bronzed provides estimates and general guidance, not medical advice. Always follow official sun protection advice.</p>}
+        </div>
+        <figure class="app-hero__art" data-reveal data-parallax>
+          <Picture src={app.artwork} alt={app.artworkAlt} widths={[640, 960, 1280, 1586]} sizes="(max-width: 900px) calc(100vw - 32px), 56vw" formats={['avif', 'webp']} loading="eager" />
+        </figure>
+      </div>
+    </section>
+
+    <aside class="signal-strip" aria-label="App facts">
+      <div class="signal-strip__item"><p><strong>{app.version}</strong>Current version</p></div>
+      <div class="signal-strip__item"><p><strong>Native iOS</strong>Built for iPhone</p></div>
+      <div class="signal-strip__item"><p><strong>{app.category}</strong>App Store category</p></div>
+    </aside>
+
+    <section class="section feature-story" id="features" aria-labelledby="feature-title">
+      <div class="shell">
+        <p class="eyebrow">Inside the app</p>
+        <h2 class="section-title" id="feature-title" data-reveal>{app.target === 'bronzed' ? 'A clearer way to read the sun.' : 'A calm place to return to your intention.'}</h2>
+        <div class="feature-story__grid">
+          <div class="product-gallery" data-reveal>
+            <div class="device-frame">
+              <Image src={app.screenshot} alt={`Real ${app.name} app interface`} width={390} format="webp" quality={88} />
+            </div>
+          </div>
+          <div class="features">
+            {app.features.map((feature, index) => (
+              <article class="feature" data-reveal>
+                <p class="feature__number">0{index + 1}</p>
+                <h3>{feature.title}</h3>
+                <p>{feature.body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell" aria-labelledby="steps-title">
+      <p class="eyebrow">{app.target === 'bronzed' ? 'A focused session' : 'Three moments each day'}</p>
+      <h2 class="section-title" id="steps-title" data-reveal>{app.target === 'bronzed' ? 'From conditions to a useful decision.' : 'A ritual simple enough to repeat.'}</h2>
+      <div class="steps-grid">
+        {app.steps.map((step) => <article class="step" data-reveal><p class="step__number">{step.number}</p><h3>{step.title}</h3><p>{step.body}</p></article>)}
+      </div>
+    </section>
+
+    <section class="section shell">
+      <div class="privacy-panel" data-reveal>
+        <p class="eyebrow">Privacy, clearly stated</p>
+        <div><h2>Your personal content belongs to you.</h2><p>{privacyCopy}</p><a href="/privacy">Read the full Privacy Policy</a></div>
+      </div>
+    </section>
+
+    <section class="section shell" aria-labelledby="faq-title">
+      <p class="eyebrow">Questions, answered</p>
+      <h2 class="section-title" id="faq-title" data-reveal>What to know before you start.</h2>
+      <div class="faq-list">
+        {app.faqs.map((faq) => <details><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}
+      </div>
+    </section>
+
+    <section class="section shell blog-preview" aria-labelledby="journal-title">
+      <div class="blog-preview__art" data-reveal><Picture src={blogImage} alt={app.target === 'bronzed' ? 'Abstract sun dials showing UV intensity.' : 'Three abstract ritual phases.'} widths={[480, 720, 960]} sizes="(max-width: 900px) calc(100vw - 32px), 56vw" formats={['avif', 'webp']} /></div>
+      <div data-reveal><p class="eyebrow">From the journal</p><h2 id="journal-title">{app.blogTitle}</h2><p>{app.blogSummary}</p><a class="button" href={`/blog/${app.blogSlug}`}>Read the guide</a></div>
+    </section>
+
+    <section class="download-panel">
+      <div><p class="eyebrow">Available now</p><h2>{app.target === 'bronzed' ? 'Meet the sun with better context.' : 'Make space for a steadier ritual.'}</h2><StoreButton href={app.storeUrl} /></div>
+    </section>
+  </main>
+  <Footer product={app.name} />
+</BaseLayout>

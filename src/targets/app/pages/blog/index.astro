@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import { Picture } from 'astro:assets';
+import BaseLayout from '@shared/layouts/BaseLayout.astro';
+import Nav from '@shared/components/Nav.astro';
+import Footer from '@shared/components/Footer.astro';
+import blogUv from '@shared/assets/art/blog-uv.png';
+import blog369 from '@shared/assets/art/blog-369.png';
+import { getCurrentApp } from '@shared/data/apps';
+import '@shared/styles/blog.css';
+
+const app = getCurrentApp();
+const posts = (await getCollection('blog', ({ data }) => data.app === app.target && !data.draft))
+  .sort((a, b) => b.data.publicationDate.valueOf() - a.data.publicationDate.valueOf());
+const images = { 'blog-uv': blogUv, 'blog-369': blog369 };
+---
+
+<BaseLayout title={`${app.name} Journal — Practical guides`} description={app.blogSummary} canonical={new URL('/blog', Astro.site)} themeClass={app.themeClass}>
+  <Nav product={app.name} links={[{ href: '/', label: app.name }, { href: '/blog', label: 'Journal' }, { href: '/support', label: 'Support' }]} storeUrl={app.storeUrl} />
+  <main id="main" class="blog-index shell">
+    <header class="blog-index__header" data-reveal>
+      <p class="eyebrow">{app.name} Journal</p>
+      <h1>Useful context for a more intentional day.</h1>
+      <p class="lede">Clear guides built around the same problem {app.name} helps you solve.</p>
+    </header>
+    <section aria-label="Articles">
+      {posts.map((post) => (
+        <a class="post-card" href={`/blog/${post.data.slug}`}>
+          <div><p class="post-card__meta">{post.data.publicationDate.toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</p><h2>{post.data.title}</h2><p>{post.data.summary}</p><span class="button">Read article</span></div>
+          <div class="post-card__image"><Picture src={images[post.data.heroImage]} alt={post.data.alt} widths={[480, 720, 960]} sizes="(max-width: 800px) calc(100vw - 32px), 38vw" formats={['avif', 'webp']} /></div>
+        </a>
+      ))}
+    </section>
+  </main>
+  <Footer product={app.name} />
+</BaseLayout>
