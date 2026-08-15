@@ -1,0 +1,152 @@
+---
+import { Picture } from 'astro:assets';
+import BaseLayout from '@shared/layouts/BaseLayout.astro';
+import Nav from '@shared/components/Nav.astro';
+import Footer from '@shared/components/Footer.astro';
+import companyArt from '@shared/assets/art/company-system.png';
+import bronzedArt from '@shared/assets/art/bronzed-system.png';
+import stellarArt from '@shared/assets/art/stellar-system.png';
+import { companySite } from '@shared/data/site';
+import '@shared/styles/company.css';
+
+const canonical = new URL('/', Astro.site);
+const socialImage = new URL(companyArt.src, Astro.site);
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: companySite.name,
+  url: companySite.url,
+  logo: new URL('/favicon.svg', Astro.site).toString(),
+  email: companySite.email,
+  sameAs: [],
+};
+---
+
+<BaseLayout
+  title="Camm Studios — Focused apps for overlooked problems"
+  description={companySite.description}
+  canonical={canonical}
+  image={socialImage}
+  structuredData={structuredData}
+>
+  <div class="company-intro" data-company-intro aria-hidden="true">
+    <div class="company-intro__inner">
+      <div class="company-intro__signal"></div>
+      <p>A small signal can become a useful product.</p>
+    </div>
+  </div>
+  <Nav links={[{ href: '#process', label: 'Process' }, { href: '#portfolio', label: 'Apps' }, { href: '/support', label: 'Support' }]} />
+  <main id="main">
+    <section class="company-hero shell">
+      <div class="company-hero__grid">
+        <h1 data-word-reveal>We find overlooked problems and build focused apps that earn their place on your phone.</h1>
+        <div class="company-hero__aside" data-reveal>
+          <p>Camm Studios uses data and AI to find real needs, build native products, launch globally, and improve them over time.</p>
+          <div class="company-hero__actions">
+            <a class="button button--ink" href="#process">Read our process</a>
+            <p class="proof">Two live, native iOS products</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <figure class="system-figure" data-reveal data-parallax>
+      <Picture src={companyArt} alt="An orange signal moving through discovery, focus, distribution, and feedback stages in a cobalt system." widths={[640, 960, 1280, 1536]} sizes="(max-width: 800px) calc(100vw - 32px), calc(100vw - 8vw)" formats={['avif', 'webp']} loading="eager" />
+      <figcaption><span>One signal. Four deliberate stages.</span><span>Discover · Build · Launch · Learn</span></figcaption>
+    </figure>
+
+    <section class="section shell thesis" aria-labelledby="thesis-title">
+      <p class="eyebrow">The thesis</p>
+      <p class="thesis__statement" id="thesis-title" data-reveal>Useful apps rarely begin with more features. They begin with a problem clear enough to solve well.</p>
+    </section>
+
+    <section class="section process" id="process" aria-labelledby="process-title">
+      <div class="shell">
+        <div class="process__intro">
+          <p class="eyebrow">How we operate</p>
+          <h2 class="section-title" id="process-title" data-reveal>From overlooked signal to product that keeps learning.</h2>
+        </div>
+        <div class="process__grid">
+          <div class="process__chapters">
+            <article class="chapter" data-reveal>
+              <p class="chapter__number">01 / Discover</p>
+              <h3>Discover overlooked consumer needs.</h3>
+              <p>We study search behaviour, product gaps, and recurring friction. The goal is a need with a clear shape.</p>
+            </article>
+            <article class="chapter" data-reveal>
+              <p class="chapter__number">02 / Build</p>
+              <h3>Build one focused native solution.</h3>
+              <p>We reduce the idea to its most useful interaction, then craft it for the platform it lives on.</p>
+            </article>
+            <article class="chapter" data-reveal>
+              <p class="chapter__number">03 / Launch</p>
+              <h3>Launch globally with strong localization.</h3>
+              <p>We treat language and local context as product work, so each app can feel at home in more places.</p>
+            </article>
+            <article class="chapter" data-reveal>
+              <p class="chapter__number">04 / Learn</p>
+              <h3>Learn from real use and improve continuously.</h3>
+              <p>Behaviour reveals what earns attention. We use that signal to refine the product with care.</p>
+            </article>
+          </div>
+          <div class="process__visual" aria-hidden="true">
+            <Picture src={companyArt} alt="" widths={[640, 960, 1280]} sizes="(max-width: 900px) calc(100vw - 32px), 48vw" formats={['avif', 'webp']} />
+            <div class="process__key"><span>Find</span><span>Shape</span><span>Reach</span><span>Return</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell judgement" aria-labelledby="judgement-title">
+      <h2 class="judgement__title" id="judgement-title" data-word-reveal>AI native. Human judged.</h2>
+      <div class="judgement__copy" data-reveal>
+        <p>AI helps us move from broad signals to working software quickly. People decide what is useful, understandable, safe, and worth keeping.</p>
+        <p>Speed matters. Taste, responsibility, and product judgement matter more.</p>
+      </div>
+    </section>
+
+    <section class="section capabilities" aria-labelledby="capabilities-title">
+      <div class="shell">
+        <p class="eyebrow">Capabilities</p>
+        <h2 class="section-title" id="capabilities-title" data-reveal>A compact studio built for the whole product cycle.</h2>
+        <div class="capability-grid">
+          <article class="capability"><p class="capability__number">01</p><h3>Opportunity research</h3><p>Search patterns, reviews, category gaps, and product evidence.</p></article>
+          <article class="capability"><p class="capability__number">02</p><h3>Native product design</h3><p>Focused interfaces shaped around real platform behaviour.</p></article>
+          <article class="capability"><p class="capability__number">03</p><h3>Global distribution</h3><p>Localization, app store presentation, and useful content.</p></article>
+          <article class="capability"><p class="capability__number">04</p><h3>Continuous learning</h3><p>Measured use, careful interpretation, and regular improvement.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section portfolio" id="portfolio" aria-labelledby="portfolio-title">
+      <div class="shell">
+        <p class="eyebrow">Live products</p>
+        <h2 class="section-title" id="portfolio-title" data-reveal>Two apps. Two clear jobs.</h2>
+        <div class="portfolio-grid">
+          <a class="portfolio-card" href="https://bronzed.cammstudios.com" data-reveal>
+            <div class="portfolio-card__art"><Picture src={bronzedArt} alt="An abstract solar measurement system for Bronzed." widths={[480, 720, 960]} sizes="(max-width: 680px) calc(100vw - 32px), 46vw" formats={['avif', 'webp']} /></div>
+            <div class="portfolio-card__body"><div><p class="eyebrow">Weather and wellbeing</p><h3>Bronzed</h3><p>Live UV and personal context become a clearer outdoor time estimate.</p></div><span class="portfolio-card__arrow" aria-hidden="true">↗</span></div>
+          </a>
+          <a class="portfolio-card" href="https://stellar.cammstudios.com" data-reveal>
+            <div class="portfolio-card__art"><Picture src={stellarArt} alt="An abstract three phase ritual system for Stellar." widths={[480, 720, 960]} sizes="(max-width: 680px) calc(100vw - 32px), 46vw" formats={['avif', 'webp']} /></div>
+            <div class="portfolio-card__body"><div><p class="eyebrow">Daily reflection</p><h3>Stellar</h3><p>Affirmations, journaling, and vision boards form a steady daily ritual.</p></div><span class="portfolio-card__arrow" aria-hidden="true">↗</span></div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <script is:inline>
+    const intro = document.querySelector('[data-company-intro]');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let seen = false;
+    try { seen = sessionStorage.getItem('camm-intro-seen') === '1'; } catch {}
+    if (!intro || reduced || seen) {
+      intro?.remove();
+    } else {
+      try { sessionStorage.setItem('camm-intro-seen', '1'); } catch {}
+      window.setTimeout(() => intro.classList.add('is-done'), 1900);
+      window.setTimeout(() => intro.remove(), 2900);
+    }
+  </script>
+</BaseLayout>
