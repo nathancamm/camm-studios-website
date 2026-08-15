@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Camm Studios</title>
+  <path d="M12 40V29C12 17.4 21.4 8 33 8s21 9.4 21 21v11" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
+  <path d="M16 50h25l10-10" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="15" cy="50" r="6" fill="#E4571A"/>
+</svg>

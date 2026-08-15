@@ -1,0 +1,15 @@
+---
+import mark from '../assets/brand/mark.svg';
+
+interface Props {
+  product?: string;
+}
+
+const { product } = Astro.props;
+---
+
+<a class="brand" href="/" aria-label={`${product ?? 'Camm Studios'} home`}>
+  <img src={mark.src} width="32" height="32" alt="" />
+  <span class="brand__name">Camm Studios</span>
+  {product && <span class="brand__product">{product}</span>}
+</a>

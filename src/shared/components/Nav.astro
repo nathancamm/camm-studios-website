@@ -1,0 +1,32 @@
+---
+import Brand from './Brand.astro';
+
+interface Link {
+  href: string;
+  label: string;
+}
+
+interface Props {
+  product?: string;
+  links?: Link[];
+  storeUrl?: string;
+}
+
+const { product, storeUrl, links = [] } = Astro.props;
+---
+
+<header class="site-header">
+  <nav class="nav-island" aria-label="Primary navigation">
+    <Brand product={product} />
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-panel">
+      <span class="sr-only">Open menu</span>
+      <span></span><span></span>
+    </button>
+    <div class="nav-panel" id="nav-panel">
+      <div class="nav-links">
+        {links.map((link) => <a href={link.href}>{link.label}</a>)}
+      </div>
+      {storeUrl && <a class="button button--compact button--ink" href={storeUrl}>Get the app</a>}
+    </div>
+  </nav>
+</header>
