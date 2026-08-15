@@ -22,36 +22,36 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 const features = [
   {
     kicker: 'Smart tan timer',
-    title: 'A safe-time countdown, computed for you',
-    body: 'Tell Bronzed your skin type once. Every session combines the live UV index, cloud cover, and the SPF you are wearing into one personal countdown — capped below your skin’s burn threshold, with a halfway flip reminder for an even tan.',
+    title: 'A countdown built for your skin, not for everyone',
+    body: 'Set your skin type once. Bronzed folds in the live UV index, cloud cover, and the SPF you are wearing, then runs a session that ends before your burn threshold. Halfway through, it tells you to flip.',
     shot: shot02,
     alt: 'Bronzed session screen showing UV index 7, skin type III, a 17 minute safe limit, and a guided 8 minute session',
   },
   {
     kicker: 'Live UV dashboard',
-    title: 'Is now a good time? One glance answers it',
-    body: 'A live UV gauge with color-coded risk, real-time conditions from Apple Weather, and hourly UV for the rest of the day. Home screen widgets keep the number in sight before you head out.',
+    title: 'Open it and you know if now is a good time',
+    body: 'A live UV gauge with color-coded risk, conditions from Apple Weather, and hour-by-hour UV for the rest of the day. Widgets put the number on your Home Screen so you never guess.',
     shot: shot03,
     alt: 'Bronzed home screen showing a live UV index of 7 with High UV label and hourly UV forecast',
   },
   {
     kicker: 'Lock Screen and Dynamic Island',
     title: 'Start a session, put your phone down',
-    body: 'Your countdown, flip status, and sunscreen reapply alerts live on the Lock Screen and in the Dynamic Island. The timer keeps working while you relax — no unlocking, no checking.',
+    body: 'The countdown, your flip reminder, and sunscreen alerts run on the Lock Screen and in the Dynamic Island. You lie back. Your phone does the worrying.',
     shot: shot01,
     alt: 'Bronzed guided session timer showing 2 minutes 41 seconds remaining on the last round',
   },
   {
     kicker: 'Vitamin D tracking',
     title: 'Sunshine you can count',
-    body: 'Bronzed estimates the vitamin D you produce in every session and tracks progress toward your daily goal, day by day and week by week.',
+    body: 'Every session logs an estimate of the vitamin D you made, tracked against your daily goal, day by day and week by week.',
     shot: shot05,
     alt: 'Bronzed vitamin D screen showing 1,080 IU today against a 1,000 IU daily goal',
   },
   {
     kicker: 'Progress calendar',
-    title: 'Watch your color build',
-    body: 'Every session logs automatically. Streaks, totals, and weekly progress photos make the change impossible to miss — proof that smart, consistent sessions beat one long burn.',
+    title: 'Watch the color arrive',
+    body: 'Sessions log themselves. Streaks, totals, and weekly photos show the tan building one safe session at a time. Slow beats sorry.',
     shot: shot04,
     alt: 'Bronzed progress calendar with a five day streak and weekly progress photos',
   },
@@ -60,35 +60,35 @@ const features = [
 const faqs = [
   {
     q: 'How does Bronzed know how long I can stay in the sun?',
-    a: 'Bronzed combines the live UV index at your location, your Fitzpatrick skin type, and the SPF you are wearing. The calculation is based on Minimal Erythemal Dose (MED) — the same model dermatologists use — and every safe time is capped below your skin’s burn threshold with a built-in safety margin.',
+    a: 'It combines the live UV index at your location, your Fitzpatrick skin type, and the SPF you are wearing. The model is Minimal Erythemal Dose, the same one dermatologists use, and every session is capped below your burn threshold with a safety margin on top.',
   },
   {
     q: 'Is tanning ever completely safe?',
-    a: 'No — and Bronzed will never tell you otherwise. All UV exposure carries some risk. Bronzed exists to make your time in the sun informed and deliberate: personal limits, flip reminders, and SPF guidance instead of guesswork. Stop immediately if your skin shows any sign of burning, whatever the timer says.',
+    a: 'No. All UV exposure carries risk, and any app that says otherwise is lying to you. Bronzed keeps the risk visible and the session short. If your skin stings, get out of the sun, whatever the timer says.',
   },
   {
     q: 'Does it work without location access?',
-    a: 'Yes. Location (“while using”) gives you accurate local UV automatically, but you can also enter any location manually.',
+    a: 'Yes. Location gives you local UV automatically, but you can type in any place instead.',
   },
   {
     q: 'Where does the weather data come from?',
-    a: 'UV index, temperature, and forecasts come from Apple Weather, the same source as the built-in Weather app.',
+    a: 'Apple Weather. Same source as the built-in Weather app.',
   },
   {
     q: 'Is Bronzed free?',
-    a: 'Bronzed is free to download and use. A premium subscription unlocks the full guided routine: $39.99/year (with a 3-day free trial) or $6.99/week. Cancel anytime in your Apple Account settings.',
+    a: 'Free to download and use. The full guided routine is $39.99/year with a 3-day free trial, or $6.99/week. Cancel anytime in your Apple Account settings.',
   },
   {
     q: 'Where is my data stored?',
-    a: 'On your device. Your skin profile, session history, and progress photos never leave your phone. See the <a href="/privacy">privacy policy</a> for details.',
+    a: 'On your phone. Your skin profile, sessions, and photos never leave it. Details in the <a href="/privacy">privacy policy</a>.',
   },
   {
     q: 'Does Bronzed work for darker skin types?',
-    a: 'Yes. Bronzed supports all six Fitzpatrick skin types, and the plans differ dramatically — fair skin that burns in minutes and deep skin that rarely burns get completely different safe times, because that is how sun actually works.',
+    a: 'Yes, all six Fitzpatrick types. Type I skin that burns in ten minutes and Type VI skin that rarely burns get completely different numbers. That is the entire point of the app.',
   },
   {
     q: 'Is Bronzed a medical app?',
-    a: 'No. Bronzed provides estimates and general guidance, not medical advice. If you have fair or sensitive skin, a history of skin cancer, or take medication that increases sun sensitivity, talk to a doctor before deliberate sun exposure.',
+    a: 'No. It gives estimates, not medical advice. If you have very fair skin, a history of skin cancer, or take medication that raises sun sensitivity, talk to a doctor first.',
   },
 ];
 ---
@@ -104,11 +104,11 @@ const faqs = [
       <div class="hero-scrim"></div>
       <svg class="sun-rings" viewBox="0 0 600 600" aria-hidden="true">
         <g class="rings-spin">
-          <circle cx="300" cy="300" r="150" stroke="rgba(245,240,229,0.35)" stroke-width="1.2" stroke-dasharray="2 10" fill="none" />
-          <circle cx="300" cy="300" r="210" stroke="rgba(245,240,229,0.22)" stroke-width="1" stroke-dasharray="2 14" fill="none" />
-          <circle cx="300" cy="300" r="272" stroke="rgba(245,240,229,0.14)" stroke-width="1" stroke-dasharray="2 18" fill="none" />
+          <circle cx="300" cy="300" r="150" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-dasharray="2 10" fill="none" />
+          <circle cx="300" cy="300" r="210" stroke="rgba(255,255,255,0.22)" stroke-width="1" stroke-dasharray="2 14" fill="none" />
+          <circle cx="300" cy="300" r="272" stroke="rgba(255,255,255,0.14)" stroke-width="1" stroke-dasharray="2 18" fill="none" />
         </g>
-        <circle class="ring-glow" cx="300" cy="300" r="90" fill="rgba(228,87,26,0.18)" />
+        <circle class="ring-glow" cx="300" cy="300" r="90" fill="rgba(255,255,255,0.10)" />
       </svg>
       <div class="shell hero-inner">
         <div class="hero-copy">
@@ -118,12 +118,12 @@ const faqs = [
             <span class="rise" style="--d: 420ms">never burn.</span>
           </h1>
           <p class="lede rise" style="--d: 580ms">
-            Your skin, the live UV index, and your SPF — turned into one number: how long you can
-            stay in the sun today.
+            Bronzed turns the live UV index, your skin type, and your SPF into one number: how long
+            you can stay out today.
           </p>
           <div class="hero-cta rise" style="--d: 720ms">
             <AppStoreBadge href={bronzed.appStoreUrl} tone="paper" />
-            <p class="mono-note">iOS {bronzed.minimumOs}+ · Powered by Apple Weather</p>
+            <p class="mono-note">Free · iOS {bronzed.minimumOs}+ · Apple Weather data</p>
           </div>
         </div>
         <div class="hero-shot rise" style="--d: 860ms">
@@ -148,7 +148,7 @@ const faqs = [
       <div class="shell">
         <p class="kicker kicker--rule reveal">What it does</p>
         <h2 id="features-title" class="display-lg reveal">
-          The math for<br />your skin.
+          Your skin tans.<br />Bronzed does the math.
         </h2>
         <div class="feature-list">
           {features.map((f, i) => (
@@ -185,15 +185,15 @@ const faqs = [
           {[
             {
               t: 'Tell it your skin, once',
-              d: 'Pick your Fitzpatrick skin type in onboarding. Bronzed handles every calculation from there.',
+              d: 'Pick your Fitzpatrick type when you first open the app. That is the last setup you do.',
             },
             {
               t: 'Check the gauge',
-              d: 'The live UV dashboard tells you whether now is a good time and which SPF to wear.',
+              d: 'The dashboard shows live UV, whether now is a good time, and which SPF to wear.',
             },
             {
-              t: 'Start your session',
-              d: 'A personal countdown with flip and reapply reminders runs on your Lock Screen while you relax.',
+              t: 'Start the session',
+              d: 'The countdown runs on your Lock Screen with flip and reapply reminders. You just lie there.',
             },
           ].map((step, i) => (
             <li class="step reveal" style={`--reveal-delay: ${i * 80}ms`}>
@@ -211,7 +211,7 @@ const faqs = [
       <div class="shell">
         <WordReveal
           class="display-lg motto"
-          text="Fair skin burns in minutes. Olive skin rarely does. One timer for everyone was always wrong."
+          text="Fair skin burns in ten minutes. Olive skin shrugs it off. One timer for everyone was always wrong."
         />
       </div>
     </section>
@@ -227,23 +227,23 @@ const faqs = [
           <div class="science-item reveal">
             <h3>Fitzpatrick + MED</h3>
             <p>
-              Safe times come from the Fitzpatrick skin type scale and Minimal Erythemal Dose — the
-              standard model for how skin responds to UV. Every calculation is capped below your
-              burn threshold.
+              Safe times come from the Fitzpatrick skin type scale and Minimal Erythemal Dose, the
+              standard model for how skin responds to UV. Every session is capped below your burn
+              threshold.
             </p>
           </div>
           <div class="science-item reveal" style="--reveal-delay: 70ms">
-            <h3>Honest by design</h3>
+            <h3>No magic promised</h3>
             <p>
-              There is no such thing as risk-free tanning, and Bronzed never pretends otherwise. It
-              makes sun time informed and deliberate, with SPF guidance and hard stops.
+              There is no risk-free tan, and Bronzed does not sell you one. It gives you the
+              number, the sunscreen nudge, and a hard stop.
             </p>
           </div>
           <div class="science-item reveal" style="--reveal-delay: 140ms">
             <h3>Private by default</h3>
             <p>
-              Your skin profile, sessions, and photos stay on your device. We never see them.
-              Anonymous usage analytics only — read the <a href="/privacy">privacy policy</a>.
+              Your skin profile, sessions, and photos stay on your phone. We never see them. The
+              <a href="/privacy">privacy policy</a> is short enough to actually read.
             </p>
           </div>
         </div>

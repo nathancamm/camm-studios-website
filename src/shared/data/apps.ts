@@ -26,7 +26,7 @@ export const bronzed: AppDefinition = {
   storeName: 'Bronzed - Tan Timer & UV Index',
   tagline: 'Tan smart, never burn.',
   oneLiner:
-    'A personal safe tanning timer built from the live UV index, your skin type, and your SPF.',
+    'It reads the live UV index and your skin type, then gives you one number: how long you can stay out. A tan, no burn.',
   appStoreUrl: 'https://apps.apple.com/app/id6788585058',
   appStoreId: '6788585058',
   site: 'https://bronzed.cammstudios.com',
@@ -43,7 +43,7 @@ export const stellar: AppDefinition = {
   storeName: 'Stellar - Daily Affirmations',
   tagline: 'Speak it. Write it. See it.',
   oneLiner:
-    'Daily affirmations, a guided 369 journal, and a vision board in one calm, focused space.',
+    'Affirmations, a guided 369 journal, and a vision board. Five quiet minutes a day, no feed attached.',
   appStoreUrl: 'https://apps.apple.com/app/id6759896200',
   appStoreId: '6759896200',
   site: 'https://stellar.cammstudios.com',

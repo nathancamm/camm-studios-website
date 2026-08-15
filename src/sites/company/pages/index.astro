@@ -27,7 +27,7 @@ const jsonld = [
     email: company.email,
     logo: `${company.site}/apple-touch-icon.png`,
     description:
-      'Independent app studio. We find overlooked problems and build focused apps that earn their place on your phone.',
+      'Independent app studio. Small, sharp iOS apps for problems the big studios never notice.',
   },
   ...apps.map((app) => ({
     '@context': 'https://schema.org',
@@ -47,45 +47,45 @@ const heroWords = ['The', 'overlooked', 'frontier.'];
 const chapters = [
   {
     no: '01',
-    title: 'Find',
-    body: 'Most studios chase the charts. We ride the other way — into live store data, search trails, and one-star reviews, looking for the problems everyone else stepped past. If real people are searching and nobody serves them well, we stake the claim.',
+    title: 'Hunt',
+    body: 'Artemis, our discovery pipeline, mines App Store search data overnight and surfaces gems: searches with buying intent and weak competition. Each gem gets a one-page brief. What do the top three apps get wrong, and what single feature would beat them? Most briefs die right there. Day-one funerals are cheap.',
   },
   {
     no: '02',
-    title: 'Build',
-    body: 'One problem, one app. Native SwiftUI, small on purpose: a tool you open, use, and put back in your pocket. If a screen does not serve the core job, it does not ship.',
+    title: 'Forge',
+    body: 'A green-lit brief goes to Forge, our app factory. Onboarding, paywall, analytics, and localization scaffolding come stamped from a proven pattern in half a day. The build budget goes where it counts: the one feature that wins the niche. Native Swift, no accounts, no feed.',
   },
   {
     no: '03',
     title: 'Launch',
-    body: 'Worldwide on day one. Store pages, screenshots, and copy tuned language by language — because somebody in Lisbon checks the UV index too.',
+    body: 'Ten working days is the budget from idea to submission. Apps ship in more than thirty languages, with store listings in 39 locales and screenshots generated for each one. Day one is worldwide.',
   },
   {
     no: '04',
-    title: 'Tend',
-    body: 'Software is a garden, not a monument. We watch how each app is really used, prune what fails to earn its place, and let the good parts grow. Every version comes back a little sharper.',
+    title: 'Operate',
+    body: 'Every week, every app stands the same review: revenue, rankings, funnel. Winners get more languages, sharper keywords, real ad spend. The rest get sixty days to prove themselves, then the archive. Every kill funds the next hunt.',
   },
 ];
 
 const dials = [
   { n: '02', label: 'apps in orbit' },
-  { n: '01', label: 'sun, measured daily' },
-  { n: '18', label: 'intentions a day, the 369 way' },
+  { n: '10', label: 'days, idea to submission' },
+  { n: '39', label: 'store locales per launch' },
   { n: '∞', label: 'overlooked problems left' },
 ];
 
 const marquee = [
   'Bronzed — tan smart, never burn',
   'Stellar — speak it, write it, see it',
-  'Independent app studio',
-  'Launched worldwide',
+  'Artemis is hunting',
+  'Ten days, idea to App Store',
   'AI-native, human-judged',
 ];
 ---
 
 <Base
-  title="Camm Studios — Focused apps for overlooked problems"
-  description="Camm Studios is an independent app studio. We find the problems everyone rides past and build small, focused apps that earn their place on your phone."
+  title="Camm Studios — Small apps, done properly"
+  description="Camm Studios is an independent app studio. We make small, sharp iOS apps for problems the big studios never notice. One job per app, done properly."
   jsonld={jsonld}
 >
   <div class="intro" id="intro" aria-hidden="true">
@@ -118,7 +118,7 @@ const marquee = [
             [1130, 100, 1.6, 1.1], [1260, 190, 1.2, 3.1], [1370, 80, 1.7, 0.8], [540, 250, 1.1, 3.6],
             [160, 280, 1.3, 2.6], [960, 280, 1.4, 1.6], [1320, 300, 1.1, 0.2],
           ].map(([x, y, r, d]) => (
-            <circle cx={x} cy={y} r={r} fill="#f5f0e5" style={`animation: twinkle ${3 + (d % 2)}s var(--ease-fluid) ${d}s infinite`} />
+            <circle cx={x} cy={y} r={r} fill="#ffffff" style={`animation: twinkle ${3 + (d % 2)}s var(--ease-fluid) ${d}s infinite`} />
           ))}
         </svg>
         <div class="hero-scrim"></div>
@@ -131,15 +131,15 @@ const marquee = [
           ))}
         </h1>
         <p class="lede rise" style="--d: 780ms">
-          We find the problems everyone rides past and build small, focused apps that earn their
-          place on your phone.
+          We make small, sharp iOS apps for problems the big studios never notice. One job per app.
+          Done properly.
         </p>
         <div class="hero-row rise" style="--d: 920ms">
           <a class="btn btn--primary" href="/#process">
             Read our process
             <span class="btn-arrow" aria-hidden="true">→</span>
           </a>
-          <p class="mono-note">Two apps in orbit, live on the App Store</p>
+          <p class="mono-note">Bronzed and Stellar, live on the App Store now</p>
         </div>
       </div>
       <div class="marquee hero-marquee" aria-hidden="true">
@@ -154,14 +154,14 @@ const marquee = [
     <!-- manifesto -->
     <section class="band" aria-labelledby="manifesto-title">
       <div class="shell manifesto">
-        <p class="kicker kicker--rule reveal">Why we exist</p>
+        <p class="kicker kicker--rule reveal">The idea</p>
         <h2 id="manifesto-title" class="display-lg ink-fade reveal">
           Giants need big problems.<br />We take everything<br />they leave behind.
         </h2>
         <p class="lede reveal" style="--reveal-delay: 100ms">
-          The ideas we build look too small to matter — a tan timer, a nightly journal — until you
-          meet the person who opens them every single day. That person is who we work for. We make
-          small apps into serious businesses.
+          A tan timer. A nightly journal. Ideas too small for a boardroom, and exactly the right
+          size for one person's day. Millions of people need tools like these, and most of what
+          they get is junk. We think that is a business.
         </p>
       </div>
     </section>
@@ -170,11 +170,14 @@ const marquee = [
     <section class="band band--deep" id="process" aria-labelledby="process-title">
       <div class="shell">
         <p class="kicker kicker--rule reveal">The operating model</p>
-        <h2 id="process-title" class="display-lg reveal">Find. Build.<br />Launch. Tend.</h2>
+        <h2 id="process-title" class="display-lg reveal">Hunt. Forge.<br />Launch. Operate.</h2>
         <div class="trajectory">
           {chapters.map((ch, i) => (
             <article class={`waypoint reveal ${i % 2 === 1 ? 'waypoint--right' : ''}`}>
-              <p class="waypoint-no" aria-hidden="true">{ch.no}</p>
+              <p class="waypoint-no" aria-hidden="true">
+                <span class="waypoint-phase">Phase</span>
+                {ch.no}
+              </p>
               <div class="waypoint-card card">
                 <h3 class="display-md">{ch.title}</h3>
                 <p>{ch.body}</p>
@@ -204,11 +207,14 @@ const marquee = [
     <section class="band band--night" id="instruments" aria-labelledby="instruments-title">
       <div class="shell">
         <p class="kicker kicker--rule reveal">AI-native, human-judged</p>
-        <h2 id="instruments-title" class="display-lg ink-fade--night reveal">Our instruments.</h2>
+        <h2 id="instruments-title" class="display-lg ink-fade--night reveal">
+          Proprietary instruments.
+        </h2>
         <p class="lede reveal" style="--reveal-delay: 100ms">
-          Machines read the frontier at a scale no human could — demand, reviews, languages,
-          numbers. Then a person picks up every result and asks the only question that matters:
-          would this earn a place on your phone? AI proposes. We decide.
+          We build our own tools, and every tool has a name and one job. AI runs through all of
+          them: reading markets overnight, drafting store pages in dozens of languages,
+          stress-testing builds. It decides nothing. Every screen, every word, and every price
+          still gets a human yes or no.
         </p>
         <Instruments />
         <ul class="dials" aria-label="Studio dials">
@@ -397,7 +403,17 @@ const marquee = [
     font-family: var(--font-mono);
     font-size: var(--text-5xl);
     line-height: 1;
-    color: var(--orange);
+    color: var(--accent);
+    display: flex;
+    align-items: baseline;
+    gap: var(--sp-100);
+  }
+  .waypoint-phase {
+    font-size: var(--text-xs);
+    line-height: var(--lh-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
   }
   .waypoint-card {
     padding: var(--sp-400);
@@ -446,8 +462,8 @@ const marquee = [
   }
   .panel-head { display: flex; align-items: center; gap: var(--sp-200); }
   .panel-icon { border-radius: 14px; }
-  .panel--bronzed h3 { color: var(--orange-deep); }
-  .panel--stellar h3 { color: #9fb0ff; }
+  .panel--bronzed h3 { color: var(--ink); }
+  .panel--stellar h3 { color: var(--night-text); }
   .panel-desc { font-size: var(--text-lg); line-height: var(--lh-lg); color: var(--ink-soft); max-width: 460px; }
   .panel--stellar .panel-desc { color: var(--night-soft); }
   .panel--stellar .kicker { color: var(--night-soft); }
