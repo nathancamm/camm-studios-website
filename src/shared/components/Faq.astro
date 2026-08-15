@@ -1,0 +1,33 @@
+---
+/**
+ * FAQ list with FAQPage structured data. Answers accept inline HTML.
+ */
+export interface FaqItem {
+  q: string;
+  a: string;
+}
+interface Props {
+  items: FaqItem[];
+}
+const { items } = Astro.props;
+
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a.replace(/<[^>]+>/g, '') },
+  })),
+};
+---
+
+<div>
+  {items.map((item) => (
+    <details class="faq-item">
+      <summary>{item.q}</summary>
+      <div class="faq-a" set:html={item.a} />
+    </details>
+  ))}
+</div>
+<script type="application/ld+json" set:html={JSON.stringify(jsonld)} />

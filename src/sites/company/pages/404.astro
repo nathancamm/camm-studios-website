@@ -1,0 +1,42 @@
+---
+import { Image } from 'astro:assets';
+import CompanyShell from '../components/CompanyShell.astro';
+import lostArt from '@shared/assets/art/company-404.png';
+---
+
+<CompanyShell
+  title="Page not found — Camm Studios"
+  description="This page drifted off. Head back to Camm Studios."
+  noindex={true}
+>
+  <div class="shell lost">
+    <div class="lost-art frame-media">
+      <Image
+        src={lostArt}
+        alt="A small orange weather balloon drifting alone in an enormous cream sky"
+        widths={[640, 1080, 1600]}
+        sizes="(min-width: 900px) 900px, 100vw"
+        format="avif"
+        quality={60}
+      />
+    </div>
+    <p class="mono-note">Error 404 — signal lost</p>
+    <h1 class="display-lg">This page drifted off.</h1>
+    <p class="lede">The address you followed does not exist here. The ground is this way.</p>
+    <a class="btn btn--primary" href="/">
+      Back to base
+      <span class="btn-arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+</CompanyShell>
+
+<style>
+  .lost {
+    display: grid;
+    gap: var(--sp-300);
+    justify-items: start;
+    max-width: 900px;
+  }
+  .lost-art { width: 100%; }
+  .lost h1 { margin-top: var(--sp-100); }
+</style>

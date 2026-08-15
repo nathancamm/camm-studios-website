@@ -1,0 +1,26 @@
+---
+/**
+ * The Camm Studios mark: a signal-orange sphere carried on a dark cradle.
+ * A nod to the archival industrial photography behind the brand.
+ */
+interface Props {
+  size?: number;
+  tone?: 'ink' | 'paper';
+}
+const { size = 28, tone = 'ink' } = Astro.props;
+const strut = tone === 'paper' ? 'var(--paper)' : 'var(--ink)';
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 64 64"
+  fill="none"
+  role="img"
+  aria-label="Camm Studios mark"
+>
+  <circle cx="32" cy="26" r="16" fill="var(--orange)"></circle>
+  <path d="M21 50 L28 38.5" stroke={strut} stroke-width="4" stroke-linecap="round"></path>
+  <path d="M43 50 L36 38.5" stroke={strut} stroke-width="4" stroke-linecap="round"></path>
+  <path d="M12 52 H52" stroke={strut} stroke-width="4" stroke-linecap="round"></path>
+</svg>

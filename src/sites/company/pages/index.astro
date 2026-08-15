@@ -1,0 +1,471 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@shared/layouts/Base.astro';
+import SiteNav from '@shared/components/SiteNav.astro';
+import SiteFooter from '@shared/components/SiteFooter.astro';
+import WordReveal from '@shared/components/WordReveal.astro';
+import Mark from '@shared/components/Mark.astro';
+import { apps, company } from '@shared/data/apps';
+import heroArt from '@shared/assets/art/company-hero.png';
+import processArt from '@shared/assets/art/company-process.png';
+import bronzedIcon from '@shared/assets/icons/bronzed-icon.png';
+import stellarIcon from '@shared/assets/icons/stellar-icon.png';
+
+const icons = { bronzed: bronzedIcon, stellar: stellarIcon };
+
+const jsonld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Camm Studios',
+    url: company.site,
+    email: company.email,
+    logo: `${company.site}/apple-touch-icon.png`,
+    description:
+      'Independent app studio. We find overlooked problems and build focused apps that earn their place on your phone.',
+  },
+  ...apps.map((app) => ({
+    '@context': 'https://schema.org',
+    '@type': 'MobileApplication',
+    name: app.storeName,
+    operatingSystem: `iOS ${app.minimumOs} or later`,
+    applicationCategory: 'LifestyleApplication',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    url: app.site,
+    installUrl: app.appStoreUrl,
+    author: { '@type': 'Organization', name: 'Camm Studios' },
+  })),
+];
+
+const chapters = [
+  {
+    no: '01',
+    title: 'Discover',
+    body: 'We hunt for the problems big studios step over: the search nobody serves well, the daily annoyance nobody thought was worth an app. Real demand, verified before a line of code.',
+    diagram: 'discover',
+  },
+  {
+    no: '02',
+    title: 'Build',
+    body: 'One problem, one focused native app. SwiftUI, small surface area, no feature sprawl. If a screen does not serve the core job, it does not ship.',
+    diagram: 'build',
+  },
+  {
+    no: '03',
+    title: 'Launch',
+    body: 'Every app launches worldwide with real localization, not machine-translated word salad. Store pages, screenshots, and copy tuned market by market.',
+    diagram: 'launch',
+  },
+  {
+    no: '04',
+    title: 'Learn',
+    body: 'Live apps are not finished apps. We watch how people actually use them, keep what earns its place, and cut what does not. Every version gets a little sharper.',
+    diagram: 'learn',
+  },
+];
+---
+
+<Base
+  title="Camm Studios — Focused apps for overlooked problems"
+  description="Camm Studios is an independent app studio. We find overlooked problems and build focused apps that earn their place on your phone."
+  jsonld={jsonld}
+>
+  <div class="intro" id="intro" aria-hidden="true">
+    <div class="intro-inner">
+      <Mark size={72} />
+      <p class="intro-word">Camm Studios</p>
+    </div>
+  </div>
+
+  <SiteNav
+    brandName="Camm Studios"
+    items={[
+      { label: 'Process', href: '/#process' },
+      { label: 'Apps', href: '/#apps' },
+      { label: 'Support', href: '/support' },
+    ]}
+    cta={{ label: 'Our apps', href: '/#apps' }}
+  />
+
+  <main id="main">
+    <!-- hero -->
+    <section class="hero">
+      <div class="shell">
+        <p class="kicker kicker--rule reveal">Independent app studio</p>
+        <h1 class="display-xl ink-fade reveal" style="--reveal-delay: 80ms">
+          We find overlooked problems<br />and build focused apps that<br />earn their place on your
+          phone.
+        </h1>
+        <div class="hero-row reveal" style="--reveal-delay: 160ms">
+          <a class="btn btn--primary" href="/#process">
+            Read our process
+            <span class="btn-arrow" aria-hidden="true">→</span>
+          </a>
+          <p class="mono-note">Two apps live on the App Store</p>
+        </div>
+      </div>
+      <div class="hero-art">
+        <div data-parallax="0.08">
+          <Image
+            src={heroArt}
+            alt="A huge signal-orange sphere structure on a dark cradle in a calm industrial coastal landscape"
+            widths={[640, 1080, 1600, 2200]}
+            sizes="100vw"
+            format="avif"
+            quality={62}
+            loading="eager"
+          />
+        </div>
+        <p class="hero-caption mono-note shell">Fig. 01 — Carry the idea carefully.</p>
+      </div>
+    </section>
+
+    <!-- process chapters -->
+    <section class="band" id="process" aria-labelledby="process-title">
+      <div class="shell">
+        <p class="kicker kicker--rule reveal">The operating model</p>
+        <h2 id="process-title" class="display-lg reveal">
+          Four chapters,<br />repeated forever.
+        </h2>
+        <div class="chapters">
+          {chapters.map((ch) => (
+            <article class="chapter">
+              <div class="chapter-rail">
+                <p class="index-no">{ch.no}</p>
+                <h3 class="display-md">{ch.title}</h3>
+              </div>
+              <div class="chapter-body reveal">
+                <div class="chapter-diagram" aria-hidden="true">
+                  {ch.diagram === 'discover' && (
+                    <svg viewBox="0 0 280 140" fill="none">
+                      {[
+                        [30, 40], [70, 96], [116, 30], [160, 108], [196, 60], [244, 90], [252, 28], [90, 62],
+                      ].map(([x, y]) => (
+                        <circle cx={x} cy={y} r="5" fill="var(--line-strong)" />
+                      ))}
+                      <circle cx="140" cy="72" r="11" fill="var(--orange)" />
+                      <circle cx="140" cy="72" r="22" stroke="var(--orange)" stroke-width="1.5" />
+                    </svg>
+                  )}
+                  {ch.diagram === 'build' && (
+                    <svg viewBox="0 0 280 140" fill="none">
+                      <path d="M20 126 A120 120 0 0 1 260 126" stroke="var(--line-strong)" stroke-width="1.5" />
+                      <path d="M56 126 A84 84 0 0 1 224 126" stroke="var(--line-strong)" stroke-width="1.5" />
+                      <path d="M92 126 A48 48 0 0 1 188 126" stroke="var(--cobalt)" stroke-width="2" />
+                      <circle cx="140" cy="112" r="12" fill="var(--orange)" />
+                    </svg>
+                  )}
+                  {ch.diagram === 'launch' && (
+                    <svg viewBox="0 0 280 140" fill="none">
+                      <circle cx="140" cy="70" r="48" stroke="var(--cobalt)" stroke-width="1.5" />
+                      <ellipse cx="140" cy="70" rx="20" ry="48" stroke="var(--cobalt)" stroke-width="1.5" />
+                      <path d="M92 70 H188" stroke="var(--cobalt)" stroke-width="1.5" />
+                      <circle cx="140" cy="22" r="8" fill="var(--orange)" />
+                    </svg>
+                  )}
+                  {ch.diagram === 'learn' && (
+                    <svg viewBox="0 0 280 140" fill="none">
+                      <path
+                        d="M140 22 A48 48 0 1 1 96 46"
+                        stroke="var(--cobalt)"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                      <path d="M96 24 L96 48 L120 48" stroke="var(--cobalt)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                      <circle cx="140" cy="22" r="8" fill="var(--orange)" />
+                    </svg>
+                  )}
+                </div>
+                <p class="chapter-text">{ch.body}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- process artwork interlude -->
+    <section class="interlude" aria-hidden="true">
+      <div data-parallax="0.06">
+        <Image
+          src={processArt}
+          alt=""
+          widths={[640, 1080, 1600, 2200]}
+          sizes="100vw"
+          format="avif"
+          quality={60}
+        />
+      </div>
+      <p class="hero-caption mono-note shell">Fig. 02 — Same sphere, better polish.</p>
+    </section>
+
+    <!-- AI-native -->
+    <section class="band band--night" aria-labelledby="ai-title">
+      <div class="shell">
+        <p class="kicker kicker--rule reveal">AI-native, human-judged</p>
+        <h2 id="ai-title" class="display-lg ink-fade--night reveal">
+          Machines do the reading.<br />People do the deciding.
+        </h2>
+        <p class="lede reveal" style="--reveal-delay: 80ms">
+          We use AI through the whole pipeline: reading demand at a scale no human could, drafting,
+          localizing, testing. Then a person looks at every result and asks the only question that
+          matters: would this earn a place on your phone?
+        </p>
+        <ul class="cap-grid">
+          {[
+            {
+              t: 'Research at machine scale',
+              d: 'Thousands of niches read and ranked, so we only build where real demand already exists.',
+            },
+            {
+              t: 'Native craft',
+              d: 'SwiftUI, Lock Screen, widgets, Dynamic Island. Apps that feel like they belong on iOS, because they do.',
+            },
+            {
+              t: 'Localized from day one',
+              d: 'Store pages and app copy shipped in many languages at launch, reviewed for tone, not just translated.',
+            },
+            {
+              t: 'Judged by humans',
+              d: 'Every screen, every word, every price gets a human veto. AI proposes. We decide.',
+            },
+          ].map((cap, i) => (
+            <li class="cap reveal" style={`--reveal-delay: ${i * 70}ms`}>
+              <h3>{cap.t}</h3>
+              <p>{cap.d}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- portfolio -->
+    <section class="band" id="apps" aria-labelledby="apps-title">
+      <div class="shell">
+        <p class="kicker kicker--rule reveal">The portfolio</p>
+        <h2 id="apps-title" class="display-lg reveal">Two apps, live today.</h2>
+        <div class="apps-grid">
+          {apps.map((app, i) => (
+            <article class={`app-card app-card--${app.id} reveal`} style={`--reveal-delay: ${i * 90}ms`}>
+              <div class="app-head">
+                <Image src={icons[app.id]} alt={`${app.name} app icon`} width={72} height={72} class="app-icon" />
+                <div>
+                  <h3>{app.name}</h3>
+                  <p class="mono-note">{app.genres.join(' · ')} — iOS {app.minimumOs}+</p>
+                </div>
+              </div>
+              <p class="app-tagline">{app.tagline}</p>
+              <p class="app-desc">{app.oneLiner}</p>
+              <div class="app-actions">
+                <a class="btn btn--primary btn--sm" href={app.site} rel="noopener">
+                  Visit site
+                  <span class="btn-arrow" aria-hidden="true">→</span>
+                </a>
+                <a class="btn btn--ghost btn--sm" href={app.appStoreUrl} rel="noopener">App Store</a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- tagline moment -->
+    <section class="band band--deep" aria-label="Studio motto">
+      <div class="shell">
+        <WordReveal class="display-lg motto" text="Small apps. Clear purpose. Built to get better." />
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter
+    columns={[
+      {
+        title: 'Apps',
+        links: apps.map((app) => ({ label: app.name, href: app.site })),
+      },
+      {
+        title: 'Studio',
+        links: [
+          { label: 'Process', href: '/#process' },
+          { label: 'Support', href: '/support' },
+        ],
+      },
+      {
+        title: 'Legal',
+        links: [
+          { label: 'Privacy', href: '/privacy' },
+          { label: 'Terms', href: '/terms' },
+        ],
+      },
+    ]}
+  />
+</Base>
+
+<style>
+  /* intro — once per session, skipped for reduced motion */
+  .intro {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--paper);
+    transition: transform 900ms var(--ease-fluid), visibility 0s linear 900ms;
+  }
+  .intro-inner {
+    display: grid;
+    justify-items: center;
+    gap: var(--sp-300);
+  }
+  .intro-inner :global(svg),
+  .intro-word {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 700ms var(--ease-fluid), transform 700ms var(--ease-fluid);
+  }
+  .intro-word {
+    font-size: var(--text-2xl);
+    line-height: var(--lh-2xl);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    transition-delay: 250ms;
+  }
+  html.intro-play .intro-inner :global(svg),
+  html.intro-play .intro-word {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  html.intro-done .intro {
+    transform: translateY(-100%);
+    visibility: hidden;
+  }
+  html.intro-off .intro { display: none; }
+
+  /* hero */
+  .hero { padding-top: calc(var(--sp-900) + var(--sp-600)); }
+  .hero h1 { margin-top: var(--sp-300); }
+  .hero-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-300);
+    margin-top: var(--sp-500);
+    padding-bottom: var(--sp-700);
+  }
+  .hero-art { overflow: clip; }
+  .hero-art :global(img),
+  .interlude :global(img) {
+    width: 100%;
+    height: auto;
+  }
+  .hero-caption { padding-block: var(--sp-100); }
+
+  /* chapters */
+  .chapters {
+    margin-top: var(--sp-700);
+    display: grid;
+    gap: var(--sp-800);
+  }
+  .chapter {
+    display: grid;
+    gap: var(--sp-300);
+    border-top: 1px solid var(--line);
+    padding-top: var(--sp-400);
+  }
+  @media (min-width: 768px) {
+    .chapter { grid-template-columns: 280px 1fr; gap: var(--sp-700); }
+    .chapter-rail { position: sticky; top: 120px; align-self: start; }
+  }
+  .chapter-rail { display: grid; gap: var(--sp-100); }
+  .chapter-diagram {
+    max-width: 420px;
+    margin-bottom: var(--sp-300);
+  }
+  .chapter-text {
+    font-size: var(--text-lg);
+    line-height: var(--lh-lg);
+    color: var(--ink-soft);
+    max-width: 560px;
+  }
+
+  .interlude { overflow: clip; }
+
+  /* AI-native */
+  .band--night h2 { margin-top: var(--sp-300); }
+  .band--night .lede { margin-top: var(--sp-300); }
+  .cap-grid {
+    list-style: none;
+    margin: var(--sp-700) 0 0;
+    padding: 0;
+    display: grid;
+    gap: var(--sp-400);
+  }
+  @media (min-width: 768px) {
+    .cap-grid { grid-template-columns: repeat(2, 1fr); gap: var(--sp-500); }
+  }
+  .cap {
+    border-top: 1px solid var(--night-line);
+    padding-top: var(--sp-300);
+  }
+  .cap h3 { font-size: var(--text-xl); line-height: var(--lh-xl); }
+  .cap p { margin-top: var(--sp-100); color: var(--night-soft); }
+
+  /* portfolio */
+  .apps-grid {
+    margin-top: var(--sp-700);
+    display: grid;
+    gap: var(--sp-400);
+  }
+  @media (min-width: 768px) {
+    .apps-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .app-card {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: var(--sp-500);
+    display: grid;
+    gap: var(--sp-300);
+    align-content: start;
+    transition: transform 700ms var(--ease-fluid), box-shadow 700ms var(--ease-fluid);
+  }
+  .app-card:hover {
+    transform: translateY(-6px) rotate(-0.4deg);
+    box-shadow: 0 24px 48px -24px color-mix(in srgb, var(--ink) 30%, transparent);
+  }
+  .app-card--stellar { background: var(--night); border-color: var(--night-line); color: var(--night-text); }
+  .app-card--stellar .mono-note { color: var(--night-soft); }
+  .app-card--stellar .app-desc { color: var(--night-soft); }
+  .app-head { display: flex; align-items: center; gap: var(--sp-200); }
+  .app-head h3 { font-size: var(--text-2xl); line-height: var(--lh-2xl); }
+  .app-icon { border-radius: 16px; }
+  .app-tagline {
+    font-size: var(--text-3xl);
+    line-height: var(--lh-3xl);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .app-card--bronzed .app-tagline { color: var(--orange); }
+  .app-card--stellar .app-tagline { color: #9fb0ff; }
+  .app-desc { color: var(--ink-soft); max-width: 420px; }
+  .app-actions { display: flex; flex-wrap: wrap; gap: var(--sp-200); margin-top: var(--sp-100); }
+  .app-card--stellar .btn--primary { background: var(--paper); color: var(--ink); }
+  .app-card--stellar .btn--ghost { border-color: var(--night-line); color: var(--night-text); }
+
+  .motto { max-width: 680px; }
+</style>
+
+<script>
+  // Once-per-session intro. Never blocks reduced-motion users or return visits.
+  const html = document.documentElement;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const seen = sessionStorage.getItem('cs-intro') === '1';
+  if (reduced || seen) {
+    html.classList.add('intro-off');
+  } else {
+    sessionStorage.setItem('cs-intro', '1');
+    requestAnimationFrame(() => html.classList.add('intro-play'));
+    window.setTimeout(() => html.classList.add('intro-done'), 1900);
+  }
+</script>

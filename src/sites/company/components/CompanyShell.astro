@@ -1,0 +1,54 @@
+---
+import Base from '@shared/layouts/Base.astro';
+import SiteNav from '@shared/components/SiteNav.astro';
+import SiteFooter from '@shared/components/SiteFooter.astro';
+import { apps } from '@shared/data/apps';
+
+interface Props {
+  title: string;
+  description: string;
+  jsonld?: object[];
+  noindex?: boolean;
+}
+const { title, description, jsonld, noindex } = Astro.props;
+---
+
+<Base title={title} description={description} jsonld={jsonld} noindex={noindex}>
+  <SiteNav
+    brandName="Camm Studios"
+    items={[
+      { label: 'Process', href: '/#process' },
+      { label: 'Apps', href: '/#apps' },
+      { label: 'Support', href: '/support' },
+    ]}
+    cta={{ label: 'Our apps', href: '/#apps' }}
+  />
+  <main id="main" class="subpage">
+    <slot />
+  </main>
+  <SiteFooter
+    columns={[
+      { title: 'Apps', links: apps.map((app) => ({ label: app.name, href: app.site })) },
+      {
+        title: 'Studio',
+        links: [
+          { label: 'Process', href: '/#process' },
+          { label: 'Support', href: '/support' },
+        ],
+      },
+      {
+        title: 'Legal',
+        links: [
+          { label: 'Privacy', href: '/privacy' },
+          { label: 'Terms', href: '/terms' },
+        ],
+      },
+    ]}
+  />
+</Base>
+
+<style is:global>
+  .subpage { padding-top: calc(var(--sp-900) + var(--sp-500)); padding-bottom: var(--sp-900); }
+  .subpage .page-head { margin-bottom: var(--sp-600); }
+  .subpage .page-head h1 { margin-top: var(--sp-200); }
+</style>

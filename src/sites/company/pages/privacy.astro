@@ -1,0 +1,188 @@
+---
+import CompanyShell from '../components/CompanyShell.astro';
+---
+
+<CompanyShell
+  title="Privacy Policy — Camm Studios"
+  description="Privacy Policy for Camm Studios apps. Learn how we handle your data."
+>
+  <div class="shell">
+    <header class="page-head">
+      <p class="kicker kicker--rule">Legal</p>
+      <h1 class="display-lg">Privacy Policy</h1>
+      <p class="mono-note">Last updated: March 18, 2026</p>
+    </header>
+
+    <div class="prose">
+      <p>
+        Camm Studios ("we", "our", or "us") operates mobile applications (the "Apps"). This Privacy
+        Policy explains how we collect, use, and protect your information when you use our Apps.
+        App-specific policies for
+        <a href="https://bronzed.cammstudios.com/privacy">Bronzed</a> and
+        <a href="https://stellar.cammstudios.com/privacy">Stellar</a> supplement this policy.
+      </p>
+
+      <h2>1. Information We Collect</h2>
+
+      <h3>Information You Provide</h3>
+      <p>
+        Our Apps store your content (such as journal entries, affirmations, vision board images, and
+        preferences) <strong>locally on your device</strong>. We do not transmit this content to our
+        servers.
+      </p>
+      <p>
+        During onboarding, some of our Apps may ask you for profile information such as your first
+        name, age range, gender, and personal interests. This information is used to personalise
+        your experience and may be shared with our third-party analytics and paywall services (see
+        Section 4 below).
+      </p>
+
+      <h3>Automatically Collected Information</h3>
+      <p>We collect usage data to improve our Apps through third-party analytics services:</p>
+      <ul>
+        <li><strong>Device information:</strong> Device model, operating system version, and app version</li>
+        <li>
+          <strong>Usage analytics:</strong> Feature usage events (e.g. screens viewed, actions
+          taken), collected via <strong>PostHog</strong>
+        </li>
+        <li><strong>App lifecycle events:</strong> App launches, sessions, and background transitions</li>
+        <li><strong>Crash reports:</strong> Anonymous crash data to help us fix bugs</li>
+      </ul>
+      <p>
+        This data is associated with anonymous identifiers and does not include your name, email, or
+        locally stored content.
+      </p>
+
+      <h3>Subscription Information</h3>
+      <p>
+        All subscription purchases and billing are processed by Apple through the App Store. We do
+        not collect or store your payment information. Subscription status is managed through
+        <strong>Superwall</strong> or <strong>RevenueCat</strong> (depending on the app), which
+        receive an anonymous user identifier and purchase receipts to verify your subscription.
+      </p>
+
+      <h2>2. How We Use Your Information</h2>
+      <ul>
+        <li>To provide and maintain our Apps</li>
+        <li>To personalise your experience (e.g. tailored paywall offers)</li>
+        <li>To improve app performance and fix bugs through analytics</li>
+        <li>To verify subscription status</li>
+        <li>To understand how features are used so we can improve them</li>
+      </ul>
+
+      <h2>3. Data Storage and Security</h2>
+      <p>
+        Your personal content (journal entries, affirmations, vision board items, etc.) is stored
+        <strong>only on your device</strong> and is not backed up to our servers. If you delete the
+        App, your locally stored data will be permanently deleted.
+      </p>
+      <p>
+        Profile attributes collected during onboarding and usage analytics are transmitted to our
+        third-party service providers (see Section 4). We rely on these providers' security
+        practices to protect this data.
+      </p>
+
+      <h2>4. Third-Party Services</h2>
+      <p>Our Apps use the following third-party services that may receive data:</p>
+      <ul>
+        <li>
+          <strong>PostHog</strong> (analytics) — Receives anonymous usage events, device
+          information, and user attributes. Data is processed on servers in the United States.
+          <a href="https://posthog.com/privacy" rel="noopener">PostHog Privacy Policy</a>
+        </li>
+        <li>
+          <strong>Superwall</strong> (paywall and subscription management) — Receives anonymous user
+          identifiers, user profile attributes, and subscription status for paywall personalisation.
+          <a href="https://superwall.com/privacy" rel="noopener">Superwall Privacy Policy</a>
+        </li>
+        <li>
+          <strong>RevenueCat</strong> (subscription management) — Receives anonymous user
+          identifiers, purchase receipts, and subscription status to unlock premium access and
+          restore purchases.
+          <a href="https://www.revenuecat.com/privacy" rel="noopener">RevenueCat Privacy Policy</a>
+        </li>
+        <li><strong>Apple App Store</strong> — Processes all subscription purchases and billing</li>
+        <li>
+          <strong>TikTok Events SDK</strong> (attribution and advertising analytics) — Receives app
+          install and event data (e.g. app opens, purchases), device information (device model, OS
+          version), and advertising identifiers (IDFA, if you have granted permission) to measure
+          advertising campaign performance. Data is processed by TikTok Inc. and may be transferred
+          to servers in the United States and other countries.
+          <a href="https://www.tiktok.com/legal/page/global/privacy-policy/en" rel="noopener">TikTok Privacy Policy</a>
+        </li>
+        <li><strong>Vercel</strong> — Hosts our websites and collects anonymous web analytics</li>
+      </ul>
+      <p>We do not sell your personal information to any third party.</p>
+
+      <h2>5. Data Retention</h2>
+      <p>
+        Locally stored data persists on your device until you delete the App. Analytics data held by
+        third-party providers is retained according to their respective data retention policies. We
+        do not maintain our own servers or databases containing your personal data.
+      </p>
+
+      <h2>6. Children's Privacy</h2>
+      <p>
+        Our Apps are not intended for anyone under the age of 18. We do not knowingly collect
+        personal information from children. If you are under 18, please do not use our Apps. If we
+        learn that we have collected information from a person under 18, we will take steps to
+        delete that information.
+      </p>
+
+      <h2>7. Your Rights</h2>
+
+      <h3>All Users</h3>
+      <p>
+        Since your content is stored locally on your device, you have full control over it at all
+        times. You can delete all locally stored data by deleting the App.
+      </p>
+
+      <h3>European Economic Area (GDPR)</h3>
+      <p>If you are located in the EEA, you have the right to:</p>
+      <ul>
+        <li>Access the personal data we hold about you</li>
+        <li>Request correction of inaccurate data</li>
+        <li>Request deletion of your data</li>
+        <li>Object to or restrict processing of your data</li>
+        <li>Data portability</li>
+        <li>Withdraw consent at any time</li>
+      </ul>
+      <p>
+        Our legal basis for processing is legitimate interest (improving our Apps) and consent
+        (profile data provided during onboarding). To exercise your rights, contact us at the email
+        below.
+      </p>
+
+      <h3>California Residents (CCPA)</h3>
+      <p>If you are a California resident, you have the right to:</p>
+      <ul>
+        <li>Know what personal information we collect and how it is used</li>
+        <li>Request deletion of your personal information</li>
+        <li>Opt out of the sale of your personal information (we do not sell your data)</li>
+        <li>Non-discrimination for exercising your privacy rights</li>
+      </ul>
+      <p>To exercise your rights, contact us at the email below.</p>
+
+      <h3>Australian Users (Privacy Act 1988)</h3>
+      <p>
+        If you are located in Australia, you have the right to access and correct personal
+        information we hold about you under the Australian Privacy Principles. To make a request,
+        contact us at the email below.
+      </p>
+
+      <h2>8. Changes to This Policy</h2>
+      <p>
+        We may update this Privacy Policy from time to time. We will notify you of any material
+        changes by updating the "Last updated" date at the top of this page. Your continued use of
+        our Apps after changes are posted constitutes acceptance of the updated policy.
+      </p>
+
+      <h2>9. Contact Us</h2>
+      <p>
+        If you have any questions about this Privacy Policy or wish to exercise your privacy rights,
+        please contact us:
+      </p>
+      <p><strong>Email:</strong> <a href="mailto:info@cammstudios.com">info@cammstudios.com</a></p>
+    </div>
+  </div>
+</CompanyShell>

@@ -1,0 +1,32 @@
+---
+import AppShell from '@shared/components/AppShell.astro';
+import type { AppDefinition } from '@shared/data/apps';
+
+interface Props {
+  app: AppDefinition;
+  kind: 'Privacy Policy' | 'Terms of Service';
+  description: string;
+  updated: string;
+}
+const { app, kind, description, updated } = Astro.props;
+---
+
+<AppShell app={app} title={`${kind} — ${app.name}`} description={description}>
+  <main id="main" class="subpage">
+    <div class="shell">
+      <header class="page-head">
+        <p class="kicker kicker--rule">Legal</p>
+        <h1 class="display-lg">{kind}</h1>
+        <p class="mono-note">{app.name} — Last updated: {updated}</p>
+      </header>
+      <div class="prose">
+        <slot />
+      </div>
+    </div>
+  </main>
+</AppShell>
+
+<style is:global>
+  .subpage { padding-top: calc(var(--sp-900) + var(--sp-500)); padding-bottom: var(--sp-900); }
+  .subpage .page-head { margin-bottom: var(--sp-600); display: grid; gap: var(--sp-200); }
+</style>

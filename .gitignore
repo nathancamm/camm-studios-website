@@ -1,7 +1,16 @@
-.DS_Store
-*.swp
-*.swo
-*~
-.vscode/
-.idea/
+# build output
+dist/
+.astro/
+
+# dependencies
 node_modules/
+
+# environment
+.env
+.env.*
+
+# macOS
+.DS_Store
+
+# vercel
+.vercel/

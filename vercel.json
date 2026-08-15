@@ -1,0 +1,38 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/apps/bronzed/privacy.html", "destination": "https://bronzed.cammstudios.com/privacy", "statusCode": 308 },
+    { "source": "/apps/bronzed/privacy", "destination": "https://bronzed.cammstudios.com/privacy", "statusCode": 308 },
+    { "source": "/apps/bronzed/privacy/", "destination": "https://bronzed.cammstudios.com/privacy", "statusCode": 308 },
+    { "source": "/apps/bronzed/terms.html", "destination": "https://bronzed.cammstudios.com/terms", "statusCode": 308 },
+    { "source": "/apps/bronzed/terms", "destination": "https://bronzed.cammstudios.com/terms", "statusCode": 308 },
+    { "source": "/apps/bronzed/terms/", "destination": "https://bronzed.cammstudios.com/terms", "statusCode": 308 },
+    { "source": "/apps/manifest/privacy.html", "destination": "https://stellar.cammstudios.com/privacy", "statusCode": 308 },
+    { "source": "/apps/manifest/privacy", "destination": "https://stellar.cammstudios.com/privacy", "statusCode": 308 },
+    { "source": "/apps/manifest/privacy/", "destination": "https://stellar.cammstudios.com/privacy", "statusCode": 308 },
+    { "source": "/apps/manifest/terms.html", "destination": "https://stellar.cammstudios.com/terms", "statusCode": 308 },
+    { "source": "/apps/manifest/terms", "destination": "https://stellar.cammstudios.com/terms", "statusCode": 308 },
+    { "source": "/apps/manifest/terms/", "destination": "https://stellar.cammstudios.com/terms", "statusCode": 308 },
+    { "source": "/apps/bronzed/index.html", "destination": "https://bronzed.cammstudios.com/", "statusCode": 308 },
+    { "source": "/apps/bronzed/", "destination": "https://bronzed.cammstudios.com/", "statusCode": 308 },
+    { "source": "/apps/bronzed", "destination": "https://bronzed.cammstudios.com/", "statusCode": 308 },
+    { "source": "/apps/manifest/index.html", "destination": "https://stellar.cammstudios.com/", "statusCode": 308 },
+    { "source": "/apps/manifest/", "destination": "https://stellar.cammstudios.com/", "statusCode": 308 },
+    { "source": "/apps/manifest", "destination": "https://stellar.cammstudios.com/", "statusCode": 308 },
+    { "source": "/privacy-policy.html", "destination": "/privacy", "statusCode": 308 },
+    { "source": "/privacy-policy", "destination": "/privacy", "statusCode": 308 },
+    { "source": "/terms-of-service.html", "destination": "/terms", "statusCode": 308 },
+    { "source": "/terms-of-service", "destination": "/terms", "statusCode": 308 },
+    { "source": "/support.html", "destination": "/support", "statusCode": 308 },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "cammstudios.com" }],
+      "destination": "https://www.cammstudios.com/:path*",
+      "statusCode": 308
+    }
+  ]
+}

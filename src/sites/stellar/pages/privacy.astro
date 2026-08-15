@@ -1,0 +1,153 @@
+---
+import LegalPage from '@shared/components/LegalPage.astro';
+import { stellar } from '@shared/data/apps';
+---
+
+<LegalPage
+  app={stellar}
+  kind="Privacy Policy"
+  description="Privacy Policy for the Stellar app by Camm Studios."
+  updated="March 18, 2026"
+>
+  <p>
+    This Privacy Policy applies specifically to the <strong>Stellar - Daily Affirmations</strong>
+    app ("Stellar") developed by Camm Studios. This supplements our
+    <a href="https://www.cammstudios.com/privacy">general Privacy Policy</a>.
+  </p>
+
+  <h2>1. What Data Stellar Stores Locally</h2>
+  <p>
+    All of the following data is stored <strong>locally on your device only</strong> and never
+    transmitted to our servers:
+  </p>
+  <ul>
+    <li>Your favourite affirmations and custom affirmations</li>
+    <li>Journal entries (369 method)</li>
+    <li>Vision board images and text goals</li>
+    <li>Daily check-in and streak data</li>
+    <li>Notification preferences and timing</li>
+    <li>Onboarding completion status</li>
+  </ul>
+  <p>We do not have access to any of this data. It never leaves your device.</p>
+
+  <h2>2. Personal Information Collected During Onboarding</h2>
+  <p>
+    During onboarding, Stellar asks you for the following profile information to personalise your
+    experience:
+  </p>
+  <ul>
+    <li>First name</li>
+    <li>Age range</li>
+    <li>Gender</li>
+    <li>Relationship status</li>
+    <li>Employment status</li>
+    <li>Manifestation belief level</li>
+    <li>Areas you want to improve</li>
+  </ul>
+  <p>
+    This data is stored locally and is also shared with <strong>PostHog</strong> (analytics) and
+    <strong>Superwall</strong> (paywall personalisation) to tailor your experience. It is not
+    linked to your name or email address.
+  </p>
+
+  <h2>3. Photos and Camera</h2>
+  <p>
+    Stellar allows you to add photos to your vision board using the iOS Photo Picker. We only
+    access photos you explicitly select. We do not access your full photo library. Selected photos
+    are stored locally within the app's data container and are never uploaded.
+  </p>
+
+  <h2>4. Notifications</h2>
+  <p>
+    If you enable reminders, Stellar schedules local notifications on your device. These are
+    processed entirely by iOS and do not involve any external servers.
+  </p>
+
+  <h2>5. Analytics and Usage Data</h2>
+  <p>
+    Stellar uses <strong>PostHog</strong> for analytics. The following anonymous usage events are
+    collected to help us understand how the app is used and improve it:
+  </p>
+  <ul>
+    <li><strong>Screen views:</strong> Which screens you visit (Home, Journal, Profile, Settings, Vision Board)</li>
+    <li><strong>Affirmation events:</strong> Favouriting, unfavouriting, creating, and deleting affirmations (category is recorded, but not the affirmation text)</li>
+    <li><strong>Journal events:</strong> Entry submissions and completions (time slot is recorded, but not the journal content)</li>
+    <li><strong>Vision board events:</strong> Opening the vision board and adding items (content is not recorded)</li>
+    <li><strong>Onboarding events:</strong> Steps viewed, completed, and skipped</li>
+    <li><strong>Subscription events:</strong> Paywall views, purchase starts, completions, and restores</li>
+    <li><strong>Streak milestones:</strong> When you reach streak milestones</li>
+    <li><strong>App lifecycle:</strong> App launches and session data</li>
+  </ul>
+  <p>
+    PostHog does <strong>not</strong> receive your journal entries, affirmation text, vision board
+    content, photos, or any other personal content you create in the app. Analytics data is sent to
+    PostHog's servers in the United States.
+  </p>
+
+  <h2>6. Advertising and Attribution</h2>
+  <p>
+    Stellar uses the <strong>TikTok Events SDK</strong> to measure the performance of advertising
+    campaigns. The following data may be collected and sent to TikTok:
+  </p>
+  <ul>
+    <li><strong>App events:</strong> App installs, opens, and purchase events</li>
+    <li><strong>Device information:</strong> Device model, operating system version, and language</li>
+    <li><strong>Advertising identifiers:</strong> IDFA (only if you have granted App Tracking Transparency permission)</li>
+    <li><strong>IP address:</strong> Used for approximate geographic attribution</li>
+  </ul>
+  <p>
+    TikTok does <strong>not</strong> receive your journal entries, affirmation text, vision board
+    content, photos, or any other personal content you create in the app. Data is processed by
+    TikTok Inc. and may be transferred to servers in the United States and other countries. See
+    <a href="https://www.tiktok.com/legal/page/global/privacy-policy/en" rel="noopener">TikTok's Privacy Policy</a>.
+  </p>
+
+  <h2>7. Subscription Data</h2>
+  <p>
+    Your subscription is managed through Apple's App Store and <strong>Superwall</strong>. We do
+    not receive your name, email, or payment details.
+  </p>
+  <ul>
+    <li><strong>Superwall</strong> receives: anonymous user identifier, purchase receipts, subscription status, and user profile attributes (from onboarding) for paywall personalisation</li>
+    <li><strong>Superwall does not receive:</strong> your email, journal entries, photos, affirmation text, or any personal content</li>
+    <li><strong>Apple App Store:</strong> Processes all billing and payments directly</li>
+  </ul>
+
+  <h2>8. Data Deletion</h2>
+  <p>
+    To delete all your locally stored Stellar data, simply delete the app from your device. This
+    permanently removes all content stored on your device.
+  </p>
+  <p>
+    To request deletion of analytics data held by our third-party providers (PostHog, Superwall,
+    and TikTok), contact us at the email below and we will process your request.
+  </p>
+
+  <h2>9. Your Privacy Rights</h2>
+
+  <h3>European Economic Area (GDPR)</h3>
+  <p>
+    If you are in the EEA, you have the right to access, correct, delete, restrict processing, and
+    port your personal data. You may also withdraw consent at any time. Contact us to exercise
+    these rights.
+  </p>
+
+  <h3>California Residents (CCPA)</h3>
+  <p>
+    California residents have the right to know what data is collected, request deletion, and opt
+    out of data sales. We do not sell your personal information. Contact us to exercise these
+    rights.
+  </p>
+
+  <h3>Australian Users (Privacy Act 1988)</h3>
+  <p>
+    Australian users have the right to access and correct personal information under the Australian
+    Privacy Principles. Contact us to make a request.
+  </p>
+
+  <h2>10. Contact</h2>
+  <p>
+    Questions about Stellar's privacy practices or want to exercise your privacy rights? Email us at
+    <a href="mailto:info@cammstudios.com">info@cammstudios.com</a>.
+  </p>
+</LegalPage>

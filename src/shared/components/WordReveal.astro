@@ -1,0 +1,21 @@
+---
+/**
+ * Tagline moment: each word lifts from muted to full ink as it crosses
+ * the scroll trigger line. Driven by motion.ts, degrades to static text.
+ */
+interface Props {
+  text: string;
+  class?: string;
+}
+const { text, class: className = '' } = Astro.props;
+const words = text.split(' ');
+---
+
+<p class={`wordreveal ${className}`}>
+  {words.map((word, i) => (
+    <>
+      <span class="w">{word}</span>
+      {i < words.length - 1 && ' '}
+    </>
+  ))}
+</p>

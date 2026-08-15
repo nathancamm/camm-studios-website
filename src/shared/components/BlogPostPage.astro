@@ -1,0 +1,123 @@
+---
+import { Image } from 'astro:assets';
+import { render, type CollectionEntry } from 'astro:content';
+import AppShell from '@shared/components/AppShell.astro';
+import AppStoreBadge from '@shared/components/AppStoreBadge.astro';
+import type { AppDefinition } from '@shared/data/apps';
+import { SITE_URLS, target } from '@shared/lib/site';
+
+interface Props {
+  app: AppDefinition;
+  post: CollectionEntry<'blog'>;
+}
+const { app, post } = Astro.props;
+const { Content } = await render(post);
+const base = SITE_URLS[target];
+const url = `${base}/blog/${post.id}`;
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+const jsonld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.data.title,
+    description: post.data.summary,
+    datePublished: post.data.publishDate.toISOString(),
+    dateModified: (post.data.updatedDate ?? post.data.publishDate).toISOString(),
+    keywords: post.data.keywords.join(', '),
+    url,
+    author: { '@type': 'Organization', name: 'Camm Studios' },
+    publisher: { '@type': 'Organization', name: 'Camm Studios', url: 'https://www.cammstudios.com' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: app.name, item: base },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${base}/blog` },
+      { '@type': 'ListItem', position: 3, name: post.data.title, item: url },
+    ],
+  },
+];
+---
+
+<AppShell
+  app={app}
+  title={`${post.data.title} — ${app.name}`}
+  description={post.data.summary}
+  jsonld={jsonld}
+>
+  <main id="main" class="subpage">
+    <article class="shell article">
+      <header class="article-head">
+        <nav class="crumbs mono-note" aria-label="Breadcrumb">
+          <a href="/">{app.name}</a> / <a href="/blog">Blog</a>
+        </nav>
+        <h1 class="display-lg">{post.data.title}</h1>
+        <p class="mono-note">
+          {fmt(post.data.publishDate)}
+          {post.data.updatedDate && ` · Updated ${fmt(post.data.updatedDate)}`}
+        </p>
+      </header>
+      <Image
+        src={post.data.hero}
+        alt={post.data.heroAlt}
+        widths={[640, 1080, 1600]}
+        sizes="(min-width: 900px) 880px, 100vw"
+        format="avif"
+        quality={62}
+        class="article-hero"
+        loading="eager"
+      />
+      <div class="prose">
+        <Content />
+        {post.data.sources.length > 0 && (
+          <>
+            <h2>Sources</h2>
+            <ul>
+              {post.data.sources.map((s) => (
+                <li>
+                  <a href={s.url} rel="noopener">{s.title}</a>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </div>
+      <aside class="article-cta card">
+        <div>
+          <h2>Get {app.name}</h2>
+          <p>{app.oneLiner}</p>
+        </div>
+        <AppStoreBadge href={app.appStoreUrl} />
+      </aside>
+    </article>
+  </main>
+</AppShell>
+
+<style>
+  .subpage { padding-top: calc(var(--sp-900) + var(--sp-500)); padding-bottom: var(--sp-900); }
+  .article { max-width: 880px; }
+  .article-head { display: grid; gap: var(--sp-200); margin-bottom: var(--sp-500); }
+  .crumbs a { color: inherit; text-decoration: none; }
+  .crumbs a:hover { color: var(--accent); }
+  .article :global(.article-hero) {
+    width: 100%;
+    border-radius: 24px;
+    border: 1px solid var(--line);
+    margin-bottom: var(--sp-600);
+  }
+  .article-cta {
+    margin-top: var(--sp-700);
+    padding: var(--sp-400);
+    display: grid;
+    gap: var(--sp-300);
+    align-items: center;
+  }
+  @media (min-width: 768px) {
+    .article-cta { grid-template-columns: 1fr auto; }
+  }
+  .article-cta h2 { font-size: var(--text-xl); line-height: var(--lh-xl); }
+  .article-cta p { color: var(--ink-soft); margin-top: var(--sp-50); max-width: 480px; }
+</style>

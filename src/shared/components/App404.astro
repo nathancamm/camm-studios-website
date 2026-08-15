@@ -1,0 +1,36 @@
+---
+import AppShell from '@shared/components/AppShell.astro';
+import type { AppDefinition } from '@shared/data/apps';
+
+interface Props {
+  app: AppDefinition;
+  line: string;
+}
+const { app, line } = Astro.props;
+---
+
+<AppShell
+  app={app}
+  title={`Page not found — ${app.name}`}
+  description={`That page does not exist on the ${app.name} site.`}
+  noindex={true}
+>
+  <main id="main" class="subpage">
+    <div class="shell lost">
+      <p class="mono-note">Error 404 — signal lost</p>
+      <h1 class="display-lg">{line}</h1>
+      <div class="row">
+        <a class="btn btn--primary" href="/">
+          Back to {app.name}
+          <span class="btn-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="btn btn--ghost" href="/blog">Read the blog</a>
+      </div>
+    </div>
+  </main>
+</AppShell>
+
+<style>
+  .lost { display: grid; gap: var(--sp-300); justify-items: start; max-width: 680px; }
+  .row { display: flex; gap: var(--sp-200); flex-wrap: wrap; }
+</style>

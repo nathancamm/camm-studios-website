@@ -1,0 +1,9 @@
+---
+import { getCollection } from 'astro:content';
+import BlogIndexPage from '@shared/components/BlogIndexPage.astro';
+import { bronzed } from '@shared/data/apps';
+
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+---
+
+<BlogIndexPage app={bronzed} posts={posts} />

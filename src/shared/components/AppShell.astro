@@ -1,0 +1,77 @@
+---
+import Base from '@shared/layouts/Base.astro';
+import SiteNav from '@shared/components/SiteNav.astro';
+import SiteFooter from '@shared/components/SiteFooter.astro';
+import type { AppDefinition } from '@shared/data/apps';
+import { company } from '@shared/data/apps';
+
+interface Props {
+  app: AppDefinition;
+  title: string;
+  description: string;
+  jsonld?: object[];
+  noindex?: boolean;
+}
+const { app, title, description, jsonld = [], noindex } = Astro.props;
+
+const appJsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'MobileApplication',
+  name: app.storeName,
+  operatingSystem: `iOS ${app.minimumOs} or later`,
+  applicationCategory: 'LifestyleApplication',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  url: app.site,
+  installUrl: app.appStoreUrl,
+  author: { '@type': 'Organization', name: 'Camm Studios', url: company.site },
+};
+---
+
+<Base
+  title={title}
+  description={description}
+  jsonld={[appJsonld, ...jsonld]}
+  bodyClass={`site-${app.id}`}
+  noindex={noindex}
+>
+  <SiteNav
+    brandName={app.name}
+    brandIcon="/favicon-64.png"
+    items={[
+      { label: 'Features', href: '/#features' },
+      { label: 'FAQ', href: '/#faq' },
+      { label: 'Blog', href: '/blog' },
+      { label: 'Support', href: '/support' },
+    ]}
+    cta={{ label: 'App Store', href: app.appStoreUrl }}
+  />
+  <slot />
+  <SiteFooter
+    note={app.tagline}
+    columns={[
+      {
+        title: app.name,
+        links: [
+          { label: 'Features', href: '/#features' },
+          { label: 'Blog', href: '/blog' },
+          { label: 'Support', href: '/support' },
+          { label: 'App Store', href: app.appStoreUrl },
+        ],
+      },
+      {
+        title: 'Studio',
+        links: [
+          { label: 'Camm Studios', href: company.site },
+          { label: 'Our process', href: `${company.site}/#process` },
+        ],
+      },
+      {
+        title: 'Legal',
+        links: [
+          { label: 'Privacy', href: '/privacy' },
+          { label: 'Terms', href: '/terms' },
+        ],
+      },
+    ]}
+  />
+</Base>

@@ -1,0 +1,28 @@
+{
+  "name": "cammstudios-website",
+  "type": "module",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "dev:bronzed": "SITE_TARGET=bronzed astro dev",
+    "dev:stellar": "SITE_TARGET=stellar astro dev",
+    "build": "astro build",
+    "build:company": "SITE_TARGET=company astro build",
+    "build:bronzed": "SITE_TARGET=bronzed astro build",
+    "build:stellar": "SITE_TARGET=stellar astro build",
+    "build:all": "SITE_TARGET=company astro build --outDir dist/company && SITE_TARGET=bronzed astro build --outDir dist/bronzed && SITE_TARGET=stellar astro build --outDir dist/stellar",
+    "preview": "astro preview",
+    "check": "SITE_TARGET=bronzed astro check"
+  },
+  "dependencies": {
+    "@fontsource-variable/manrope": "^5.2.5",
+    "@fontsource/geist-mono": "^5.2.5",
+    "astro": "^5.13.2",
+    "sharp": "^0.34.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "typescript": "^5.9.2"
+  }
+}

@@ -1,0 +1,73 @@
+---
+import AppShell from '@shared/components/AppShell.astro';
+import Faq from '@shared/components/Faq.astro';
+import { stellar, company } from '@shared/data/apps';
+
+const faqs = [
+  {
+    q: 'My reminders are not arriving',
+    a: 'Check that notifications are allowed for Stellar in iOS <strong>Settings → Notifications</strong>, and review your reminder times in the app under <strong>Settings → Reminders</strong>. Focus modes can also silence notifications.',
+  },
+  {
+    q: 'How do I edit or delete a journal entry?',
+    a: 'Open the <strong>369 Journal</strong>, pick the day on the calendar, and tap an entry to edit or delete it.',
+  },
+  {
+    q: 'How do I add photos to my vision board?',
+    a: 'Open the <strong>Vision Board</strong> and tap the plus button. Stellar uses the iOS photo picker, so it only ever sees the photos you select.',
+  },
+  {
+    q: 'How do I cancel my subscription?',
+    a: 'Open the <strong>Settings</strong> app on your iPhone, tap your name, then <strong>Subscriptions</strong>, choose Stellar, and tap <strong>Cancel Subscription</strong>.',
+  },
+  {
+    q: 'How do I restore my purchase on a new device?',
+    a: 'Open Stellar, go to <strong>Settings</strong>, and tap <strong>Restore Purchases</strong>. Sign in with the same Apple Account you used for the original purchase.',
+  },
+  {
+    q: 'Can I get a refund?',
+    a: 'Refunds are handled by Apple. Visit <a href="https://reportaproblem.apple.com" rel="noopener">reportaproblem.apple.com</a>, sign in, find the purchase, and request a refund.',
+  },
+  {
+    q: 'Are my entries backed up?',
+    a: 'Your content is stored on your device only, so use iCloud or local device backups to protect it. If you delete the app without a backup, your entries cannot be recovered.',
+  },
+];
+---
+
+<AppShell
+  app={stellar}
+  title="Support — Stellar"
+  description="Get help with Stellar: reminders, journal entries, vision boards, subscriptions, and privacy."
+>
+  <main id="main" class="subpage">
+    <div class="shell">
+      <header class="page-head">
+        <p class="kicker kicker--rule">Support</p>
+        <h1 class="display-lg">Here to help.</h1>
+        <p class="lede">
+          Most questions are answered below. For anything else, email us — we reply within 24
+          hours.
+        </p>
+      </header>
+      <div class="actions">
+        <a class="btn btn--primary" href={`mailto:${company.email}?subject=Stellar%20support`}>
+          {company.email}
+        </a>
+        <a class="btn btn--ghost" href="https://apps.apple.com/account/subscriptions" rel="noopener">
+          Manage subscription
+        </a>
+      </div>
+      <section class="faq-wrap" aria-label="Frequently asked questions">
+        <Faq items={faqs} />
+      </section>
+    </div>
+  </main>
+</AppShell>
+
+<style>
+  .subpage { padding-top: calc(var(--sp-900) + var(--sp-500)); padding-bottom: var(--sp-900); }
+  .page-head { display: grid; gap: var(--sp-200); margin-bottom: var(--sp-400); }
+  .actions { display: flex; gap: var(--sp-200); flex-wrap: wrap; margin-bottom: var(--sp-700); }
+  .faq-wrap { max-width: 800px; }
+</style>
