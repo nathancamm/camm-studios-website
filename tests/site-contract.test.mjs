@@ -75,6 +75,53 @@ test('each HTML document uses its target canonical host and has no dead links', 
   }
 });
 
+test('internal links and same-page anchors resolve', () => {
+  for (const [target, files] of Object.entries(routeFiles)) {
+    const outDir = join(root, 'dist', target);
+    for (const file of files.filter((path) => path.endsWith('.html'))) {
+      const html = readFileSync(join(outDir, file), 'utf8');
+      const hrefs = [...html.matchAll(/href=["']([^"']+)["']/gi)].map((match) => match[1]);
+
+      for (const href of hrefs) {
+        if (href.startsWith('#')) {
+          const id = href.slice(1);
+          assert.match(html, new RegExp(`id=["']${id}["']`), `${target}/${file} has a missing #${id} anchor`);
+          continue;
+        }
+        if (!href.startsWith('/')) continue;
+
+        const path = href.split(/[?#]/, 1)[0];
+        const candidate = path === '/'
+          ? 'index.html'
+          : path.endsWith('/')
+            ? `${path.slice(1)}index.html`
+            : path.includes('.')
+              ? path.slice(1)
+              : `${path.slice(1)}/index.html`;
+        assert.ok(existsSync(join(outDir, candidate)), `${target}/${file} links to missing ${href}`);
+      }
+    }
+  }
+});
+
+test('metadata and structured data match each public surface', () => {
+  for (const [target, files] of Object.entries(routeFiles)) {
+    for (const file of files.filter((path) => path.endsWith('.html') && path !== '404.html')) {
+      const html = readFileSync(join(root, 'dist', target, file), 'utf8');
+      assert.match(html, /<meta name="description" content="[^"]+"/i, `${target}/${file} has no description`);
+      assert.match(html, /<meta property="og:title" content="[^"]+"/i, `${target}/${file} has no Open Graph title`);
+    }
+  }
+
+  const company = readFileSync(join(root, 'dist/company/index.html'), 'utf8');
+  const bronzed = readFileSync(join(root, 'dist/bronzed/index.html'), 'utf8');
+  const stellarPost = readFileSync(join(root, 'dist/stellar/blog/369-method-daily-ritual/index.html'), 'utf8');
+  assert.match(company, /"@type":"Organization"/);
+  assert.match(bronzed, /"@type":"MobileApplication"/);
+  assert.match(stellarPost, /"@type":"BlogPosting"/);
+  assert.match(stellarPost, /"@type":"BreadcrumbList"/);
+});
+
 test('product pages use the live locale neutral App Store links', () => {
   const bronzed = readFileSync(join(root, 'dist/bronzed/index.html'), 'utf8');
   const stellar = readFileSync(join(root, 'dist/stellar/index.html'), 'utf8');
@@ -102,13 +149,19 @@ test('legacy app legal routes redirect permanently to final subdomains', () => {
   ];
 
   for (const [app, document, destination] of groups) {
-    for (const suffix of ['.html', '', '/']) {
-      const source = `/apps/${app}/${document}${suffix}`;
-      const redirect = redirects.get(source);
-      assert.ok(redirect, `Missing redirect for ${source}`);
-      assert.equal(redirect.destination, destination);
-      assert.equal(redirect.permanent, true);
+    for (const host of ['cammstudios.com', 'www.cammstudios.com']) {
+      for (const suffix of ['.html', '', '/']) {
+        const source = `/apps/${app}/${document}${suffix}`;
+        const redirect = redirects.get(source);
+        assert.ok(redirect, `Missing redirect for https://${host}${source}`);
+        assert.equal(redirect.destination, destination);
+        assert.equal(redirect.permanent, true);
+        assert.ok(!redirect.destination.includes('?'), `Redirect should let Vercel preserve the original query for ${source}`);
+      }
     }
   }
-});
 
+  const apexRuleIndex = config.redirects.findIndex((redirect) => redirect.has?.some((condition) => condition.type === 'host'));
+  const lastLegacyIndex = Math.max(...groups.flatMap(([app, document]) => ['.html', '', '/'].map((suffix) => config.redirects.findIndex((redirect) => redirect.source === `/apps/${app}/${document}${suffix}`))));
+  assert.ok(lastLegacyIndex < apexRuleIndex, 'Apex host redirect would create a chain before legacy legal redirects');
+});

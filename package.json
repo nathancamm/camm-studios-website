@@ -21,6 +21,7 @@
     "check:all": "npm run check:company && npm run check:bronzed && npm run check:stellar",
     "test": "npm run build:all && node --test tests/site-contract.test.mjs",
     "test:contracts": "node --test tests/site-contract.test.mjs",
+    "test:visual": "node tests/visual-qa.mjs",
     "preview:company": "SITE_TARGET=company astro preview",
     "preview:bronzed": "SITE_TARGET=bronzed astro preview",
     "preview:stellar": "SITE_TARGET=stellar astro preview"
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
+    "@playwright/test": "1.62.1",
     "@types/node": "24.3.0",
     "sharp": "0.35.3",
     "typescript": "5.9.3"
