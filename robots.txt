@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://cammstudios.com/sitemap.xml
