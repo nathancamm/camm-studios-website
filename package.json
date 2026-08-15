@@ -1,0 +1,43 @@
+{
+  "name": "camm-studios-website",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "SITE_TARGET=company astro dev",
+    "dev:bronzed": "SITE_TARGET=bronzed astro dev",
+    "dev:stellar": "SITE_TARGET=stellar astro dev",
+    "build": "astro build",
+    "build:company": "SITE_TARGET=company astro build",
+    "build:bronzed": "SITE_TARGET=bronzed astro build",
+    "build:stellar": "SITE_TARGET=stellar astro build",
+    "build:all": "npm run build:company && npm run build:bronzed && npm run build:stellar",
+    "check:company": "SITE_TARGET=company astro check",
+    "check:bronzed": "SITE_TARGET=bronzed astro check",
+    "check:stellar": "SITE_TARGET=stellar astro check",
+    "check:all": "npm run check:company && npm run check:bronzed && npm run check:stellar",
+    "test": "npm run build:all && node --test tests/site-contract.test.mjs",
+    "test:contracts": "node --test tests/site-contract.test.mjs",
+    "preview:company": "SITE_TARGET=company astro preview",
+    "preview:bronzed": "SITE_TARGET=bronzed astro preview",
+    "preview:stellar": "SITE_TARGET=stellar astro preview"
+  },
+  "dependencies": {
+    "@astrojs/rss": "4.0.19",
+    "@fontsource-variable/manrope": "5.3.0",
+    "astro": "7.2.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "sharp": "0.35.3",
+    "typescript": "5.9.3"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "sharp@0.35.3": true,
+    "fsevents@2.3.3": true
+  }
+}
