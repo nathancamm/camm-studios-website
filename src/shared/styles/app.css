@@ -1,5 +1,5 @@
-.theme-bronzed { --accent: var(--orange); }
-.theme-stellar { --accent: #5b67df; }
+.theme-bronzed { --accent: var(--orange); --accent-text: var(--orange-text); --accent-on-dark: #ff8a56; }
+.theme-stellar { --accent: #5b67df; --accent-text: #3340b0; --accent-on-dark: #9ca4ff; }
 
 .app-hero {
   min-height: 100svh;
@@ -104,7 +104,8 @@
   background: var(--ink);
 }
 
-.feature-story .eyebrow { color: var(--accent); }
+.feature-story .eyebrow,
+.feature__number { color: var(--accent-on-dark); }
 
 .feature-story__grid {
   display: grid;
@@ -300,6 +301,8 @@
 }
 
 .download-panel .button { border-color: var(--ink); }
+.download-panel .eyebrow { color: white; }
+.theme-bronzed .download-panel .eyebrow { color: var(--ink); }
 
 @keyframes orbit {
   to { transform: rotate(360deg); }

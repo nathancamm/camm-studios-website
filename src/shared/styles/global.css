@@ -6,8 +6,10 @@
   --line: color-mix(in srgb, var(--ink) 18%, transparent);
   --cobalt: #1e39c2;
   --orange: #e4571a;
+  --orange-text: #a9360c;
   --periwinkle: #8d95ee;
   --accent: var(--cobalt);
+  --accent-text: var(--cobalt);
   --space-1: 2px;
   --space-2: 4px;
   --space-3: 8px;
@@ -153,7 +155,7 @@ p {
 
 .eyebrow {
   margin-bottom: var(--space-5);
-  color: var(--accent);
+  color: var(--accent-text);
   font-size: 12px;
   font-weight: 680;
   line-height: 1.2;

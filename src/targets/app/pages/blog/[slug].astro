@@ -59,7 +59,7 @@ const structuredData = [
       <p class="article-hero__summary" data-reveal>{post.data.summary}</p>
       <p class="article-hero__meta"><span>{post.data.publicationDate.toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</span><span>{Math.max(4, Math.round((post.body?.length ?? 3600) / 900))} minute read</span></p>
     </header>
-    <figure class="article-image" data-reveal><Picture src={hero} alt={post.data.alt} widths={[640, 960, 1280, 1600]} sizes="(max-width: 800px) calc(100vw - 32px), calc(100vw - 8vw)" formats={['avif', 'webp']} loading="eager" /></figure>
+    <figure class="article-image" data-reveal><Picture src={hero} alt={post.data.alt} widths={[640, 960, 1280, 1600]} sizes="(max-width: 800px) calc(100vw - 32px), calc(100vw - 8vw)" formats={['avif', 'webp']} loading="eager" fetchpriority="high" /></figure>
     <div class="article-grid shell">
       <aside class="article-share"><p>Published by<br /><strong>Camm Studios</strong></p><p><a href={`/rss.xml`}>RSS feed</a></p></aside>
       <article class="article-body">

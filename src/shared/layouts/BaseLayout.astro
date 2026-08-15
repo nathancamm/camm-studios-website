@@ -2,6 +2,8 @@
 import '@fontsource-variable/manrope';
 import '../styles/global.css';
 import mark from '../assets/brand/mark.svg';
+import bronzedFavicon from '../assets/product/bronzed-favicon.png';
+import stellarFavicon from '../assets/product/stellar-favicon.png';
 
 interface Props {
   title: string;
@@ -24,6 +26,9 @@ const {
 } = Astro.props;
 const canonicalUrl = canonical.toString();
 const imageUrl = image?.toString();
+const target = process.env.SITE_TARGET;
+const favicon = target === 'bronzed' ? bronzedFavicon.src : target === 'stellar' ? stellarFavicon.src : mark.src;
+const rssUrl = target === 'bronzed' || target === 'stellar' ? new URL('/rss.xml', Astro.site) : undefined;
 ---
 
 <!doctype html>
@@ -36,7 +41,8 @@ const imageUrl = image?.toString();
     <meta name="description" content={description} />
     <meta name="robots" content={robots} />
     <link rel="canonical" href={canonicalUrl} />
-    <link rel="icon" href={mark.src} type="image/svg+xml" />
+    <link rel="icon" href={favicon} />
+    {rssUrl && <link rel="alternate" type="application/rss+xml" title={`${title} RSS feed`} href={rssUrl} />}
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -51,9 +57,15 @@ const imageUrl = image?.toString();
     )}
     <script is:inline>
       window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+      if (window.location.hostname.endsWith('cammstudios.com')) {
+        for (const source of ['/_vercel/insights/script.js', '/_vercel/speed-insights/script.js']) {
+          const script = document.createElement('script');
+          script.src = source;
+          script.defer = true;
+          document.head.appendChild(script);
+        }
+      }
     </script>
-    <script is:inline defer src="/_vercel/insights/script.js"></script>
-    <script is:inline defer src="/_vercel/speed-insights/script.js"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>

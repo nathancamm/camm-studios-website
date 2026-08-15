@@ -18,7 +18,7 @@ const structuredData = {
   '@type': 'MobileApplication',
   name: app.appStoreTitle,
   operatingSystem: 'iOS',
-  applicationCategory: `${app.category}Application`,
+  applicationCategory: app.target === 'bronzed' ? 'HealthApplication' : 'LifestyleApplication',
   description: app.seoDescription,
   url: canonical.toString(),
   downloadUrl: app.storeUrl,
@@ -48,7 +48,7 @@ const privacyCopy = app.target === 'bronzed'
       <div class="app-hero__grid">
         <div class="app-hero__copy">
           <div class="app-identity" data-reveal>
-            <Image src={app.icon} alt={`${app.name} app icon`} width={64} height={64} format="webp" />
+            <Image src={app.icon} alt={`${app.name} app icon`} width={128} height={128} format="webp" loading="eager" />
             <div><p class="app-identity__name">{app.name}</p><p class="app-identity__meta">{app.eyebrow}</p></div>
           </div>
           <p class="eyebrow">{app.eyebrow}</p>
@@ -58,7 +58,7 @@ const privacyCopy = app.target === 'bronzed'
           {app.target === 'bronzed' && <p class="app-hero__notice">No app can prevent sunburn. Bronzed provides estimates and general guidance, not medical advice. Always follow official sun protection advice.</p>}
         </div>
         <figure class="app-hero__art" data-reveal data-parallax>
-          <Picture src={app.artwork} alt={app.artworkAlt} widths={[640, 960, 1280, 1586]} sizes="(max-width: 900px) calc(100vw - 32px), 56vw" formats={['avif', 'webp']} loading="eager" />
+          <Picture src={app.artwork} alt={app.artworkAlt} widths={[640, 960, 1280, 1586]} sizes="(max-width: 900px) calc(100vw - 32px), 56vw" formats={['webp']} loading="eager" fetchpriority="high" />
         </figure>
       </div>
     </section>

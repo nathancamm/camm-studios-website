@@ -6,6 +6,7 @@ import Footer from '@shared/components/Footer.astro';
 import companyArt from '@shared/assets/art/company-system.png';
 import bronzedArt from '@shared/assets/art/bronzed-system.png';
 import stellarArt from '@shared/assets/art/stellar-system.png';
+import mark from '@shared/assets/brand/mark.svg';
 import { companySite } from '@shared/data/site';
 import '@shared/styles/company.css';
 
@@ -16,9 +17,8 @@ const structuredData = {
   '@type': 'Organization',
   name: companySite.name,
   url: companySite.url,
-  logo: new URL('/favicon.svg', Astro.site).toString(),
+  logo: new URL(mark.src, Astro.site).toString(),
   email: companySite.email,
-  sameAs: [],
 };
 ---
 
@@ -51,7 +51,7 @@ const structuredData = {
     </section>
 
     <figure class="system-figure" data-reveal data-parallax>
-      <Picture src={companyArt} alt="An orange signal moving through discovery, focus, distribution, and feedback stages in a cobalt system." widths={[640, 960, 1280, 1536]} sizes="(max-width: 800px) calc(100vw - 32px), calc(100vw - 8vw)" formats={['avif', 'webp']} loading="eager" />
+      <Picture src={companyArt} alt="An orange signal moving through discovery, focus, distribution, and feedback stages in a cobalt system." widths={[640, 960, 1280, 1536]} sizes="(max-width: 800px) calc(100vw - 32px), calc(100vw - 8vw)" formats={['avif', 'webp']} loading="eager" fetchpriority="high" />
       <figcaption><span>One signal. Four deliberate stages.</span><span>Discover · Build · Launch · Learn</span></figcaption>
     </figure>
 

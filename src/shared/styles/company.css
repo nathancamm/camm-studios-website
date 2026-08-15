@@ -224,7 +224,7 @@
 }
 
 .capability__number {
-  color: var(--orange);
+  color: var(--orange-text);
   font-size: 12px;
 }
 
@@ -440,7 +440,12 @@
   }
 
   .portfolio-card {
-    min-height: 520px;
+    min-height: 0;
+  }
+
+  .portfolio-card__art {
+    height: auto;
+    aspect-ratio: 1.65 / 1;
   }
 }
 
