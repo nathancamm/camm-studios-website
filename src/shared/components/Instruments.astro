@@ -28,8 +28,8 @@ const items = [
               <circle cx={x} cy={y} r="3" fill="#5a5a5a" />
             ))}
             <g class="sweep">
-              <path d="M160 120 L300 74 A150 150 0 0 1 306 132 Z" fill="rgba(151,163,255,0.10)" />
-              <path d="M160 120 L300 74" stroke="var(--accent-bright)" stroke-width="1.5" />
+              <path d="M160 120 L300 74 A150 150 0 0 1 306 132 Z" fill="rgba(224,182,79,0.14)" />
+              <path d="M160 120 L300 74" stroke="#e0b64f" stroke-width="1.5" />
             </g>
             <circle cx="160" cy="120" r="86" stroke="#3a3a3a" stroke-width="1" stroke-dasharray="3 6" />
             <circle cx="160" cy="120" r="130" stroke="#2b2b2b" stroke-width="1" stroke-dasharray="3 6" />
@@ -45,12 +45,12 @@ const items = [
               <ellipse cx="160" cy="140" rx="92" ry="10" stroke="#5a5a5a" stroke-width="1" stroke-dasharray="4 5" />
               <ellipse cx="160" cy="186" rx="120" ry="10" stroke="#3a3a3a" stroke-width="1" />
             </g>
-            <circle class="fall" cx="160" cy="52" r="6" fill="var(--accent-bright)" />
+            <circle class="fall" cx="160" cy="52" r="6" fill="#e0b64f" />
           </svg>
         )}
         {item.key === 'bench' && (
           <svg viewBox="0 0 320 240" fill="none">
-            <circle cx="160" cy="128" r="34" fill="var(--accent-bright)" />
+            <circle cx="160" cy="128" r="34" fill="#e3a44f" />
             <circle cx="149" cy="116" r="9" fill="rgba(255,255,255,0.35)" />
             <g class="ring-a">
               <ellipse cx="160" cy="128" rx="76" ry="26" stroke="var(--paper)" stroke-width="1.2" stroke-dasharray="5 7" />
@@ -65,16 +65,16 @@ const items = [
           <svg viewBox="0 0 320 240" fill="none">
             <path class="beam" d="M20 120 H128" stroke="var(--paper)" stroke-width="1.6" stroke-dasharray="6 6" />
             <path d="M128 84 L188 120 L128 156 Z" stroke="var(--paper)" stroke-width="1.4" fill="rgba(255,255,255,0.05)" />
-            <path class="beam" d="M188 120 C230 118 258 96 300 60" stroke="var(--accent-bright)" stroke-width="1.4" stroke-dasharray="6 6" />
-            <path class="beam beam-2" d="M188 120 C232 118 262 108 300 92" stroke="#9e9e9e" stroke-width="1.4" stroke-dasharray="6 6" />
+            <path class="beam" d="M188 120 C230 118 258 96 300 60" stroke="#e06a5a" stroke-width="1.4" stroke-dasharray="6 6" />
+            <path class="beam beam-2" d="M188 120 C232 118 262 108 300 92" stroke="#e0b64f" stroke-width="1.4" stroke-dasharray="6 6" />
             <path class="beam beam-3" d="M188 120 H300" stroke="var(--paper)" stroke-width="1.4" stroke-dasharray="6 6" />
-            <path class="beam beam-4" d="M188 120 C232 122 262 132 300 148" stroke="#6f6f6f" stroke-width="1.4" stroke-dasharray="6 6" />
+            <path class="beam beam-4" d="M188 120 C232 122 262 132 300 148" stroke="#79b979" stroke-width="1.4" stroke-dasharray="6 6" />
             <path class="beam beam-5" d="M188 120 C230 122 258 144 300 180" stroke="var(--accent-bright)" stroke-width="1.4" stroke-dasharray="6 6" />
           </svg>
         )}
         {item.key === 'orrery' && (
           <svg viewBox="0 0 320 240" fill="none">
-            <circle cx="160" cy="120" r="16" fill="var(--accent-bright)" />
+            <circle cx="160" cy="120" r="16" fill="#e3a44f" />
             <g class="orbit-a">
               <ellipse cx="160" cy="120" rx="66" ry="42" stroke="#8a8a8a" stroke-width="1.2" stroke-dasharray="4 6" />
               <circle cx="226" cy="120" r="7" fill="var(--paper)" />
@@ -90,8 +90,8 @@ const items = [
             {[64, 96, 128, 160, 192].map((y, row) => (
               <path d={`M64 ${y} H256`} stroke={row === 2 ? '#8a8a8a' : '#3a3a3a'} stroke-width="1.2" stroke-dasharray="2 6" />
             ))}
-            <circle class="tick" cx="72" cy="64" r="6" fill="var(--accent-bright)" />
-            <path d="M232 52 l8 10 14 -18" stroke="var(--paper)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="check" />
+            <circle class="tick" cx="72" cy="64" r="6" fill="#e06a5a" />
+            <path d="M232 52 l8 10 14 -18" stroke="#79b979" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="check" />
           </svg>
         )}
       </div>

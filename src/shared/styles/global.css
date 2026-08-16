@@ -340,6 +340,31 @@ button { font: inherit; }
   to { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
 
+/* living painting: two frames cross-fading in a slow loop */
+.living { position: relative; }
+.living .frame-b {
+  position: absolute;
+  inset: 0;
+  animation: living-fade 16s var(--ease-fluid) infinite;
+}
+@keyframes living-fade {
+  0%, 38% { opacity: 0; }
+  50%, 88% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* scroll progress hairline */
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 2px;
+  z-index: 150;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+
 /* staggered hero entrance: <span class="rise" style="--d: 120ms"> */
 .rise {
   opacity: 0;

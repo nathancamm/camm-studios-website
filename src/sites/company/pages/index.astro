@@ -8,6 +8,7 @@ import Instruments from '@shared/components/Instruments.astro';
 import Mark from '@shared/components/Mark.astro';
 import { apps, company } from '@shared/data/apps';
 import heroArt from '@shared/assets/art/company-hero.png';
+import heroArtB from '@shared/assets/art/company-hero-b.png';
 import craftArt from '@shared/assets/art/company-craft.png';
 import bronzedArt from '@shared/assets/art/bronzed-hero.png';
 import stellarArt from '@shared/assets/art/stellar-hero.png';
@@ -15,6 +16,7 @@ import bronzedIcon from '@shared/assets/icons/bronzed-icon.png';
 import stellarIcon from '@shared/assets/icons/stellar-icon.png';
 
 const heroBg = await getImage({ src: heroArt, format: 'avif', quality: 62, width: 2400 });
+const heroBgB = await getImage({ src: heroArtB, format: 'avif', quality: 62, width: 2400 });
 const panelArt = { bronzed: bronzedArt, stellar: stellarArt };
 const icons = { bronzed: bronzedIcon, stellar: stellarIcon };
 
@@ -68,10 +70,10 @@ const chapters = [
 ];
 
 const dials = [
-  { n: '02', label: 'apps in orbit' },
-  { n: '10', label: 'days, idea to submission' },
-  { n: '39', label: 'store locales per launch' },
-  { n: '∞', label: 'overlooked problems left' },
+  { n: '02', count: 2, pad: true, label: 'apps in orbit' },
+  { n: '10', count: 10, pad: false, label: 'days, idea to submission' },
+  { n: '39', count: 39, pad: false, label: 'store locales per launch' },
+  { n: '∞', count: null, pad: false, label: 'overlooked problems left' },
 ];
 
 const marquee = [
@@ -109,8 +111,9 @@ const marquee = [
   <main id="main">
     <!-- animated hero -->
     <section class="hero band--night">
-      <div class="hero-bg" aria-hidden="true">
+      <div class="hero-bg living" aria-hidden="true">
         <img src={heroBg.src} alt="" class="hero-img" fetchpriority="high" />
+        <img src={heroBgB.src} alt="" class="hero-img frame-b" loading="lazy" />
         <svg class="stars" viewBox="0 0 1440 600" preserveAspectRatio="xMidYMin slice">
           {[
             [90, 80, 1.6, 0], [220, 180, 1.2, 1.3], [340, 60, 1.8, 2.1], [470, 140, 1.1, 0.6],
@@ -123,7 +126,7 @@ const marquee = [
         </svg>
         <div class="hero-scrim"></div>
       </div>
-      <div class="shell hero-content">
+      <div class="shell hero-content" data-parallax="-0.06">
         <p class="kicker rise" style="--d: 200ms">Camm Studios — independent app studio</p>
         <h1 class="display-xl hero-title">
           {heroWords.map((word, i) => (
@@ -167,7 +170,12 @@ const marquee = [
     </section>
 
     <!-- process: zigzag trajectory -->
-    <section class="band band--deep" id="process" aria-labelledby="process-title">
+    <section class="band band--deep process" id="process" aria-labelledby="process-title">
+      <svg class="process-orbit" viewBox="0 0 800 800" aria-hidden="true" data-rotate="26">
+        <circle cx="400" cy="400" r="340" stroke="var(--line-strong)" stroke-width="1.5" stroke-dasharray="4 14" fill="none" />
+        <circle cx="400" cy="400" r="250" stroke="var(--line)" stroke-width="1" stroke-dasharray="3 16" fill="none" />
+        <circle cx="740" cy="400" r="8" fill="var(--accent)" />
+      </svg>
       <div class="shell">
         <p class="kicker kicker--rule reveal">The operating model</p>
         <h2 id="process-title" class="display-lg reveal">Hunt. Forge.<br />Launch. Operate.</h2>
@@ -220,7 +228,13 @@ const marquee = [
         <ul class="dials" aria-label="Studio dials">
           {dials.map((dial) => (
             <li class="dial reveal">
-              <span class="dial-n">{dial.n}</span>
+              {dial.count !== null ? (
+                <span class="dial-n" data-count={dial.count} data-pad={dial.pad ? '1' : ''}>
+                  {dial.pad ? '00' : '0'}
+                </span>
+              ) : (
+                <span class="dial-n">{dial.n}</span>
+              )}
               <span class="mono-note">{dial.label}</span>
             </li>
           ))}
@@ -373,6 +387,19 @@ const marquee = [
   /* manifesto */
   .manifesto { display: grid; gap: var(--sp-300); }
   .manifesto .lede { max-width: 620px; }
+
+  /* process */
+  .process { position: relative; overflow: clip; }
+  .process-orbit {
+    position: absolute;
+    top: -140px;
+    right: -260px;
+    width: 700px;
+    height: 700px;
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  .process .shell { position: relative; }
 
   /* trajectory */
   .trajectory {

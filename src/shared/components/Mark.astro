@@ -1,29 +1,18 @@
 ---
 /**
- * The Camm Studios mark: an orange world with a thin orbit ring.
- * The ring passes behind the planet, then in front. Everything the
- * studio ships is a small world in orbit.
+ * The original Camm Studios mark, in ink or paper depending on the ground.
  */
+import { Image } from 'astro:assets';
+import logoInk from '@shared/assets/brand/logo-ink.png';
+import logoPaper from '@shared/assets/brand/logo-paper.png';
+
 interface Props {
   size?: number;
   tone?: 'ink' | 'paper';
 }
 const { size = 28, tone = 'ink' } = Astro.props;
-const ring = tone === 'paper' ? 'var(--paper)' : 'var(--ink)';
+const src = tone === 'paper' ? logoPaper : logoInk;
+const width = Math.round(size * (409 / 384));
 ---
 
-<svg
-  width={size}
-  height={size}
-  viewBox="0 0 64 64"
-  fill="none"
-  role="img"
-  aria-label="Camm Studios mark"
->
-  <g transform="rotate(-24 32 32)">
-    <path d="M6 32 A26 9.5 0 0 1 58 32" stroke={ring} stroke-width="3" stroke-linecap="round"></path>
-    <circle cx="32" cy="32" r="14" fill="var(--accent)"></circle>
-    <path d="M6 32 A26 9.5 0 0 0 58 32" stroke={ring} stroke-width="3" stroke-linecap="round"></path>
-    <circle cx="13" cy="37.5" r="2.8" fill={ring}></circle>
-  </g>
-</svg>
+<Image src={src} alt="Camm Studios mark" width={width} height={size} densities={[1, 2]} />
