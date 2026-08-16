@@ -3,7 +3,7 @@ title: "How to use the 369 manifestation method as a daily ritual"
 summary: "Write your intention 3 times in the morning, 6 in the afternoon, 9 at night. What the 369 method actually does, and how to make it stick."
 publishDate: 2026-08-16
 hero: "../../../src/shared/assets/art/blog-369.png"
-heroAlt: "An open blank journal and brass pen on a small desk floating in a starfield, lit by a candle lantern"
+heroAlt: "An open blank notebook and pen floating in a dark space-station cupola, Earth glowing through the window"
 keywords:
   - "369 method"
   - "369 manifestation method"

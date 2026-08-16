@@ -3,7 +3,7 @@ title: "UV Index explained: what each level means for your time outdoors"
 summary: "The UV Index runs from 0 to 11+. Each step changes how fast your skin reacts to the sun. Here's how to read it and plan around it."
 publishDate: 2026-08-16
 hero: "../../../src/shared/assets/art/blog-uv.png"
-heroAlt: "A painterly still life of brass solar instruments and an orange glass sphere in hard midday light"
+heroAlt: "Macro photograph of a UV sensor lens splitting hard sunlight into a faint spectrum"
 keywords:
   - "UV index explained"
   - "UV index levels"

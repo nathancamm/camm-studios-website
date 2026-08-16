@@ -1,76 +1,73 @@
-# Artwork brief v4 — Camm Studios website (colour + loop frames)
+# Artwork brief v5 — CAMM OS (cinematic spaceflight, no solarpunk)
 
 Use your image generation capability (imagegen skill, built-in image_gen tool).
 Generate SEVEN base images, then THREE loop-frame variants. Copy every file
 into the exact workspace path given, overwriting existing files.
 
-Shared art direction: painterly retro-futurist "space renaissance cowboy
-solarpunk", in RICH CINEMATIC COLOUR. Think renaissance landscape painting
-crossed with a classic sci-fi paperback cover. Deep cobalt and teal night
-skies, gold and amber lamplight, soft violet nebulae, green glass domes.
-Avoid a dominant orange wash; colour should feel jewel-like and varied. Soft
-film grain, painterly texture, vast quiet compositions. The site around these
-images is strict monochrome, so each image should glow like a stained-glass
-window in a gray gallery.
+Shared art direction: CINEMATIC PHOTOREAL SPACEFLIGHT. Stills from a prestige
+space film: deep clean blacks, precise machines, dramatic rim light, shallow
+depth where it helps. Jewel colour against darkness: cobalt blue signal
+lights, aurora teal, solar gold, violet nebulae. Quiet, exact, expensive.
+NO solarpunk, NO cowboys, NO greenhouses, NO deserts, NO painterly canvas
+texture. The site around these images is strict monochrome console UI, so
+each image should read like a window out of the console.
 
-Hard constraints for ALL images: no text, no letters, no numbers, no logos, no
-watermarks, no user interfaces, no screens, no readable faces. Landscape
-orientation, widest available size.
+Hard constraints for ALL images: no text, no letters, no numbers, no logos,
+no watermarks, no user interfaces, no screens with content, no readable
+faces. Landscape orientation, widest available size.
 
 ## Base images
 
 1. `src/shared/assets/art/company-hero.png`
-   A vast twilight desert prairie from a low ridge. A single tiny rider on
-   horseback far in the distance, heading toward warm-lit green glass
-   greenhouse domes. A colossal ringed planet rising, first stars out, teal
-   dusk fading to gold at the horizon. Keep the upper-left third of the sky
-   quiet for a headline.
+   A small, beautifully engineered satellite in low orbit above Earth's night
+   side. City lights and a thin aurora arc below, star field above. The
+   satellite is compact and precise, catching golden sunrise rim light on one
+   edge, one small cobalt signal light blinking on its body. Vast dark space
+   in the upper-left third for a headline.
 
 2. `src/shared/assets/art/company-craft.png`
-   Inside a glass dome at night, a small friendly robot gardener prunes a
-   tiny glowing tree in a brass pot. Cobalt starry sky through the glass,
-   warm gold lamplight, green foliage in shadow. Intimate and quiet.
+   Macro scene inside a dark clean room: a precision robotic arm performs
+   micro-assembly on a palm-sized device held in a jig, under a single cool
+   task light. Sparks of reflected light in dark metal, one cobalt indicator
+   glowing. The feeling: enormous care applied to something very small.
 
 3. `src/shared/assets/art/company-404.png`
-   A small round robot in a cowboy hat alone in a moonlit desert beside a
-   leaning blank signpost, scratching its head. Violet-blue night, one gold
-   shooting star, lots of empty sky in the center.
+   A tiny probe drifting alone in empty black space, slightly tumbling, its
+   unspooled antenna trailing, one cobalt light still blinking. A distant
+   pale planet far out of reach. Gently funny, very lonely, lots of empty
+   space in the center.
 
 4. `src/shared/assets/art/bronzed-hero.png`
-   An enormous low sun over a calm sea, ringed by faint etched brass
-   measurement arcs, like the sun is an instrument dial. Amber and rose sky,
-   deep teal water, glass domes glowing on a distant headland. Space at the
-   upper left for copy.
+   The sun observed from space: an enormous, detailed solar disc filling the
+   right side, granular surface and prominence arcs, with a tiny observation
+   probe silhouetted in transit. Gold and amber against deep black. Dark
+   space at the upper left for copy.
 
 5. `src/shared/assets/art/stellar-hero.png`
-   A deep cobalt night sky where a constellation of bright stars is joined by
-   thin gold lines, above a dark mesa with a small brass telescope and one
-   warm-lit tent. Violet milky way, vast and hopeful. Space at the upper left
-   for copy.
+   Deep space seen through the open aperture ring of a great telescope: a
+   violet-and-cobalt nebula with a sharp cluster of stars, the dark barrel
+   edge framing the right side. Vast, hopeful, precise. Dark space at the
+   upper left for copy.
 
 6. `src/shared/assets/art/blog-uv.png`
-   A painterly still life of brass solar instruments — heliograph, sundial
-   disc, a small orange-glass sphere — on a stone ledge in hard midday light,
-   deep blue sky behind. Renaissance engraving mood, sci-fi edge.
+   Macro photograph of a scientific UV sensor instrument: a domed quartz lens
+   catching a shaft of hard sunlight that splits into a faint spectrum inside
+   the glass, dark lab background, gold and cobalt reflections. Editorial,
+   precise.
 
 7. `src/shared/assets/art/blog-369.png`
-   An open blank journal and brass pen on a small wooden desk floating in a
-   cobalt starfield, a lantern with a warm flame, a tiny ringed planet in the
-   distance. Blank pages only.
+   Inside a dark space-station cupola at night: an open blank paper notebook
+   and a pen floating gently in zero gravity, lit by warm cabin light, with
+   Earth's blue glow through the round window behind. Blank pages only.
 
-## Loop frames (for a living, breathing hero animation)
+## Loop frames (living hero animation)
 
 For each of the three hero images, create ONE variant frame by EDITING the
 base image you just generated (load it with view_image, then use edit mode).
-The variant must keep the composition, palette, and every major element
-pixel-identical, changing ONLY:
-
-- clouds drifted very slightly,
-- star or lamp brightness subtly different,
-- water or grass texture subtly shifted.
-
-The two frames will be slowly cross-faded in a loop on the website, so the
-change must be gentle, like a scene breathing. Save the variants as:
+Keep the composition and every major element pixel-identical, changing ONLY:
+signal lights slightly brighter or dimmer, stars subtly varied, aurora or
+nebula drifted a touch. The two frames cross-fade slowly on the site, so the
+change must feel like the scene breathing.
 
 - `src/shared/assets/art/company-hero-b.png`
 - `src/shared/assets/art/bronzed-hero-b.png`
