@@ -5,7 +5,6 @@ import SiteNav from '@shared/components/SiteNav.astro';
 import SiteFooter from '@shared/components/SiteFooter.astro';
 import WordReveal from '@shared/components/WordReveal.astro';
 import Instruments from '@shared/components/Instruments.astro';
-import Mark from '@shared/components/Mark.astro';
 import { apps, company } from '@shared/data/apps';
 import heroArt from '@shared/assets/art/company-hero.png';
 import heroArtB from '@shared/assets/art/company-hero-b.png';
@@ -17,7 +16,7 @@ import stellarIcon from '@shared/assets/icons/stellar-icon.png';
 
 const heroBg = await getImage({ src: heroArt, format: 'avif', quality: 62, width: 2400 });
 const heroBgB = await getImage({ src: heroArtB, format: 'avif', quality: 62, width: 2400 });
-const panelArt = { bronzed: bronzedArt, stellar: stellarArt };
+const missionArt = { bronzed: bronzedArt, stellar: stellarArt };
 const icons = { bronzed: bronzedIcon, stellar: stellarIcon };
 
 const jsonld = [
@@ -44,28 +43,34 @@ const jsonld = [
   })),
 ];
 
-const heroWords = ['The', 'overlooked', 'frontier.'];
+const bootLines = [
+  { label: 'CAMM OS', state: 'v2.0' },
+  { label: 'Artemis', state: 'hunting' },
+  { label: 'Forge', state: 'ready' },
+  { label: 'Sentinel', state: 'watching' },
+  { label: 'All systems', state: 'nominal' },
+];
 
-const chapters = [
+const stages = [
   {
     no: '01',
     title: 'Hunt',
-    body: 'Artemis, our discovery pipeline, mines App Store search data overnight and surfaces gems: searches with buying intent and weak competition. Each gem gets a one-page brief. What do the top three apps get wrong, and what single feature would beat them? Most briefs die right there. Day-one funerals are cheap.',
+    body: 'Artemis mines App Store search data overnight and surfaces gems: searches with buying intent and weak competition. Each gem gets a one-page brief. Most briefs die right there. Day-one funerals are cheap.',
   },
   {
     no: '02',
     title: 'Forge',
-    body: 'A green-lit brief goes to Forge, our app factory. Onboarding, paywall, analytics, and localization scaffolding come stamped from a proven pattern in half a day. The build budget goes where it counts: the one feature that wins the niche. Native Swift, no accounts, no feed.',
+    body: 'A green-lit brief goes to Forge, our app factory. Onboarding, paywall, analytics, and localization come stamped from a proven pattern in half a day. The build budget goes to the one feature that wins the niche.',
   },
   {
     no: '03',
     title: 'Launch',
-    body: 'Ten working days is the budget from idea to submission. Apps ship in more than thirty languages, with store listings in 39 locales and screenshots generated for each one. Day one is worldwide.',
+    body: 'Ten working days is the budget from idea to submission. Apps ship in more than thirty languages, with store listings in 39 locales. Day one is worldwide.',
   },
   {
     no: '04',
     title: 'Operate',
-    body: 'Every week, every app stands the same review: revenue, rankings, funnel. Winners get more languages, sharper keywords, real ad spend. The rest get sixty days to prove themselves, then the archive. Every kill funds the next hunt.',
+    body: 'Every week, every app stands the same review: revenue, rankings, funnel. Winners get scaled. The rest get sixty days to prove themselves, then the archive. Every kill funds the next hunt.',
   },
 ];
 
@@ -76,12 +81,35 @@ const dials = [
   { n: '∞', count: null, pad: false, label: 'overlooked problems left' },
 ];
 
-const marquee = [
+const telemetry = [
   'Bronzed — tan smart, never burn',
   'Stellar — speak it, write it, see it',
   'Artemis is hunting',
   'Ten days, idea to App Store',
   'AI-native, human-judged',
+];
+
+const missionData = {
+  bronzed: [
+    ['Status', 'Launched · 2026'],
+    ['Sector', 'Weather · Health'],
+    ['Requires', 'iOS 18.0+'],
+    ['Price', 'Free'],
+  ],
+  stellar: [
+    ['Status', 'Launched · 2026'],
+    ['Sector', 'Lifestyle · Health'],
+    ['Requires', 'iOS 18.6+'],
+    ['Price', 'Free'],
+  ],
+} as const;
+
+const spy = [
+  { id: 'window', label: 'Window' },
+  { id: 'brief', label: 'Brief' },
+  { id: 'sequence', label: 'Sequence' },
+  { id: 'systems', label: 'Systems' },
+  { id: 'missions', label: 'Missions' },
 ];
 ---
 
@@ -90,27 +118,32 @@ const marquee = [
   description="Camm Studios is an independent app studio. We make small, sharp iOS apps for problems the big studios never notice. One job per app, done properly."
   jsonld={jsonld}
 >
-  <div class="intro" id="intro" aria-hidden="true">
-    <div class="intro-inner">
-      <Mark size={72} />
-      <p class="intro-word">Camm Studios</p>
+  <div class="boot" aria-hidden="true">
+    <div class="boot-lines">
+      {bootLines.map((line) => (
+        <p class="bl">
+          <span>{line.label}</span>
+          <span class="ok">{line.state}</span>
+        </p>
+      ))}
     </div>
   </div>
 
   <SiteNav
     brandName="Camm Studios"
     items={[
-      { label: 'Process', href: '/#process' },
-      { label: 'Instruments', href: '/#instruments' },
-      { label: 'Apps', href: '/#apps' },
+      { label: 'Sequence', href: '/#sequence' },
+      { label: 'Systems', href: '/#systems' },
+      { label: 'Missions', href: '/#missions' },
       { label: 'Support', href: '/support' },
     ]}
-    cta={{ label: 'Our apps', href: '/#apps' }}
+    cta={{ label: 'Our apps', href: '/#missions' }}
+    spy={spy}
   />
 
   <main id="main">
-    <!-- animated hero -->
-    <section class="hero band--night">
+    <!-- 01 · observation window -->
+    <section class="hero band--night" id="window" aria-label="Observation window">
       <div class="hero-bg living" aria-hidden="true">
         <img src={heroBg.src} alt="" class="hero-img" fetchpriority="high" />
         <img src={heroBgB.src} alt="" class="hero-img frame-b" loading="lazy" />
@@ -119,103 +152,96 @@ const marquee = [
             [90, 80, 1.6, 0], [220, 180, 1.2, 1.3], [340, 60, 1.8, 2.1], [470, 140, 1.1, 0.6],
             [610, 90, 1.5, 2.8], [760, 200, 1.2, 1.9], [880, 70, 1.9, 0.4], [1010, 160, 1.3, 2.4],
             [1130, 100, 1.6, 1.1], [1260, 190, 1.2, 3.1], [1370, 80, 1.7, 0.8], [540, 250, 1.1, 3.6],
-            [160, 280, 1.3, 2.6], [960, 280, 1.4, 1.6], [1320, 300, 1.1, 0.2],
           ].map(([x, y, r, d]) => (
             <circle cx={x} cy={y} r={r} fill="#ffffff" style={`animation: twinkle ${3 + (d % 2)}s var(--ease-fluid) ${d}s infinite`} />
           ))}
         </svg>
-        <div class="hero-scrim"></div>
+        <svg class="reticle" viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="70" stroke="rgba(255,255,255,0.35)" stroke-width="1" stroke-dasharray="2 8" fill="none" />
+          <circle cx="100" cy="100" r="3" fill="var(--accent-bright)" />
+          <path d="M100 10 V40 M100 160 V190 M10 100 H40 M160 100 H190" stroke="rgba(255,255,255,0.35)" stroke-width="1" />
+        </svg>
       </div>
-      <div class="shell hero-content" data-parallax="-0.06">
-        <p class="kicker rise" style="--d: 200ms">Camm Studios — independent app studio</p>
-        <h1 class="display-xl hero-title">
-          {heroWords.map((word, i) => (
-            <span class="rise" style={`--d: ${320 + i * 130}ms`}>{word} </span>
-          ))}
-        </h1>
-        <p class="lede rise" style="--d: 780ms">
-          We make small, sharp iOS apps for problems the big studios never notice. One job per app.
-          Done properly.
-        </p>
-        <div class="hero-row rise" style="--d: 920ms">
-          <a class="btn btn--primary" href="/#process">
-            Read our process
-            <span class="btn-arrow" aria-hidden="true">→</span>
-          </a>
-          <p class="mono-note">Bronzed and Stellar, live on the App Store now</p>
+      <div class="shell hero-frame" data-parallax="-0.05">
+        <div class="plate hero-plate">
+          <p class="kicker rise" style="--d: 200ms">
+            <span class="module-id">[ 01 ]</span> Observation window · independent app studio
+          </p>
+          <h1 class="display-xl rise" style="--d: 340ms">The overlooked frontier.</h1>
+          <p class="lede rise" style="--d: 500ms">
+            We make small, sharp iOS apps for problems the big studios never notice. One job per
+            app. Done properly.
+          </p>
+          <div class="hero-row rise" style="--d: 660ms">
+            <a class="btn btn--primary" href="/#sequence">
+              Read our process
+              <span class="btn-arrow" aria-hidden="true">→</span>
+            </a>
+            <a class="btn btn--ghost" href="/#missions">Active missions</a>
+          </div>
         </div>
       </div>
       <div class="marquee hero-marquee" aria-hidden="true">
         <div class="marquee-track">
-          {[...marquee, ...marquee].map((item) => (
+          {[...telemetry, ...telemetry].map((item) => (
             <span class="marquee-item">{item}</span>
           ))}
         </div>
       </div>
     </section>
 
-    <!-- manifesto -->
-    <section class="band" aria-labelledby="manifesto-title">
-      <div class="shell manifesto">
-        <p class="kicker kicker--rule reveal">The idea</p>
-        <h2 id="manifesto-title" class="display-lg ink-fade reveal">
-          Giants need big problems.<br />We take everything<br />they leave behind.
-        </h2>
-        <p class="lede reveal" style="--reveal-delay: 100ms">
-          A tan timer. A nightly journal. Ideas too small for a boardroom, and exactly the right
-          size for one person's day. Millions of people need tools like these, and most of what
-          they get is junk. We think that is a business.
-        </p>
-      </div>
-    </section>
-
-    <!-- process: zigzag trajectory -->
-    <section class="band band--deep process" id="process" aria-labelledby="process-title">
-      <svg class="process-orbit" viewBox="0 0 800 800" aria-hidden="true" data-rotate="26">
-        <circle cx="400" cy="400" r="340" stroke="var(--line-strong)" stroke-width="1.5" stroke-dasharray="4 14" fill="none" />
-        <circle cx="400" cy="400" r="250" stroke="var(--line)" stroke-width="1" stroke-dasharray="3 16" fill="none" />
-        <circle cx="740" cy="400" r="8" fill="var(--accent)" />
-      </svg>
+    <!-- 02 · the brief -->
+    <section class="module band" id="brief" aria-labelledby="brief-title">
       <div class="shell">
-        <p class="kicker kicker--rule reveal">The operating model</p>
-        <h2 id="process-title" class="display-lg reveal">Hunt. Forge.<br />Launch. Operate.</h2>
-        <div class="trajectory">
-          {chapters.map((ch, i) => (
-            <article class={`waypoint reveal ${i % 2 === 1 ? 'waypoint--right' : ''}`}>
-              <p class="waypoint-no" aria-hidden="true">
-                <span class="waypoint-phase">Phase</span>
-                {ch.no}
-              </p>
-              <div class="waypoint-card card">
-                <h3 class="display-md">{ch.title}</h3>
-                <p>{ch.body}</p>
-              </div>
-            </article>
-          ))}
+        <p class="module-head">
+          <span><span class="module-id">[ 02 ]</span> The brief</span>
+          <span>Filed under: why we exist</span>
+        </p>
+        <div class="brief-grid">
+          <h2 id="brief-title" class="display-lg ink-fade reveal">
+            Giants need big problems.<br />We take everything<br />they leave behind.
+          </h2>
+          <div class="brief-note reveal" style="--reveal-delay: 120ms">
+            <p class="lede">
+              A tan timer. A nightly journal. Ideas too small for a boardroom, and exactly the
+              right size for one person's day. Millions of people need tools like these, and most
+              of what they get is junk. We think that is a business.
+            </p>
+            <p class="mono-note">— The founding brief, unchanged since day one</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- craft interlude -->
-    <section class="interlude" aria-hidden="true">
-      <div data-parallax="0.06">
-        <Image
-          src={craftArt}
-          alt=""
-          widths={[640, 1080, 1600, 2400]}
-          sizes="100vw"
-          format="avif"
-          quality={60}
-        />
+    <!-- 03 · mission sequence -->
+    <section class="module band band--deep" id="sequence" aria-labelledby="seq-title">
+      <div class="shell">
+        <p class="module-head">
+          <span><span class="module-id">[ 03 ]</span> Mission sequence</span>
+          <span>Ten days, idea to submission</span>
+        </p>
+        <h2 id="seq-title" class="display-lg reveal">Hunt. Forge.<br />Launch. Operate.</h2>
+        <div class="progressline seq-line" aria-hidden="true"><span></span></div>
+        <ol class="stages">
+          {stages.map((stage, i) => (
+            <li class="stage reveal" style={`--reveal-delay: ${i * 100}ms`}>
+              <p class="stage-no" aria-hidden="true">{stage.no}</p>
+              <h3>{stage.title}</h3>
+              <p class="stage-body">{stage.body}</p>
+            </li>
+          ))}
+        </ol>
       </div>
-      <p class="interlude-caption mono-note shell">Fig. 02 — Tend the small things.</p>
     </section>
 
-    <!-- instruments -->
-    <section class="band band--night" id="instruments" aria-labelledby="instruments-title">
+    <!-- 04 · systems -->
+    <section class="module band band--night" id="systems" aria-labelledby="systems-title">
       <div class="shell">
-        <p class="kicker kicker--rule reveal">AI-native, human-judged</p>
-        <h2 id="instruments-title" class="display-lg ink-fade--night reveal">
+        <p class="module-head">
+          <span><span class="module-id">[ 04 ]</span> Systems</span>
+          <span><span class="online-dot"></span> All online</span>
+        </p>
+        <h2 id="systems-title" class="display-lg ink-fade--night reveal">
           Proprietary instruments.
         </h2>
         <p class="lede reveal" style="--reveal-delay: 100ms">
@@ -242,45 +268,89 @@ const marquee = [
       </div>
     </section>
 
-    <!-- portfolio panels -->
-    <section id="apps" aria-labelledby="apps-title">
-      <h2 id="apps-title" class="visually-hidden">Our apps</h2>
-      {apps.map((app, i) => (
-        <article class={`panel panel--${app.id}`}>
-          <div class="shell panel-inner">
-            <div class={`panel-copy reveal ${i % 2 === 1 ? 'panel-copy--right' : ''}`}>
-              <div class="panel-head">
-                <Image src={icons[app.id]} alt={`${app.name} app icon`} width={64} height={64} class="panel-icon" />
-                <p class="kicker">{app.genres.join(' · ')} — iOS {app.minimumOs}+</p>
-              </div>
-              <h3 class="display-lg">{app.tagline}</h3>
-              <p class="panel-desc">{app.oneLiner}</p>
-              <div class="panel-actions">
-                <a class="btn btn--primary" href={app.site} rel="noopener">
-                  Visit {app.name}
-                  <span class="btn-arrow" aria-hidden="true">→</span>
-                </a>
-                <a class="btn btn--ghost" href={app.appStoreUrl} rel="noopener">App Store</a>
-              </div>
-            </div>
-          </div>
-          <div class="panel-art" data-parallax="0.05">
+    <!-- 05 · observation -->
+    <section class="module band" aria-label="Observation: the greenhouse">
+      <div class="shell">
+        <p class="module-head">
+          <span><span class="module-id">[ 05 ]</span> Observation</span>
+          <span>Greenhouse 02 · tend the small things</span>
+        </p>
+        <div class="window obs-window reveal">
+          <span class="wtick"></span>
+          <div data-parallax="0.06">
             <Image
-              src={panelArt[app.id]}
-              alt=""
+              src={craftArt}
+              alt="A small robot gardener pruning a glowing tree inside a glass dome at night"
               widths={[640, 1080, 1600, 2400]}
               sizes="100vw"
               format="avif"
-              quality={58}
+              quality={60}
             />
           </div>
-        </article>
-      ))}
+        </div>
+      </div>
     </section>
 
-    <!-- tagline moment -->
-    <section class="band band--deep" aria-label="Studio motto">
+    <!-- 06 · active missions -->
+    <section class="module band" id="missions" aria-labelledby="missions-title">
       <div class="shell">
+        <p class="module-head">
+          <span><span class="module-id">[ 06 ]</span> Active missions</span>
+          <span>02 in orbit</span>
+        </p>
+        <h2 id="missions-title" class="visually-hidden">Our apps</h2>
+        <div class="missions">
+          {apps.map((app, i) => (
+            <article class={`mission ${i % 2 === 1 ? 'mission--flip' : ''}`}>
+              <div class="window mission-window reveal">
+                <span class="wtick"></span>
+                <div data-parallax="0.045">
+                  <Image
+                    src={missionArt[app.id]}
+                    alt=""
+                    widths={[640, 1080, 1600]}
+                    sizes="(min-width: 900px) 58vw, 100vw"
+                    format="avif"
+                    quality={58}
+                  />
+                </div>
+              </div>
+              <div class="mission-panel reveal" style="--reveal-delay: 120ms">
+                <div class="mission-head">
+                  <Image src={icons[app.id]} alt={`${app.name} app icon`} width={56} height={56} class="mission-icon" />
+                  <p class="mono-note">Designation: {app.name.toUpperCase()}</p>
+                </div>
+                <h3 class="display-md">{app.tagline}</h3>
+                <p class="mission-desc">{app.oneLiner}</p>
+                <dl class="data-list">
+                  {missionData[app.id].map(([k, v]) => (
+                    <div>
+                      <dt>{k}</dt>
+                      <dd>{v}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <div class="mission-actions">
+                  <a class="btn btn--primary" href={app.site} rel="noopener">
+                    Visit {app.name}
+                    <span class="btn-arrow" aria-hidden="true">→</span>
+                  </a>
+                  <a class="btn btn--ghost" href={app.appStoreUrl} rel="noopener">App Store</a>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 · transmission -->
+    <section class="module band band--deep" aria-label="Studio motto">
+      <div class="shell">
+        <p class="module-head">
+          <span><span class="module-id">[ 07 ]</span> Transmission</span>
+          <span>Repeats on every frequency</span>
+        </p>
         <WordReveal class="display-lg motto" text="Small apps. Clear purpose. Built to get better." />
       </div>
     </section>
@@ -292,8 +362,8 @@ const marquee = [
       {
         title: 'Studio',
         links: [
-          { label: 'Process', href: '/#process' },
-          { label: 'Instruments', href: '/#instruments' },
+          { label: 'Sequence', href: '/#sequence' },
+          { label: 'Systems', href: '/#systems' },
           { label: 'Support', href: '/support' },
         ],
       },
@@ -317,42 +387,12 @@ const marquee = [
     clip-path: inset(50%);
   }
 
-  /* intro — once per session, skipped for reduced motion */
-  .intro {
-    position: fixed;
-    inset: 0;
-    z-index: 300;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--paper);
-    transition: transform 900ms var(--ease-fluid), visibility 0s linear 900ms;
-  }
-  .intro-inner { display: grid; justify-items: center; gap: var(--sp-300); }
-  .intro-inner :global(svg),
-  .intro-word {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 700ms var(--ease-fluid), transform 700ms var(--ease-fluid);
-  }
-  .intro-word {
-    font-size: var(--text-2xl);
-    line-height: var(--lh-2xl);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    transition-delay: 250ms;
-  }
-  html.intro-play .intro-inner :global(svg),
-  html.intro-play .intro-word { opacity: 1; transform: translateY(0); }
-  html.intro-done .intro { transform: translateY(-100%); visibility: hidden; }
-  html.intro-off .intro { display: none; }
-
-  /* hero */
+  /* 01 · observation window */
   .hero {
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-end;
     min-height: 100svh;
     overflow: clip;
   }
@@ -365,99 +405,79 @@ const marquee = [
     animation: drift-pan 44s var(--ease-fluid) infinite alternate;
   }
   .stars { position: absolute; inset: 0 0 auto 0; width: 100%; height: 60%; }
-  .hero-scrim { position: absolute; inset: 0; }
-  .hero-content {
+  .reticle {
+    position: absolute;
+    top: 16%;
+    right: 12%;
+    width: 180px;
+    height: 180px;
+    animation: float-y 9s var(--ease-fluid) infinite;
+  }
+  .hero-frame {
     position: relative;
+    padding-bottom: var(--sp-500);
+    display: grid;
+    justify-items: start;
+  }
+  .hero-plate {
+    max-width: 620px;
     display: grid;
     gap: var(--sp-300);
     justify-items: start;
-    padding-top: calc(var(--sp-900) + var(--sp-500));
-    padding-bottom: var(--sp-900);
   }
-  .hero-scrim {
-    background: linear-gradient(180deg, color-mix(in srgb, var(--night) 52%, transparent) 0%, transparent 55%);
+  .hero-plate .kicker { color: var(--night-soft); }
+  .hero-plate h1 { color: var(--night-text); }
+  .hero-plate .lede { color: color-mix(in srgb, var(--night-text) 88%, transparent); }
+  .hero-row { display: flex; flex-wrap: wrap; gap: var(--sp-200); }
+  .hero-marquee { position: relative; color: var(--night-soft); background: color-mix(in srgb, var(--night) 70%, transparent); }
+
+  /* 02 · brief */
+  .brief-grid { display: grid; gap: var(--sp-500); padding-block: var(--sp-600) var(--sp-400); }
+  @media (min-width: 900px) {
+    .brief-grid { grid-template-columns: 7fr 5fr; gap: var(--sp-800); align-items: end; }
   }
-  .hero-title { max-width: 680px; color: var(--night-text); }
-  .hero .kicker { color: color-mix(in srgb, var(--night-text) 80%, transparent); }
-  .hero .lede { color: color-mix(in srgb, var(--night-text) 90%, transparent); }
-  .hero-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-300); }
-  .hero .mono-note { color: color-mix(in srgb, var(--night-text) 70%, transparent); }
-  .hero-marquee { position: relative; color: var(--night-soft); }
+  .brief-note { display: grid; gap: var(--sp-300); max-width: 480px; }
 
-  /* manifesto */
-  .manifesto { display: grid; gap: var(--sp-300); }
-  .manifesto .lede { max-width: 620px; }
-
-  /* process */
-  .process { position: relative; overflow: clip; }
-  .process-orbit {
-    position: absolute;
-    top: -140px;
-    right: -260px;
-    width: 700px;
-    height: 700px;
-    opacity: 0.7;
-    pointer-events: none;
-  }
-  .process .shell { position: relative; }
-
-  /* trajectory */
-  .trajectory {
-    margin-top: var(--sp-700);
+  /* 03 · sequence */
+  #sequence h2 { margin-block: var(--sp-400) var(--sp-600); }
+  .seq-line { margin-bottom: var(--sp-500); }
+  .stages {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: grid;
     gap: var(--sp-500);
-    position: relative;
   }
   @media (min-width: 900px) {
-    .trajectory {
-      gap: var(--sp-700);
-      background-image: linear-gradient(var(--line-strong) 33%, transparent 0);
-      background-size: 1px 12px;
-      background-repeat: repeat-y;
-      background-position: 50% 0;
-    }
+    .stages { grid-template-columns: repeat(4, 1fr); gap: var(--sp-400); }
   }
-  .waypoint {
-    position: relative;
-    display: grid;
-    gap: var(--sp-100);
-  }
-  @media (min-width: 900px) {
-    .waypoint { width: calc(50% - var(--sp-500)); }
-    .waypoint--right { justify-self: end; }
-  }
-  .waypoint-no {
+  .stage { display: grid; gap: var(--sp-200); align-content: start; }
+  .stage-no {
     font-family: var(--font-mono);
     font-size: var(--text-5xl);
     line-height: 1;
     color: var(--accent);
-    display: flex;
-    align-items: baseline;
-    gap: var(--sp-100);
   }
-  .waypoint-phase {
-    font-size: var(--text-xs);
-    line-height: var(--lh-xs);
+  .stage h3 {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: var(--lh-sm);
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--ink-faint);
   }
-  .waypoint-card {
-    padding: var(--sp-400);
-    display: grid;
-    gap: var(--sp-200);
+  .stage-body { color: var(--ink-soft); }
+
+  /* 04 · systems */
+  #systems h2 { margin-top: var(--sp-400); }
+  #systems .lede { margin-top: var(--sp-300); }
+  .online-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: #79b979;
+    animation: twinkle 2.6s var(--ease-fluid) infinite;
   }
-  .waypoint-card p { color: var(--ink-soft); }
-
-  /* interlude */
-  .interlude { overflow: clip; position: relative; }
-  .interlude :global(img) { width: 100%; height: auto; }
-  .interlude-caption { padding-block: var(--sp-100); }
-
-  /* instruments band */
-  #instruments h2 { margin-top: var(--sp-300); }
-  #instruments .lede { margin-top: var(--sp-300); }
-
   .dials {
     list-style: none;
     margin: var(--sp-700) 0 0;
@@ -478,41 +498,23 @@ const marquee = [
     color: var(--night-text);
   }
 
-  /* portfolio panels */
-  .panel { overflow: clip; }
-  .panel--bronzed { background: var(--paper-deep); }
-  .panel--stellar { background: var(--night); color: var(--night-text); }
-  .panel-inner { padding-block: var(--sp-800) 0; }
-  .panel-copy { display: grid; gap: var(--sp-300); justify-items: start; max-width: 560px; }
+  /* 05 · observation */
+  .obs-window :global(img) { width: 100%; height: auto; display: block; }
+
+  /* 06 · missions */
+  .missions { display: grid; gap: var(--sp-800); padding-block: var(--sp-400); }
+  .mission { display: grid; gap: var(--sp-400); align-items: center; }
   @media (min-width: 900px) {
-    .panel-copy--right { justify-self: end; }
+    .mission { grid-template-columns: 7fr 5fr; gap: var(--sp-600); }
+    .mission--flip .mission-window { order: 2; }
+    .mission--flip .mission-panel { order: 1; }
   }
-  .panel-head { display: flex; align-items: center; gap: var(--sp-200); }
-  .panel-icon { border-radius: 14px; }
-  .panel--bronzed h3 { color: var(--ink); }
-  .panel--stellar h3 { color: var(--night-text); }
-  .panel-desc { font-size: var(--text-lg); line-height: var(--lh-lg); color: var(--ink-soft); max-width: 460px; }
-  .panel--stellar .panel-desc { color: var(--night-soft); }
-  .panel--stellar .kicker { color: var(--night-soft); }
-  .panel-actions { display: flex; flex-wrap: wrap; gap: var(--sp-200); }
-  .panel--stellar .btn--primary { background: var(--paper); color: var(--ink); }
-  .panel--stellar .btn--ghost { border-color: var(--night-line); color: var(--night-text); }
-  .panel-art { margin-top: var(--sp-600); }
-  .panel-art :global(img) { width: 100%; height: auto; display: block; }
+  .mission-window :global(img) { width: 100%; height: auto; display: block; }
+  .mission-panel { display: grid; gap: var(--sp-300); align-content: start; }
+  .mission-head { display: flex; align-items: center; gap: var(--sp-200); }
+  .mission-icon { border-radius: 12px; }
+  .mission-desc { color: var(--ink-soft); max-width: 440px; }
+  .mission-actions { display: flex; flex-wrap: wrap; gap: var(--sp-200); }
 
-  .motto { max-width: 680px; }
+  .motto { max-width: 680px; margin-block: var(--sp-400); }
 </style>
-
-<script>
-  // Once-per-session intro. Never blocks reduced-motion users or return visits.
-  const html = document.documentElement;
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const seen = sessionStorage.getItem('cs-intro') === '1';
-  if (reduced || seen) {
-    html.classList.add('intro-off');
-  } else {
-    sessionStorage.setItem('cs-intro', '1');
-    requestAnimationFrame(() => html.classList.add('intro-play'));
-    window.setTimeout(() => html.classList.add('intro-done'), 1900);
-  }
-</script>

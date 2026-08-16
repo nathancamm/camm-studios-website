@@ -17,12 +17,12 @@ const { title, description, jsonld, noindex } = Astro.props;
   <SiteNav
     brandName="Camm Studios"
     items={[
-      { label: 'Process', href: '/#process' },
-      { label: 'Instruments', href: '/#instruments' },
-      { label: 'Apps', href: '/#apps' },
+      { label: 'Sequence', href: '/#sequence' },
+      { label: 'Systems', href: '/#systems' },
+      { label: 'Missions', href: '/#missions' },
       { label: 'Support', href: '/support' },
     ]}
-    cta={{ label: 'Our apps', href: '/#apps' }}
+    cta={{ label: 'Our apps', href: '/#missions' }}
   />
   <main id="main" class="subpage">
     <slot />
@@ -33,7 +33,7 @@ const { title, description, jsonld, noindex } = Astro.props;
       {
         title: 'Studio',
         links: [
-          { label: 'Process', href: '/#process' },
+          { label: 'Sequence', href: '/#sequence' },
           { label: 'Support', href: '/support' },
         ],
       },

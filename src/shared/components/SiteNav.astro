@@ -1,44 +1,55 @@
 ---
+/**
+ * CAMM OS chrome: a fixed dark status bar, a mobile overlay menu, and an
+ * optional left instrument rail that tracks sections while scrolling.
+ */
 import Mark from '@shared/components/Mark.astro';
 
 interface NavItem {
   label: string;
   href: string;
 }
+interface SpyItem {
+  id: string;
+  label: string;
+}
 interface Props {
   brandName: string;
   brandHref?: string;
-  /** small square brand image (app icon); the company mark renders when absent */
-  brandIcon?: string;
   items: NavItem[];
   cta?: NavItem;
+  status?: string;
+  spy?: SpyItem[];
 }
 
-const { brandName, brandHref = '/', brandIcon, items, cta } = Astro.props;
+const { brandName, brandHref = '/', items, cta, status = 'All systems nominal', spy = [] } =
+  Astro.props;
 const path = Astro.url.pathname.replace(/\.html$/, '') || '/';
 const isCurrent = (href: string): boolean => {
-  if (href.startsWith('/#') || href.startsWith('#')) return false;
+  if (href.includes('#')) return false;
   const clean = href.replace(/\.html$/, '');
   return clean === '/' ? path === '/' : path.startsWith(clean);
 };
 ---
 
-<header class="nav-shell">
-  <nav class="island" aria-label="Main">
-    <a class="brand" href={brandHref}>
-      {brandIcon ? <img src={brandIcon} alt="" width="26" height="26" class="brand-icon" /> : <Mark size={26} />}
-      <span>{brandName}</span>
-    </a>
-    <ul class="links">
-      {items.map((item) => (
-        <li>
-          <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
-            {item.label}
-          </a>
-        </li>
-      ))}
-    </ul>
-    {cta && <a class="btn btn--primary btn--sm cta" href={cta.href}>{cta.label}</a>}
+<header class="osbar">
+  <a class="brand" href={brandHref}>
+    <Mark size={20} tone="paper" />
+    <span class="brand-name">{brandName}</span>
+  </a>
+  <nav class="links" aria-label="Main">
+    {items.map((item) => (
+      <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+        {item.label}
+      </a>
+    ))}
+  </nav>
+  <div class="right">
+    <p class="status mono-note" aria-hidden="true">
+      <span class="status-dot"></span>
+      {status}
+    </p>
+    {cta && <a class="cta" href={cta.href} rel={cta.href.startsWith('http') ? 'noopener' : undefined}>{cta.label}</a>}
     <button
       class="burger"
       type="button"
@@ -50,8 +61,19 @@ const isCurrent = (href: string): boolean => {
       <span class="burger-line burger-line--a"></span>
       <span class="burger-line burger-line--b"></span>
     </button>
-  </nav>
+  </div>
 </header>
+
+{spy.length > 0 && (
+  <nav class="rail" aria-label="Sections">
+    {spy.map((s, i) => (
+      <a href={`#${s.id}`} data-spy-link={s.id}>
+        <span class="rail-no">{String(i + 1).padStart(2, '0')}</span>
+        <span class="rail-label">{s.label}</span>
+      </a>
+    ))}
+  </nav>
+)}
 
 <div class="overlay" id="nav-overlay" data-nav-overlay inert>
   <ul class="overlay-links">
@@ -69,71 +91,83 @@ const isCurrent = (href: string): boolean => {
 </div>
 
 <style>
-  .nav-shell {
+  .osbar {
     position: fixed;
     inset: 0 0 auto 0;
     z-index: 100;
     display: flex;
-    justify-content: center;
-    padding-top: var(--sp-300);
-    pointer-events: none;
-  }
-  .island {
-    pointer-events: auto;
-    display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: var(--sp-300);
-    width: max-content;
-    max-width: calc(100vw - var(--sp-400));
-    padding: var(--sp-75) var(--sp-100);
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--paper-raised) 78%, transparent);
-    border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    transition: box-shadow 700ms var(--ease-fluid);
+    height: 52px;
+    padding-inline: var(--sp-300);
+    background: color-mix(in srgb, var(--night) 88%, transparent);
+    border-bottom: 1px solid var(--night-line);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    color: var(--night-text);
   }
   .brand {
     display: flex;
     align-items: center;
-    gap: var(--sp-75);
-    padding-left: var(--sp-75);
-    font-weight: 700;
+    gap: var(--sp-100);
+    text-decoration: none;
+    color: var(--night-text);
+  }
+  .brand-name {
+    font-family: var(--font-mono);
     font-size: var(--text-sm);
     line-height: var(--lh-sm);
-    letter-spacing: -0.01em;
-    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
     white-space: nowrap;
   }
-  .brand-icon { border-radius: 6px; }
-  .links {
-    display: none;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    gap: var(--sp-50);
-  }
+  .links { display: none; gap: var(--sp-50); }
   .links a {
-    display: inline-block;
     padding: var(--sp-50) var(--sp-100);
-    border-radius: 999px;
-    font-size: var(--text-sm);
-    line-height: var(--lh-sm);
-    font-weight: 600;
-    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: var(--lh-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     text-decoration: none;
-    transition: background-color 700ms var(--ease-fluid), color 700ms var(--ease-fluid);
+    color: var(--night-soft);
+    border: 1px solid transparent;
+    transition: color 700ms var(--ease-fluid), border-color 700ms var(--ease-fluid);
   }
-  .links a:hover { color: var(--ink); background: var(--paper-deep); }
-  .links a[aria-current='page'] { color: var(--ink); background: var(--paper-deep); }
-  .cta { display: none; }
+  .links a:hover { color: var(--night-text); border-color: var(--night-line); }
+  .links a[aria-current='page'] { color: var(--night-text); border-color: var(--night-line); }
+  .right { display: flex; align-items: center; gap: var(--sp-300); }
+  .status { display: none; align-items: center; gap: var(--sp-75); letter-spacing: 0.12em; text-transform: uppercase; }
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: #79b979;
+    animation: twinkle 2.6s var(--ease-fluid) infinite;
+  }
+  .cta {
+    display: none;
+    padding: var(--sp-50) var(--sp-200);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: var(--lh-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--paper);
+    transition: background-color 700ms var(--ease-fluid), transform 700ms var(--ease-fluid);
+  }
+  .cta:hover { background: #ffffff; transform: translateY(-1px); }
+  .cta:active { transform: translateY(1px) scale(0.98); }
 
   .burger {
     position: relative;
     width: 38px;
     height: 38px;
     border: 0;
-    border-radius: 999px;
     background: transparent;
     cursor: pointer;
   }
@@ -142,23 +176,56 @@ const isCurrent = (href: string): boolean => {
     left: 9px;
     width: 20px;
     height: 2px;
-    background: var(--ink);
+    background: var(--night-text);
     border-radius: 2px;
     transition: transform 700ms var(--ease-fluid);
   }
   .burger-line--a { top: 15px; }
   .burger-line--b { top: 21px; }
 
+  .rail {
+    position: fixed;
+    left: var(--sp-300);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 90;
+    display: none;
+    flex-direction: column;
+    gap: var(--sp-200);
+  }
+  .rail a {
+    display: flex;
+    align-items: baseline;
+    gap: var(--sp-75);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: var(--lh-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    transition: color 700ms var(--ease-fluid);
+  }
+  .rail a:hover { color: var(--ink); }
+  .rail .rail-label {
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity 700ms var(--ease-fluid), transform 700ms var(--ease-fluid);
+  }
+  .rail a:hover .rail-label,
+  .rail a.is-current .rail-label { opacity: 1; transform: translateX(0); }
+  .rail a.is-current { color: var(--accent); }
+
   .overlay {
     position: fixed;
     inset: 0;
-    z-index: 90;
+    z-index: 95;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: color-mix(in srgb, var(--paper) 82%, transparent);
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
+    background: color-mix(in srgb, var(--night) 88%, transparent);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
     opacity: 0;
     visibility: hidden;
     transition: opacity 700ms var(--ease-fluid), visibility 0s linear 700ms;
@@ -178,19 +245,25 @@ const isCurrent = (href: string): boolean => {
     transition-delay: calc(100ms + var(--i) * 60ms);
   }
   .overlay-links a {
-    font-size: var(--text-3xl);
-    line-height: var(--lh-3xl);
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-family: var(--font-mono);
+    font-size: var(--text-2xl);
+    line-height: var(--lh-2xl);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
     text-decoration: none;
+    color: var(--night-text);
   }
-  .overlay-links a:hover { color: var(--accent); }
+  .overlay-links a:hover { color: var(--accent-bright); }
 
   @media (min-width: 900px) {
     .links { display: flex; }
-    .cta { display: inline-flex; }
+    .cta { display: inline-block; }
+    .status { display: flex; }
     .burger { display: none; }
     .overlay { display: none; }
+  }
+  @media (min-width: 1280px) {
+    .rail { display: flex; }
   }
 </style>
 

@@ -162,6 +162,84 @@ function initCounters(): void {
   els.forEach((el) => io.observe(el));
 }
 
+/* -- rail scrollspy --------------------------------------------------- */
+
+function initSpy(): void {
+  const links = document.querySelectorAll<HTMLAnchorElement>('[data-spy-link]');
+  if (!links.length) return;
+  const byId = new Map<string, HTMLAnchorElement>();
+  links.forEach((link) => byId.set(link.dataset.spyLink ?? '', link));
+  const sections = Array.from(byId.keys())
+    .map((id) => document.getElementById(id))
+    .filter((el): el is HTMLElement => el !== null);
+  if (!sections.length) return;
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          links.forEach((link) => link.classList.remove('is-current'));
+          byId.get(entry.target.id)?.classList.add('is-current');
+        }
+      }
+    },
+    { rootMargin: '-30% 0px -60% 0px' },
+  );
+  sections.forEach((section) => io.observe(section));
+}
+
+/* -- mission sequence progress line ----------------------------------- */
+
+function initProgressLines(): void {
+  const lines = document.querySelectorAll<HTMLElement>('.progressline > span');
+  if (!lines.length) return;
+  if (reduced) {
+    lines.forEach((line) => (line.style.transform = 'scaleX(1)'));
+    return;
+  }
+  let ticking = false;
+  const update = (): void => {
+    ticking = false;
+    const vh = window.innerHeight;
+    for (const line of lines) {
+      const rect = (line.parentElement as HTMLElement).getBoundingClientRect();
+      const t = Math.min(1, Math.max(0, (vh * 0.85 - rect.top) / (vh * 0.7)));
+      line.style.transform = `scaleX(${t.toFixed(3)})`;
+    }
+  };
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    },
+    { passive: true },
+  );
+  update();
+}
+
+/* -- boot sequence ----------------------------------------------------- */
+
+function initBoot(): void {
+  const boot = document.querySelector<HTMLElement>('.boot');
+  if (!boot) return;
+  const html = document.documentElement;
+  const seen = sessionStorage.getItem('cs-boot') === '1';
+  if (reduced || seen) {
+    html.classList.add('boot-off');
+    return;
+  }
+  sessionStorage.setItem('cs-boot', '1');
+  const lines = boot.querySelectorAll<HTMLElement>('.bl');
+  lines.forEach((line, i) => {
+    line.style.transitionDelay = `${120 + i * 160}ms`;
+  });
+  requestAnimationFrame(() => html.classList.add('boot-play'));
+  window.setTimeout(() => html.classList.add('boot-done'), 400 + lines.length * 160 + 700);
+}
+
 /* -- fluid island nav ----------------------------------------------- */
 
 function initNav(): void {
@@ -191,4 +269,7 @@ initReveals();
 initWordReveals();
 initScrollMotion();
 initCounters();
+initSpy();
+initProgressLines();
+initBoot();
 initNav();

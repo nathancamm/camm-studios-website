@@ -86,6 +86,13 @@ const faqs = [
     gap: var(--sp-200);
     align-content: start;
     justify-items: start;
+    min-width: 0;
+  }
+  .pad :global(.btn) {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: left;
   }
   .pad h2 { font-size: var(--text-xl); line-height: var(--lh-xl); }
   .pad p { color: var(--ink-soft); }

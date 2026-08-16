@@ -155,6 +155,138 @@ button { font: inherit; }
 .band--deep { background: var(--paper-deep); }
 
 /* ------------------------------------------------------------------ */
+/* CAMM OS chrome: modules, windows, plates, data readouts             */
+/* ------------------------------------------------------------------ */
+
+.module {
+  position: relative;
+  border-top: 1px solid var(--line);
+}
+.band--night.module { border-top-color: var(--night-line); }
+
+.module-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-300);
+  padding-block: var(--sp-200);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: var(--lh-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.band--night .module-head { color: var(--night-soft); }
+.module-id { color: var(--accent); }
+.band--night .module-id { color: var(--accent-bright); }
+
+/* framed viewport with corner ticks */
+.window {
+  position: relative;
+  border: 1px solid var(--line-strong);
+  overflow: clip;
+}
+.band--night .window { border-color: var(--night-line); }
+.window::before,
+.window::after,
+.window .wtick::before,
+.window .wtick::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--accent);
+  z-index: 3;
+}
+.window::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.window::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+.window .wtick::before { top: -1px; right: -1px; border-left: 0; border-bottom: 0; }
+.window .wtick::after { bottom: -1px; left: -1px; border-right: 0; border-top: 0; }
+
+/* dark glass text plate for copy over artwork */
+.plate {
+  background: color-mix(in srgb, var(--night) 72%, transparent);
+  border: 1px solid var(--night-line);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--night-text);
+  padding: var(--sp-400);
+}
+
+/* mono key/value readout rows */
+.data-list {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: var(--lh-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.data-list > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-300);
+  padding-block: var(--sp-100);
+  border-top: 1px solid var(--line);
+}
+.band--night .data-list > div,
+.plate .data-list > div { border-top-color: var(--night-line); }
+.data-list dt { color: var(--ink-faint); }
+.band--night .data-list dt, .plate .data-list dt { color: var(--night-soft); }
+.data-list dd { margin: 0; color: var(--ink); text-align: right; }
+.band--night .data-list dd, .plate .data-list dd { color: var(--night-text); }
+
+/* boot sequence overlay */
+.boot {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--night);
+  color: var(--night-text);
+  transition: transform 800ms var(--ease-fluid), visibility 0s linear 800ms;
+}
+.boot-lines {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: grid;
+  gap: var(--sp-100);
+  min-width: 300px;
+}
+.boot-lines .bl {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-500);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 400ms var(--ease-fluid), transform 400ms var(--ease-fluid);
+}
+.boot-lines .bl .ok { color: #79b979; }
+html.boot-play .boot-lines .bl { opacity: 1; transform: translateY(0); }
+html.boot-done .boot { transform: translateY(-100%); visibility: hidden; }
+html.boot-off .boot { display: none; }
+
+/* mission sequence progress line */
+.progressline {
+  position: relative;
+  height: 2px;
+  background: var(--line);
+}
+.progressline > span {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* ------------------------------------------------------------------ */
 /* typography helpers                                                  */
 /* ------------------------------------------------------------------ */
 
@@ -248,12 +380,15 @@ button { font: inherit; }
   display: inline-flex;
   align-items: center;
   gap: var(--sp-75);
-  padding: var(--sp-75) var(--sp-100);
-  border-radius: 999px;
+  padding: var(--sp-100) var(--sp-100);
+  border-radius: 2px;
   border: 1px solid transparent;
-  font-size: var(--text-base);
-  line-height: var(--lh-base);
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
   transition: transform 700ms var(--ease-fluid), background-color 700ms var(--ease-fluid),

@@ -11,8 +11,9 @@ interface Props {
   description: string;
   jsonld?: object[];
   noindex?: boolean;
+  spy?: { id: string; label: string }[];
 }
-const { app, title, description, jsonld = [], noindex } = Astro.props;
+const { app, title, description, jsonld = [], noindex, spy = [] } = Astro.props;
 
 const appJsonld = {
   '@context': 'https://schema.org',
@@ -36,7 +37,6 @@ const appJsonld = {
 >
   <SiteNav
     brandName={app.name}
-    brandIcon="/favicon-64.png"
     items={[
       { label: 'Features', href: '/#features' },
       { label: 'FAQ', href: '/#faq' },
@@ -44,6 +44,8 @@ const appJsonld = {
       { label: 'Support', href: '/support' },
     ]}
     cta={{ label: 'App Store', href: app.appStoreUrl }}
+    status={`Mission: ${app.name}`}
+    spy={spy}
   />
   <slot />
   <SiteFooter
@@ -62,7 +64,7 @@ const appJsonld = {
         title: 'Studio',
         links: [
           { label: 'Camm Studios', href: company.site },
-          { label: 'Our process', href: `${company.site}/#process` },
+          { label: 'Our process', href: `${company.site}/#sequence` },
         ],
       },
       {

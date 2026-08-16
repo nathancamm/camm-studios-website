@@ -95,10 +95,17 @@ const faqs = [
   app={stellar}
   title="Stellar — Daily affirmations, 369 journal & vision board"
   description="Daily affirmations, a guided 369 manifestation journal, and a private vision board in one calm space. Free on the App Store."
+  spy={[
+    { id: 'window', label: 'Window' },
+    { id: 'features', label: 'Features' },
+    { id: 'how', label: 'Sequence' },
+    { id: 'privacy', label: 'Privacy' },
+    { id: 'faq', label: 'FAQ' },
+  ]}
 >
   <main id="main">
     <!-- hero -->
-    <section class="hero band--night">
+    <section class="hero band--night" id="window">
       <div class="hero-bg living" aria-hidden="true">
         <img src={heroBg.src} alt="" class="hero-bg-img" fetchpriority="high" />
         <img src={heroBgB.src} alt="" class="hero-bg-img frame-b" loading="lazy" />
@@ -114,8 +121,10 @@ const faqs = [
         ))}
       </svg>
       <div class="shell hero-inner">
-        <div class="hero-copy">
-          <p class="kicker rise" style="--d: 150ms">Stellar — Daily affirmations</p>
+        <div class="plate hero-copy">
+          <p class="kicker rise" style="--d: 150ms">
+            <span class="module-id">[ 01 ]</span> Mission: Stellar · daily affirmations
+          </p>
           <h1 class="display-xl ink-fade--night">
             <span class="rise" style="--d: 280ms">Speak it.</span><br />
             <span class="rise" style="--d: 420ms">Write it. See it.</span>
@@ -126,7 +135,11 @@ const faqs = [
           </p>
           <div class="hero-cta rise" style="--d: 720ms">
             <AppStoreBadge href={stellar.appStoreUrl} tone="paper" />
-            <p class="mono-note">iOS {stellar.minimumOs}+ · Your words never leave your phone</p>
+            <dl class="data-list hero-data">
+              <div><dt>Price</dt><dd>Free</dd></div>
+              <div><dt>Requires</dt><dd>iOS {stellar.minimumOs}+</dd></div>
+              <div><dt>Journal</dt><dd>On device · private</dd></div>
+            </dl>
           </div>
         </div>
         <div class="hero-shot rise" style="--d: 860ms">
@@ -147,9 +160,12 @@ const faqs = [
     </section>
 
     <!-- features -->
-    <section class="band" id="features" aria-labelledby="features-title">
+    <section class="band module" id="features" aria-labelledby="features-title">
       <div class="shell">
-        <p class="kicker kicker--rule reveal">What it does</p>
+        <p class="module-head">
+          <span><span class="module-id">[ 02 ]</span> Capabilities</span>
+          <span>Five systems, one ritual</span>
+        </p>
         <h2 id="features-title" class="display-lg reveal">
           A ritual,<br />not another feed.
         </h2>
@@ -182,9 +198,12 @@ const faqs = [
     </section>
 
     <!-- how it works -->
-    <section class="band band--deep" aria-labelledby="how-title">
+    <section class="band band--deep module" id="how" aria-labelledby="how-title">
       <div class="shell">
-        <p class="kicker kicker--rule reveal">How it works</p>
+        <p class="module-head">
+          <span><span class="module-id">[ 03 ]</span> Sequence</span>
+          <span>3 · 6 · 9</span>
+        </p>
         <h2 id="how-title" class="display-lg reveal">One sentence, three moments.</h2>
         <ol class="steps">
           {[
@@ -212,8 +231,12 @@ const faqs = [
     </section>
 
     <!-- tagline moment -->
-    <section class="band" aria-label="Why Stellar exists">
+    <section class="band module" aria-label="Why Stellar exists">
       <div class="shell">
+        <p class="module-head">
+          <span><span class="module-id">[ 04 ]</span> Field note</span>
+          <span>On attention</span>
+        </p>
         <WordReveal
           class="display-lg motto"
           text="You already talk to yourself all day. Stellar makes it deliberate."
@@ -222,9 +245,12 @@ const faqs = [
     </section>
 
     <!-- privacy -->
-    <section class="band band--night" aria-labelledby="privacy-title">
+    <section class="band band--night module" id="privacy" aria-labelledby="privacy-title">
       <div class="shell">
-        <p class="kicker kicker--rule reveal">Private by design</p>
+        <p class="module-head">
+          <span><span class="module-id">[ 05 ]</span> Privacy</span>
+          <span>On device · sealed</span>
+        </p>
         <h2 id="privacy-title" class="display-lg ink-fade--night reveal">
           Your words stay yours.
         </h2>
@@ -256,9 +282,12 @@ const faqs = [
     </section>
 
     <!-- faq -->
-    <section class="band" id="faq" aria-labelledby="faq-title">
+    <section class="band module" id="faq" aria-labelledby="faq-title">
       <div class="shell faq-shell">
-        <p class="kicker kicker--rule reveal">Questions</p>
+        <p class="module-head">
+          <span><span class="module-id">[ 06 ]</span> Questions</span>
+          <span>Seven, answered straight</span>
+        </p>
         <h2 id="faq-title" class="display-lg reveal">Before you ask</h2>
         <Faq items={faqs} />
       </div>
@@ -266,9 +295,12 @@ const faqs = [
 
     <!-- blog preview -->
     {posts.length > 0 && (
-      <section class="band band--deep" aria-labelledby="blog-title">
+      <section class="band band--deep module" aria-labelledby="blog-title">
         <div class="shell">
-          <p class="kicker kicker--rule reveal">From the blog</p>
+          <p class="module-head">
+            <span><span class="module-id">[ 07 ]</span> Log</span>
+            <span>Latest entry</span>
+          </p>
           <h2 id="blog-title" class="display-lg reveal">The practice, explained.</h2>
           <div class="blog-grid">
             {posts.map((post) => (
@@ -297,7 +329,13 @@ const faqs = [
     )}
 
     <!-- final CTA -->
-    <section class="band band--night cta-final" aria-labelledby="cta-title">
+    <section class="band band--night module cta-final" aria-labelledby="cta-title">
+      <div class="shell">
+        <p class="module-head">
+          <span><span class="module-id">[ 08 ]</span> Boarding</span>
+          <span>Free on the App Store</span>
+        </p>
+      </div>
       <div class="shell cta-inner">
         <h2 id="cta-title" class="display-lg ink-fade--night reveal">
           Tonight, write it<br />nine times.
@@ -349,8 +387,9 @@ const faqs = [
   @media (min-width: 900px) {
     .hero-inner { grid-template-columns: 1.2fr 0.8fr; }
   }
-  .hero-copy { display: grid; gap: var(--sp-300); justify-items: start; }
-  .hero-cta { display: grid; gap: var(--sp-200); justify-items: start; }
+  .hero-copy { display: grid; gap: var(--sp-300); justify-items: start; max-width: 620px; }
+  .hero-cta { display: grid; gap: var(--sp-300); justify-items: start; width: 100%; }
+  .hero-data { width: 100%; max-width: 360px; }
   .hero .kicker { color: var(--night-text); }
   .hero .lede { color: color-mix(in srgb, var(--night-text) 88%, transparent); }
   .hero .mono-note { color: color-mix(in srgb, var(--night-text) 72%, transparent); }

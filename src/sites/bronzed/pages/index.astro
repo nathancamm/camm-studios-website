@@ -99,10 +99,17 @@ const faqs = [
   app={bronzed}
   title="Bronzed — Tan smart, never burn. Personal tan timer & live UV index"
   description="Bronzed calculates your personal safe tanning time from the live UV index, your skin type, and your SPF. Free on the App Store."
+  spy={[
+    { id: 'window', label: 'Window' },
+    { id: 'features', label: 'Features' },
+    { id: 'how', label: 'Sequence' },
+    { id: 'science', label: 'Science' },
+    { id: 'faq', label: 'FAQ' },
+  ]}
 >
   <main id="main">
     <!-- hero -->
-    <section class="hero band--night">
+    <section class="hero band--night" id="window">
       <div class="hero-bg living" aria-hidden="true">
         <img src={heroBg.src} alt="" class="hero-bg-img" fetchpriority="high" />
         <img src={heroBgB.src} alt="" class="hero-bg-img frame-b" loading="lazy" />
@@ -117,8 +124,10 @@ const faqs = [
         <circle class="ring-glow" cx="300" cy="300" r="90" fill="rgba(255,255,255,0.10)" />
       </svg>
       <div class="shell hero-inner">
-        <div class="hero-copy">
-          <p class="kicker rise" style="--d: 150ms">Bronzed — Tan timer &amp; UV index</p>
+        <div class="plate hero-copy">
+          <p class="kicker rise" style="--d: 150ms">
+            <span class="module-id">[ 01 ]</span> Mission: Bronzed · tan timer &amp; UV index
+          </p>
           <h1 class="display-xl ink-fade--night">
             <span class="rise" style="--d: 280ms">Tan smart,</span><br />
             <span class="rise" style="--d: 420ms">never burn.</span>
@@ -129,7 +138,11 @@ const faqs = [
           </p>
           <div class="hero-cta rise" style="--d: 720ms">
             <AppStoreBadge href={bronzed.appStoreUrl} tone="paper" />
-            <p class="mono-note">Free · iOS {bronzed.minimumOs}+ · Apple Weather data</p>
+            <dl class="data-list hero-data">
+              <div><dt>Price</dt><dd>Free</dd></div>
+              <div><dt>Requires</dt><dd>iOS {bronzed.minimumOs}+</dd></div>
+              <div><dt>Feed</dt><dd>Apple Weather · live</dd></div>
+            </dl>
           </div>
         </div>
         <div class="hero-shot rise" style="--d: 860ms">
@@ -150,9 +163,12 @@ const faqs = [
     </section>
 
     <!-- features -->
-    <section class="band" id="features" aria-labelledby="features-title">
+    <section class="band module" id="features" aria-labelledby="features-title">
       <div class="shell">
-        <p class="kicker kicker--rule reveal">What it does</p>
+        <p class="module-head">
+          <span><span class="module-id">[ 02 ]</span> Capabilities</span>
+          <span>Five systems, one job</span>
+        </p>
         <h2 id="features-title" class="display-lg reveal">
           Your skin tans.<br />Bronzed does the math.
         </h2>
@@ -185,9 +201,12 @@ const faqs = [
     </section>
 
     <!-- how it works -->
-    <section class="band band--deep" aria-labelledby="how-title">
+    <section class="band band--deep module" id="how" aria-labelledby="how-title">
       <div class="shell">
-        <p class="kicker kicker--rule reveal">How it works</p>
+        <p class="module-head">
+          <span><span class="module-id">[ 03 ]</span> Sequence</span>
+          <span>Setup once, then sun</span>
+        </p>
         <h2 id="how-title" class="display-lg reveal">Three steps, then sun.</h2>
         <ol class="steps">
           {[
@@ -215,8 +234,12 @@ const faqs = [
     </section>
 
     <!-- tagline moment -->
-    <section class="band" aria-label="Why Bronzed exists">
+    <section class="band module" aria-label="Why Bronzed exists">
       <div class="shell">
+        <p class="module-head">
+          <span><span class="module-id">[ 04 ]</span> Field note</span>
+          <span>Skin type I–VI</span>
+        </p>
         <WordReveal
           class="display-lg motto"
           text="Fair skin burns in ten minutes. Olive skin shrugs it off. One timer for everyone was always wrong."
@@ -225,9 +248,12 @@ const faqs = [
     </section>
 
     <!-- science + privacy -->
-    <section class="band band--night" aria-labelledby="science-title">
+    <section class="band band--night module" id="science" aria-labelledby="science-title">
       <div class="shell">
-        <p class="kicker kicker--rule reveal">Built on real science</p>
+        <p class="module-head">
+          <span><span class="module-id">[ 05 ]</span> The science</span>
+          <span>Fitzpatrick · MED</span>
+        </p>
         <h2 id="science-title" class="display-lg ink-fade--night reveal">
           The model dermatologists use.
         </h2>
@@ -259,9 +285,12 @@ const faqs = [
     </section>
 
     <!-- faq -->
-    <section class="band" id="faq" aria-labelledby="faq-title">
+    <section class="band module" id="faq" aria-labelledby="faq-title">
       <div class="shell faq-shell">
-        <p class="kicker kicker--rule reveal">Questions</p>
+        <p class="module-head">
+          <span><span class="module-id">[ 06 ]</span> Questions</span>
+          <span>Eight, answered straight</span>
+        </p>
         <h2 id="faq-title" class="display-lg reveal">Before you ask</h2>
         <Faq items={faqs} />
       </div>
@@ -269,9 +298,12 @@ const faqs = [
 
     <!-- blog preview -->
     {posts.length > 0 && (
-      <section class="band band--deep" aria-labelledby="blog-title">
+      <section class="band band--deep module" aria-labelledby="blog-title">
         <div class="shell">
-          <p class="kicker kicker--rule reveal">From the blog</p>
+          <p class="module-head">
+            <span><span class="module-id">[ 07 ]</span> Log</span>
+            <span>Latest entry</span>
+          </p>
           <h2 id="blog-title" class="display-lg reveal">Sun, explained.</h2>
           <div class="blog-grid">
             {posts.map((post) => (
@@ -300,7 +332,13 @@ const faqs = [
     )}
 
     <!-- final CTA -->
-    <section class="band band--night cta-final" aria-labelledby="cta-title">
+    <section class="band band--night module cta-final" aria-labelledby="cta-title">
+      <div class="shell">
+        <p class="module-head">
+          <span><span class="module-id">[ 08 ]</span> Boarding</span>
+          <span>Free on the App Store</span>
+        </p>
+      </div>
       <div class="shell cta-inner">
         <h2 id="cta-title" class="display-lg ink-fade--night reveal">
           The sun is out.<br />Know your number.
@@ -355,8 +393,9 @@ const faqs = [
   @media (min-width: 900px) {
     .hero-inner { grid-template-columns: 1.2fr 0.8fr; }
   }
-  .hero-copy { display: grid; gap: var(--sp-300); justify-items: start; }
-  .hero-cta { display: grid; gap: var(--sp-200); justify-items: start; }
+  .hero-copy { display: grid; gap: var(--sp-300); justify-items: start; max-width: 620px; }
+  .hero-cta { display: grid; gap: var(--sp-300); justify-items: start; width: 100%; }
+  .hero-data { width: 100%; max-width: 360px; }
   .hero .kicker { color: var(--night-text); }
   .hero .lede { color: color-mix(in srgb, var(--night-text) 88%, transparent); }
   .hero .mono-note { color: color-mix(in srgb, var(--night-text) 72%, transparent); }

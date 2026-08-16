@@ -17,6 +17,10 @@ const year = new Date().getFullYear();
 
 <footer class="band--night footer">
   <div class="shell">
+    <p class="module-head footer-head">
+      <span><span class="module-id">[ end ]</span> Transmission complete</span>
+      <span>Camm Studios · independent app studio</span>
+    </p>
     <div class="top">
       <div class="brand-block">
         <Mark size={40} tone="paper" />
@@ -53,7 +57,8 @@ const year = new Date().getFullYear();
 </footer>
 
 <style>
-  .footer { padding-block: var(--sp-800) var(--sp-400); }
+  .footer { padding-block: var(--sp-400); border-top: 1px solid var(--night-line); }
+  .footer-head { margin-bottom: var(--sp-600); }
   .top {
     display: grid;
     gap: var(--sp-600);
