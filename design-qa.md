@@ -6,64 +6,63 @@ Browser: Codex in-app browser
 
 ## Source truth
 
-- Current Camm Studios snake mark: `/Users/nathan/Desktop/Business/Apps/logo.png` (409 × 384)
-- Internal-tools composition reference: `/Users/nathan/Desktop/Screenshot 2026-08-23 at 3.56.02 pm.png` (1314 × 1752)
-- Required direction: cool white light theme, dot-matrix depth, colorless glass/crystal identity, robotic detail, and source-faithful C-shaped snake anatomy.
+- Selected identity: `/var/folders/4n/swhyhbr94pj2sh_z29tggg5m0000gn/T/codex-clipboard-077397be-2426-4c60-919c-5501a4c89c4e.png` (1254 × 1254), confirmed by the user as the final glass robotic snake.
+- Original snake anatomy reference: `/Users/nathan/Desktop/Business/Apps/logo.png` (409 × 384).
+- Internal-tools composition reference: `/Users/nathan/Desktop/Screenshot 2026-08-23 at 3.56.02 pm.png` (1314 × 1752).
+- Refined direction: keep the selected identity clear glass; render every other object as an abstract but physically coherent scientific instrument. Bronzed must center on a sun, Stellar on a star, all on a cool-white dot-matrix field.
 
 ## Evidence
 
 Desktop viewport: 1440 × 1000 CSS pixels at DPR 1.
 
-- Company hero: `/tmp/camm-site-qa/company-hero-desktop-v4.png`
-- Company systems, first pair: `/tmp/camm-site-qa/company-systems-desktop-v2.png`
-- Company systems, second pair: `/tmp/camm-site-qa/company-systems-bottom-desktop.png`
-- Company products: `/tmp/camm-site-qa/company-apps-desktop.png`
-- Logo study, recommended direction: `/tmp/camm-site-qa/logo-study-desktop-top-v2.png`
-- Logo study, final pair: `/tmp/camm-site-qa/logo-study-desktop-bottom-v2.png`
-- Bronzed hero: `/tmp/camm-site-qa/bronzed-hero-desktop.png`
-- Bronzed product detail: `/tmp/camm-site-qa/bronzed-features-desktop.png`
-- Bronzed guide index: `/tmp/camm-site-qa/bronzed-blog-desktop.png`
-- Stellar hero: `/tmp/camm-site-qa/stellar-hero-desktop.png`
-- Stellar product detail: `/tmp/camm-site-qa/stellar-features-desktop.png`
-- Stellar guide index: `/tmp/camm-site-qa/stellar-blog-desktop.png`
+- Company hero: `/tmp/camm-browser-qa/company-desktop.png`
+- Company systems: `/tmp/camm-browser-qa/company-systems-cards.png`
+- Logo study, selected identity: `/tmp/camm-browser-qa/logo-study-desktop.png`
+- Bronzed solar-dial hero: `/tmp/camm-browser-qa/bronzed-desktop.png`
+- Stellar star-compass hero: `/tmp/camm-browser-qa/stellar-desktop-final.png`
+- Bronzed guide index: `/tmp/camm-browser-qa/bronzed-blog.png`
+- Stellar guide index: `/tmp/camm-browser-qa/stellar-blog.png`
 
 Mobile viewport: 390 × 844 CSS pixels at DPR 1.
 
-- Company hero and 3D object: `/tmp/camm-site-qa/company-hero-mobile.png`, `/tmp/camm-site-qa/company-scene-mobile.png`
-- Open mobile navigation: `/tmp/camm-site-qa/company-menu-mobile.png`
-- Logo study and recommended concept: `/tmp/camm-site-qa/logo-study-mobile.png`, `/tmp/camm-site-qa/logo-study-stage-mobile.png`
-- Bronzed hero and 3D object: `/tmp/camm-site-qa/bronzed-hero-mobile.png`, `/tmp/camm-site-qa/bronzed-scene-mobile.png`
-- Stellar hero and 3D object: `/tmp/camm-site-qa/stellar-hero-mobile.png`, `/tmp/camm-site-qa/stellar-scene-mobile.png`
-- Bronzed guide journey: `/tmp/camm-site-qa/bronzed-blog-mobile.png`, `/tmp/camm-site-qa/bronzed-article-mobile-settled.png`
+- Company hero: `/tmp/camm-browser-qa/company-mobile.png`
+- Open company navigation: `/tmp/camm-browser-qa/company-mobile-menu.png`
+- Logo study, selected identity: `/tmp/camm-browser-qa/logo-study-mobile.png`
+- Bronzed hero: `/tmp/camm-browser-qa/bronzed-mobile.png`
+- Stellar hero: `/tmp/camm-browser-qa/stellar-mobile.png`
 
 Focused comparison inputs:
 
-- Source logo beside rendered Three.js serpent: `/tmp/camm-site-qa/source-vs-hero-snake-v2.png`
-- Source internal-tools section beside the light implementation: `/tmp/camm-site-qa/source-vs-systems.png`
-- Source logo plus all five new concepts: `/tmp/camm-site-qa/source-plus-five-logo-grid.png`
+- Selected source logo beside the rendered logo-study implementation: `/tmp/camm-browser-qa/logo-source-comparison.png`
+- Complete internal-system, Bronzed, and Stellar artwork family: `/tmp/camm-blender/asset-family-contact.png`
+- Bronzed Blender render: `/tmp/camm-blender/bronzed-solar-dial.png`
+- Stellar Blender render: `/tmp/camm-blender/stellar-star-compass.png`
 
 ## Comparison history
 
-1. The first browser render cropped the serpent at the stage edges, which obscured the source silhouette. This was a P1 visual issue.
-2. The model fit was reduced from 4.35 to 3.05, the company build was regenerated, and the browser comparison was repeated.
-3. The corrected render keeps the squared top and bottom coil, left backbone, middle shelf, upper-right head and circular eye, lower-right tail, and open right side visible in one frame.
-4. The logo-study images initially read as white square files placed on top of the stage. Multiplicative compositing was added, rebuilt, and reviewed again so the crystal forms integrate into the cool dot-matrix field.
+1. The supplied Vertebra Lock artwork was promoted unchanged to the live company identity, favicon, navigation, company social image, hero poster, and selected logo-study state.
+2. The first Stellar browser render made the star too close to the white stage. The central body material was darkened to cool graphite, the GLB was regenerated and reopened in a fresh Blender process, the Stellar build was rebuilt, and the browser render was repeated.
+3. The refined Stellar render now has an unmistakable eight-point star silhouette while retaining the white, silver, graphite, and pale-lilac product language.
+4. Bronzed was rebuilt around a supported ceramic sun dial with twelve joined rays, an axle, bearings, a pointer, and an orange calibration orbit.
+5. The four Greek systems and six guide images were reviewed together. Their rings, rails, pivots, columns, collars, and bases keep every abstraction physically legible without forcing the company logo's glass material onto the rest of the site.
 
 ## Fidelity audit
 
-- Typography: headline scale, compact technical labels, sentence casing, and weight hierarchy remain consistent across company, app, and editorial templates. No clipped or orphaned primary headings were found after animations settled.
-- Spacing: desktop two-column heroes and card grids preserve the intended measured rhythm. Mobile layouts collapse without horizontal overflow at 390 pixels.
-- Color: all company identity surfaces remain neutral graphite, silver, white, and cool blue-grey. Product-specific orange and violet accents are restrained to Bronzed and Stellar contexts.
-- Image quality: five logo options load at 1024 × 1024; system and guide artwork is authored at 1200 × 800; product artwork is 1024 × 1024; all three hero scenes load authored GLB models rather than procedural placeholder geometry.
-- Copy: company operating-model language stays separate from app conversion copy. Each app retains three distinct search-oriented guides, canonical metadata, open-graph artwork, and BlogPosting structured data.
+- Identity: the final website uses the exact selected glass robotic snake. The C-shaped body, squared coil, optical eye, articulated joints, open right side, and lower tail match the supplied source.
+- Typography and spacing: the existing premium light system remains intact. Desktop two-column heroes and card grids retain their measured rhythm; all reviewed mobile layouts collapse without overflow.
+- Color: company surfaces remain cool white, pale blue-grey, silver, and graphite. Orange appears only in Bronzed calibration geometry; pale lilac appears only in Stellar calibration geometry.
+- Physical logic: Artemis is a supported signal bow; Atlas is a weight-bearing orbit stack; Morpheus is a ribbon carried through rail-mounted rollers; Chronos is a bearing-mounted cadence gimbal. Bronzed guide objects use sun emitters, filters, rails, and shields; Stellar guide objects use mounted star cores, rods, resonance plates, orbits, and pivots.
+- Asset quality: system and guide artwork is 1200 × 800 WebP, product artwork is 1024 × 1024 WebP, and all three hero stages load authored GLB models. Superseded artwork and model files were removed from the source asset set.
 
 ## Interaction and runtime checks
 
-- Company, Bronzed, and Stellar hero canvases reached `is-rendered` and exposed the expected model URLs.
-- Two company hero captures taken 1.1 seconds apart produced an SSIM score of 0.998636, confirming the restrained live motion loop changes the rendered frame.
-- The mobile menu opened with `aria-expanded="true"`, displayed all three company destinations, then closed with `aria-expanded="false"`.
-- A Bronzed guide card navigated to `/blog/cloudy-day-uv/`; the final article state, canonical URL, open-graph image, BlogPosting schema, and breadcrumb schema were present.
-- Desktop and mobile checks reported zero horizontal overflow and no console warnings or errors on the reviewed pages.
+- Company, Bronzed, and Stellar hero canvases reached `is-rendered` with the new model URLs.
+- Two Stellar captures taken 1.2 seconds apart were not byte-identical, confirming the restrained Three.js motion loop is active.
+- Both Blender files were reopened in fresh background processes. Reports found no missing external files; Bronzed contains 45 model meshes and Stellar contains 36 model meshes.
+- The mobile menu opened with `aria-expanded="true"` and displayed all company destinations.
+- Six mobile routes and four desktop routes reported zero horizontal overflow and zero broken images.
+- Browser runtime logs were empty after the company, logo study, Bronzed, Stellar, and guide-index checks.
+- `npm run check:all` completed with zero errors, warnings, or hints. `npm test` rebuilt all three static sites and passed all 19 contract tests.
 
 ## Findings
 
