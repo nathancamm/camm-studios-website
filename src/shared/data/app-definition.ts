@@ -13,7 +13,6 @@ export interface AppDefinition {
   category: string;
   icon: ImageMetadata;
   screenshot: ImageMetadata;
-  heroModel: string;
   instrumentArt: ImageMetadata;
   guideArt: Record<string, ImageMetadata>;
   accent: string;

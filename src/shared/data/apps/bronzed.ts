@@ -1,6 +1,5 @@
 import icon from '../../assets/product/bronzed-icon.png';
 import screenshot from '../../assets/product/bronzed-screenshot.png';
-import heroModel from '../../assets/models/bronzed-solar-dial.glb?url';
 import instrumentArt from '../../assets/art/products/bronzed-solar-symbol.webp';
 import uvIndexArt from '../../assets/art/guides/bronzed-uv-scale.webp';
 import cloudyDayArt from '../../assets/art/guides/bronzed-cloud-filter.webp';
@@ -19,7 +18,6 @@ const bronzed: AppDefinition = {
   category: 'Weather and Health & Fitness',
   icon,
   screenshot,
-  heroModel,
   instrumentArt,
   guideArt: {
     'uv-index-explained': uvIndexArt,
