@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import test from 'node:test';
 
@@ -19,6 +19,8 @@ const routeFiles = {
     'index.html',
     'blog/index.html',
     'blog/uv-index-explained/index.html',
+    'blog/cloudy-day-uv/index.html',
+    'blog/sunscreen-spf-and-uv-index/index.html',
     'support/index.html',
     'privacy/index.html',
     'terms/index.html',
@@ -31,6 +33,8 @@ const routeFiles = {
     'index.html',
     'blog/index.html',
     'blog/369-method-daily-ritual/index.html',
+    'blog/write-a-personal-affirmation/index.html',
+    'blog/vision-board-routine/index.html',
     'support/index.html',
     'privacy/index.html',
     'terms/index.html',
@@ -130,11 +134,67 @@ test('product pages use the live locale neutral App Store links', () => {
   assert.match(stellar, /https:\/\/apps\.apple\.com\/app\/id6759896200/);
 });
 
-test('company page leads with the approved process action', () => {
+test('company page leads with the studio operating model', () => {
   const company = readFileSync(join(root, 'dist/company/index.html'), 'utf8');
-  assert.match(company, /Read our process/i);
-  assert.match(company, /We find overlooked problems/i);
-  assert.match(company, /Small apps\. Clear purpose\. Built to get better\./i);
+  assert.match(company, /See how we operate/i);
+  assert.match(company, /consumer apps that compound/i);
+  assert.match(company, /From signal to software to scale/i);
+});
+
+test('the company site exposes the original glass monogram and real internal systems', () => {
+  const company = readFileSync(join(root, 'dist/company/index.html'), 'utf8');
+
+  assert.match(company, /data-three-scene=["']monogram["']/i);
+  assert.match(company, /id=["']systems["']/i);
+  for (const system of ['Artemis', 'Atlas', 'Morpheus', 'Chronos']) {
+    assert.match(company, new RegExp(`>${system}<`, 'i'), `Company page is missing ${system}`);
+  }
+});
+
+test('each app has its own Three.js product world and at least three SEO articles', () => {
+  for (const target of ['bronzed', 'stellar']) {
+    const home = readFileSync(join(root, 'dist', target, 'index.html'), 'utf8');
+    const journal = readFileSync(join(root, 'dist', target, 'blog/index.html'), 'utf8');
+    assert.match(home, new RegExp(`data-three-scene=["']${target}["']`, 'i'));
+    assert.ok((journal.match(/class=["'][^"']*post-card/g) ?? []).length >= 3, `${target} needs at least three journal articles`);
+  }
+});
+
+test('each target emits only the large artwork it actually renders', () => {
+  const assetsFor = (target) => readdirSync(join(root, 'dist', target, '_astro'));
+  const companyAssets = assetsFor('company');
+  const bronzedAssets = assetsFor('bronzed');
+  const stellarAssets = assetsFor('stellar');
+
+  assert.ok(
+    companyAssets.every((asset) => !/(?:screenshot|system|blog-)/.test(asset)),
+    `Company build contains unused product artwork: ${companyAssets.filter((asset) => /(?:screenshot|system|blog-)/.test(asset)).join(', ')}`,
+  );
+  assert.ok(
+    bronzedAssets.every((asset) => !/(?:stellar-(?:icon|screenshot|system)|blog-369)/.test(asset)),
+    `Bronzed build contains Stellar artwork: ${bronzedAssets.filter((asset) => /(?:stellar-(?:icon|screenshot|system)|blog-369)/.test(asset)).join(', ')}`,
+  );
+  assert.ok(
+    stellarAssets.every((asset) => !/(?:bronzed-(?:icon|screenshot|system)|blog-uv)/.test(asset)),
+    `Stellar build contains Bronzed artwork: ${stellarAssets.filter((asset) => /(?:bronzed-(?:icon|screenshot|system)|blog-uv)/.test(asset)).join(', ')}`,
+  );
+  assert.ok(
+    bronzedAssets.every((asset) => !/^bronzed-icon\..*\.png$/.test(asset)),
+    'Bronzed emits its unoptimized source icon instead of an optimized social image.',
+  );
+  assert.ok(
+    stellarAssets.every((asset) => !/^stellar-icon\..*\.png$/.test(asset)),
+    'Stellar emits its unoptimized source icon instead of an optimized social image.',
+  );
+});
+
+test('the cinematic layer includes a reduced motion path and a canvas fallback', () => {
+  const scene = readFileSync(join(root, 'src/shared/scripts/three-scenes.ts'), 'utf8');
+  const company = readFileSync(join(root, 'dist/company/index.html'), 'utf8');
+
+  assert.match(scene, /prefers-reduced-motion:\s*reduce/);
+  assert.match(scene, /IntersectionObserver/);
+  assert.match(company, /<canvas[^>]+aria-label=/i);
 });
 
 test('legacy app legal routes redirect permanently to final subdomains', () => {

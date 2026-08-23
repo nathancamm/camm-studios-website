@@ -10,6 +10,18 @@ const sites = [
 const widths = [390, 430, 768, 1440, 1728];
 const output = new URL('../output/playwright/', import.meta.url).pathname;
 
+async function assertAnimatedHeadingReadable(page, label) {
+  const words = page.locator('[data-word-reveal] .word');
+  if (await words.count() === 0) return;
+  const unreadable = await words.evaluateAll((elements) => elements.filter((element) => {
+    const style = getComputedStyle(element);
+    return Number.parseFloat(style.opacity) < 0.99
+      || style.color === 'rgba(0, 0, 0, 0)'
+      || style.webkitTextFillColor === 'rgba(0, 0, 0, 0)';
+  }).map((element) => element.textContent));
+  assert.deepEqual(unreadable, [], `${label} has transparent or incomplete animated heading words`);
+}
+
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 
@@ -20,9 +32,20 @@ try {
       const context = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 1 });
       await context.addInitScript(() => sessionStorage.setItem('camm-intro-seen', '1'));
       const page = await context.newPage();
+      const runtimeErrors = [];
+      page.on('pageerror', (error) => runtimeErrors.push(error.message));
+      page.on('console', (message) => {
+        if (message.type() === 'error') runtimeErrors.push(message.text());
+      });
       await page.goto(site.url, { waitUntil: 'networkidle' });
       await page.locator('[data-reveal]').evaluateAll((elements) => elements.forEach((element) => element.classList.add('is-visible')));
-      await page.waitForTimeout(850);
+      await page.waitForTimeout(1300);
+
+      assert.equal(await page.locator('canvas[data-three-scene]').count(), 1, `${site.name} is missing its Three.js scene at ${width}px`);
+      await page.locator('[data-three-frame]').waitFor({ state: 'visible' });
+      assert.ok(await page.locator('[data-three-frame]').evaluate((element) => element.classList.contains('is-rendered') || element.classList.contains('is-unavailable')), `${site.name} scene never resolved at ${width}px`);
+      assert.deepEqual(runtimeErrors, [], `${site.name} logged runtime errors at ${width}px`);
+      await assertAnimatedHeadingReadable(page, `${site.name} at ${width}px`);
 
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
       assert.ok(overflow <= 1, `${site.name} overflows by ${overflow}px at ${width}px`);
@@ -35,7 +58,11 @@ try {
       if (width === 390) {
         await page.locator('.menu-toggle').click();
         assert.equal(await page.locator('.menu-toggle').getAttribute('aria-expanded'), 'true');
+        await page.waitForTimeout(750);
+        assert.equal(await page.locator('.nav-panel').evaluate((element) => getComputedStyle(element).opacity), '1');
+        assert.equal(await page.locator('.nav-panel').evaluate((element) => getComputedStyle(element).pointerEvents), 'auto');
         await page.locator('.menu-toggle').click();
+        await page.waitForTimeout(750);
       }
 
       await page.screenshot({ path: `${output}${site.name}-${width}.png`, fullPage: width === 390 || width === 1440 });
@@ -43,23 +70,48 @@ try {
     }
   }
 
-  const introContext = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
-  const introPage = await introContext.newPage();
-  await introPage.goto(sites[0].url, { waitUntil: 'networkidle' });
-  assert.equal(await introPage.locator('[data-company-intro]').count(), 1, 'Company introduction did not start on a fresh session');
-  await introPage.waitForTimeout(3000);
-  assert.equal(await introPage.locator('[data-company-intro]').count(), 0, 'Company introduction did not finish');
-  await introPage.reload({ waitUntil: 'networkidle' });
-  assert.equal(await introPage.locator('[data-company-intro]').count(), 0, 'Company introduction repeated in one session');
-  await introContext.close();
-
   const reducedContext = await browser.newContext({ viewport: { width: 390, height: 900 }, reducedMotion: 'reduce' });
   const reducedPage = await reducedContext.newPage();
   await reducedPage.goto(sites[0].url, { waitUntil: 'networkidle' });
-  assert.equal(await reducedPage.locator('[data-company-intro]').count(), 0, 'Reduced motion did not skip the introduction');
   const hiddenReveals = await reducedPage.locator('[data-reveal]').evaluateAll((elements) => elements.filter((element) => Number.parseFloat(getComputedStyle(element).opacity) < 1).length);
   assert.equal(hiddenReveals, 0, 'Reduced motion left hidden content');
+  const dimReadingWords = await reducedPage.locator('.reading-word').evaluateAll((elements) => elements.filter((element) => !['rgb(244, 242, 234)', 'rgb(19, 18, 9)'].includes(getComputedStyle(element).color)).length);
+  assert.equal(dimReadingWords, 0, 'Reduced motion left the reading reveal incomplete');
+  assert.ok(await reducedPage.locator('[data-three-frame]').evaluate((element) => element.classList.contains('is-rendered') || element.classList.contains('is-unavailable')), 'Reduced motion did not resolve the static Three.js frame');
   await reducedContext.close();
+
+  const detailRoutes = [
+    { site: sites[0], slug: 'privacy', route: '/privacy/' },
+    { site: sites[1], slug: 'guides', route: '/blog/' },
+    { site: sites[1], slug: 'cloudy-day-uv', route: '/blog/cloudy-day-uv/' },
+    { site: sites[2], slug: 'guides', route: '/blog/' },
+    { site: sites[2], slug: 'personal-affirmation', route: '/blog/write-a-personal-affirmation/' },
+  ];
+  for (const detail of detailRoutes) {
+    for (const width of [390, 1440]) {
+      const context = await browser.newContext({ viewport: { width, height: width === 390 ? 900 : 1000 } });
+      const page = await context.newPage();
+      const runtimeErrors = [];
+      page.on('pageerror', (error) => runtimeErrors.push(error.message));
+      page.on('console', (message) => {
+        if (message.type() === 'error') runtimeErrors.push(message.text());
+      });
+      const response = await page.goto(`${detail.site.url}${detail.route}`, { waitUntil: 'networkidle' });
+      assert.equal(response?.status(), 200, `${detail.site.name}${detail.route} returned ${response?.status()}`);
+      await page.locator('[data-reveal]').evaluateAll((elements) => elements.forEach((element) => element.classList.add('is-visible')));
+      await page.waitForTimeout(1300);
+      await page.locator('img').evaluateAll((images) => images.forEach((image) => { image.loading = 'eager'; }));
+      await page.waitForFunction(() => [...document.images].every((image) => image.complete));
+      const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+      assert.ok(overflow <= 1, `${detail.site.name}${detail.route} overflows by ${overflow}px at ${width}px`);
+      const brokenImages = await page.locator('img').evaluateAll((images) => images.filter((image) => image.naturalWidth === 0).map((image) => image.src));
+      assert.deepEqual(brokenImages, [], `${detail.site.name}${detail.route} has broken images at ${width}px`);
+      assert.deepEqual(runtimeErrors, [], `${detail.site.name}${detail.route} logged runtime errors at ${width}px`);
+      await assertAnimatedHeadingReadable(page, `${detail.site.name}${detail.route} at ${width}px`);
+      await page.screenshot({ path: `${output}${detail.site.name}-${detail.slug}-${width}.png`, fullPage: true });
+      await context.close();
+    }
+  }
 
   for (const site of sites) {
     const context = await browser.newContext();
