@@ -225,34 +225,32 @@ test('supporting surfaces use finished image assets instead of CSS drawings', ()
   assert.equal(guideAssets.length, 6);
 });
 
-test('the Three.js worlds use image-based lighting and calibrated instrument geometry', () => {
+test('the Three.js worlds load authored models into a calibrated optical stage', () => {
   const scene = readFileSync(join(root, 'src/shared/scripts/three-scenes.ts'), 'utf8');
   assert.match(scene, /RoomEnvironment/);
   assert.match(scene, /PMREMGenerator/);
-  assert.match(scene, /function makeCalibrationRing/);
-  assert.match(scene, /function makeTickRing/);
-  assert.match(scene, /function makeConstellation/);
-  assert.match(scene, /function makeSolarInstrument/);
+  assert.match(scene, /GLTFLoader/);
+  assert.match(scene, /data\.modelUrl/);
+  assert.match(scene, /loadAsync/);
+  assert.match(scene, /Box3/);
+  assert.match(scene, /model\.getObjectByName/);
 });
 
-test('scientific card art has layered depth, sweep motion, and reduced-motion safeguards', () => {
+test('finished artwork has restrained depth motion and reduced-motion safeguards', () => {
   const systems = readFileSync(join(root, 'src/shared/components/SystemCard.astro'), 'utf8');
   const company = readFileSync(join(root, 'src/targets/company/pages/index.astro'), 'utf8');
   const journal = readFileSync(join(root, 'src/targets/app/pages/blog/index.astro'), 'utf8');
   const companyCss = readFileSync(join(root, 'src/shared/styles/company.css'), 'utf8');
   const blogCss = readFileSync(join(root, 'src/shared/styles/blog.css'), 'utf8');
   const appCss = readFileSync(join(root, 'src/shared/styles/app.css'), 'utf8');
-  const systemVectors = systems.match(/<(?:path|ellipse|circle|line|rect|polygon)\b/g) ?? [];
 
-  for (const className of ['diagram-grid', 'diagram-depth', 'diagram-pulse', 'diagram-sweep']) {
-    assert.match(systems, new RegExp(className), `System cards are missing ${className}`);
-  }
-  assert.ok(systemVectors.length >= 80, 'System cards need denser instrument geometry');
-  assert.match(company, /app-portal__instrument/);
-  assert.match(journal, /post-card__instrument/);
-  assert.match(companyCss, /@keyframes portal-instrument-orbit/);
-  assert.match(blogCss, /@keyframes journal-instrument-scan/);
-  assert.match(appCss, /@keyframes product-stage-scan/);
+  assert.doesNotMatch(systems, /<svg\b/);
+  assert.match(systems, /system-card__art/);
+  assert.match(company, /app-portal__art/);
+  assert.match(journal, /post-card__art/);
+  assert.match(companyCss, /@keyframes portal-art-drift/);
+  assert.match(blogCss, /@keyframes journal-art-drift/);
+  assert.match(appCss, /@keyframes product-art-drift/);
   for (const css of [companyCss, blogCss, appCss]) {
     assert.match(css, /prefers-reduced-motion:\s*reduce/i);
   }
