@@ -135,11 +135,13 @@ test('product pages use the live locale neutral App Store links', () => {
   assert.match(stellar, /https:\/\/apps\.apple\.com\/app\/id6759896200/);
 });
 
-test('company page leads with the studio operating model', () => {
+test('company page leads with the honest studio story', () => {
   const company = readFileSync(join(root, 'dist/company/index.html'), 'utf8');
-  assert.match(company, /See how we operate/i);
-  assert.match(company, /consumer apps that compound/i);
-  assert.match(company, /From signal to software to scale/i);
+  assert.match(company, /one person studio/i);
+  assert.match(company, /See the apps/i);
+  assert.match(company, /Find a real problem/i);
+  assert.doesNotMatch(company, /consumer apps that compound/i);
+  assert.doesNotMatch(company, /CALIBRATED/);
 });
 
 test('every rendered page declares the cool light color scheme', () => {
@@ -176,13 +178,12 @@ test('the private logo study contains five source-grounded robotic snake directi
   }
 });
 
-test('Vertebra Lock is the selected live identity and uses an authored 3D model', () => {
+test('Vertebra Lock is the selected live identity with a procedural serpent scene', () => {
   const brand = readFileSync(join(root, 'src/shared/components/Brand.astro'), 'utf8');
   const layout = readFileSync(join(root, 'src/shared/layouts/BaseLayout.astro'), 'utf8');
   const company = readFileSync(join(root, 'src/targets/company/pages/index.astro'), 'utf8');
   const study = readFileSync(join(root, 'src/targets/company/pages/logo-study.astro'), 'utf8');
   const scene = readFileSync(join(root, 'src/shared/scripts/three-scenes.ts'), 'utf8');
-  const model = join(root, 'src/shared/assets/models/camm-robotic-snake.glb');
 
   for (const source of [brand, layout, company]) {
     assert.match(source, /vertebra-lock\.webp/);
@@ -190,33 +191,19 @@ test('Vertebra Lock is the selected live identity and uses an authored 3D model'
   }
   assert.match(study, /data-selected/);
   assert.match(study, /01 \/ Selected/);
-  assert.match(company, /camm-robotic-snake\.glb/);
-  assert.match(scene, /GLTFLoader/);
-  assert.match(scene, /SnakeHead/);
-  assert.match(scene, /SnakeEye/);
-  assert.ok(existsSync(model), 'Missing the authored Camm snake model');
-  assert.ok(statSync(model).size > 50_000, 'The Camm snake model is too small to contain authored detail');
+  assert.match(scene, /buildMonogram/);
+  assert.match(scene, /servoJoint/);
+  assert.match(scene, /glassPanel/);
+  assert.match(scene, /iris/);
 });
 
-test('each app hero uses its own authored Blender model', () => {
+test('each app hero has its own procedural instrument scene', () => {
   const scene = readFileSync(join(root, 'src/shared/scripts/three-scenes.ts'), 'utf8');
-  const expected = {
-    bronzed: 'bronzed-solar-dial.glb',
-    stellar: 'stellar-star-compass.glb',
-  };
-
-  for (const [target, filename] of Object.entries(expected)) {
-    const definition = readFileSync(join(root, 'src/shared/data/apps', `${target}.ts`), 'utf8');
-    const model = join(root, 'src/shared/assets/models', filename);
-    assert.match(definition, new RegExp(filename.replace('.', '\\.')));
-    assert.ok(existsSync(model), `Missing ${target} authored hero model`);
-    assert.ok(statSync(model).size > 50_000, `${filename} is too small to contain authored detail`);
-  }
-
-  for (const part of ['SolarCore', 'SolarCorona', 'SolarOrbit', 'SolarGnomon', 'StarCore', 'StarOrbit', 'StarNode03', 'StarNode06', 'StarNode09']) {
-    assert.match(scene, new RegExp(part), `Three.js motion is missing ${part}`);
-  }
-  assert.doesNotMatch(scene, /HeliostatLens|FilterCarriage|LoomLeafMorning|LoomPrism/);
+  assert.match(scene, /buildBronzed/);
+  assert.match(scene, /buildStellar/);
+  assert.match(scene, /rayRing/);
+  assert.match(scene, /nodeCarrier/);
+  assert.doesNotMatch(scene, /GLTFLoader|\.glb/);
 });
 
 test('supporting surfaces use finished image assets instead of CSS drawings', () => {
@@ -255,15 +242,13 @@ test('supporting surfaces use finished image assets instead of CSS drawings', ()
   ]);
 });
 
-test('the Three.js worlds load authored models into a calibrated optical stage', () => {
+test('the Three.js worlds render procedural geometry on a calibrated optical stage', () => {
   const scene = readFileSync(join(root, 'src/shared/scripts/three-scenes.ts'), 'utf8');
   assert.match(scene, /RoomEnvironment/);
   assert.match(scene, /PMREMGenerator/);
-  assert.match(scene, /GLTFLoader/);
-  assert.match(scene, /dataset\.modelUrl/);
-  assert.match(scene, /loadAsync/);
-  assert.match(scene, /Box3/);
-  assert.match(scene, /model\.getObjectByName/);
+  assert.match(scene, /RoundedBoxGeometry/);
+  assert.match(scene, /MeshPhysicalMaterial/);
+  assert.match(scene, /setAnimationLoop/);
 });
 
 test('finished artwork has restrained depth motion and reduced-motion safeguards', () => {
