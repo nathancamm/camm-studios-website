@@ -153,8 +153,8 @@ class SceneRuntime {
     const names = this.name === 'monogram'
       ? ['SnakeHead', 'SnakeEye', 'SnakeBody', 'ServoJoint_01', 'ServoJoint_02', 'ServoJoint_03', 'ServoJoint_04']
       : this.name === 'bronzed'
-        ? ['HeliostatLens', 'HeliostatGnomon', 'FilterCarriage', 'SolarBeam']
-        : ['LoomLeafMorning', 'LoomLeafAfternoon', 'LoomLeafEvening', 'LoomPrism'];
+        ? ['SolarCore', 'SolarCorona', 'SolarOrbit', 'SolarGnomon']
+        : ['StarCore', 'StarOrbit', 'StarNode03', 'StarNode06', 'StarNode09', 'StarCounterweight'];
     names.forEach((name) => {
       const part = remember(this.model as Group, name);
       if (part) this.parts.set(name, part);
@@ -228,32 +228,37 @@ class SceneRuntime {
     }
 
     if (this.name === 'bronzed') {
-      this.animatePart('HeliostatLens', (part) => {
-        part.object.rotation.y = part.rotation.y + (rest ? 0 : Math.sin(elapsed * 0.28) * 0.065);
-        part.object.rotation.z = part.rotation.z + (rest ? 0 : Math.sin(elapsed * 0.18) * 0.025);
+      this.animatePart('SolarCore', (part) => {
+        const pulse = rest ? 1 : 1 + Math.sin(elapsed * 0.48) * 0.012;
+        part.object.scale.set(part.scale.x * pulse, part.scale.y * pulse, part.scale.z * pulse);
       });
-      this.animatePart('HeliostatGnomon', (part) => {
-        part.object.rotation.z = part.rotation.z + (rest ? 0 : Math.sin(elapsed * 0.34) * 0.035);
+      this.animatePart('SolarCorona', (part) => {
+        part.object.rotation.z = part.rotation.z + (rest ? 0 : elapsed * 0.028);
       });
-      this.animatePart('FilterCarriage', (part) => {
-        part.object.position.y = part.position.y + (rest ? 0 : Math.sin(elapsed * 0.46) * 0.035);
+      this.animatePart('SolarOrbit', (part) => {
+        part.object.rotation.z = part.rotation.z - (rest ? 0 : elapsed * 0.018);
       });
-      this.animatePart('SolarBeam', (part) => {
-        const pulse = rest ? 1 : 1 + Math.sin(elapsed * 0.8) * 0.018;
-        part.object.scale.set(part.scale.x * pulse, part.scale.y, part.scale.z * pulse);
+      this.animatePart('SolarGnomon', (part) => {
+        part.object.rotation.z = part.rotation.z + (rest ? 0 : Math.sin(elapsed * 0.22) * 0.08);
       });
       return;
     }
 
-    ['LoomLeafMorning', 'LoomLeafAfternoon', 'LoomLeafEvening'].forEach((name, index) => {
+    this.animatePart('StarCore', (part) => {
+      part.object.rotation.z = part.rotation.z + (rest ? 0 : elapsed * 0.025);
+      const pulse = rest ? 1 : 1 + Math.sin(elapsed * 0.38) * 0.01;
+      part.object.scale.set(part.scale.x * pulse, part.scale.y * pulse, part.scale.z * pulse);
+    });
+    this.animatePart('StarOrbit', (part) => {
+      part.object.rotation.z = part.rotation.z - (rest ? 0 : elapsed * 0.015);
+    });
+    ['StarNode03', 'StarNode06', 'StarNode09'].forEach((name, index) => {
       this.animatePart(name, (part) => {
-        part.object.rotation.y = part.rotation.y + (rest ? 0 : Math.sin(elapsed * 0.3 + index * 2.1) * 0.045);
+        part.object.position.y = part.position.y + (rest ? 0 : Math.sin(elapsed * 0.4 + index * 2.1) * 0.025);
       });
     });
-    this.animatePart('LoomPrism', (part) => {
-      part.object.rotation.y = part.rotation.y + (rest ? 0 : elapsed * 0.08);
-      const pulse = rest ? 1 : 1 + Math.sin(elapsed * 0.42) * 0.018;
-      part.object.scale.set(part.scale.x * pulse, part.scale.y * pulse, part.scale.z * pulse);
+    this.animatePart('StarCounterweight', (part) => {
+      part.object.position.y = part.position.y + (rest ? 0 : Math.sin(elapsed * 0.24) * 0.018);
     });
   }
 

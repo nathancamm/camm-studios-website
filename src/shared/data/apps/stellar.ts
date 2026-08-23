@@ -1,10 +1,10 @@
 import icon from '../../assets/product/stellar-icon.png';
 import screenshot from '../../assets/product/stellar-screenshot.png';
-import heroModel from '../../assets/models/stellar-ritual-loom.glb?url';
-import instrumentArt from '../../assets/art/products/stellar-instrument.webp';
-import methodArt from '../../assets/art/guides/stellar-369-method.webp';
-import affirmationArt from '../../assets/art/guides/stellar-personal-affirmation.webp';
-import visionBoardArt from '../../assets/art/guides/stellar-vision-board-routine.webp';
+import heroModel from '../../assets/models/stellar-star-compass.glb?url';
+import instrumentArt from '../../assets/art/products/stellar-star-symbol.webp';
+import methodArt from '../../assets/art/guides/stellar-369-orbit.webp';
+import affirmationArt from '../../assets/art/guides/stellar-affirmation-resonator.webp';
+import visionBoardArt from '../../assets/art/guides/stellar-vision-constellation.webp';
 import type { AppDefinition } from '../app-definition';
 
 const stellar: AppDefinition = {

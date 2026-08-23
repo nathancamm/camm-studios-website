@@ -176,13 +176,20 @@ test('the private logo study contains five source-grounded robotic snake directi
   }
 });
 
-test('the live identity uses the supplied snake mark and an authored 3D model', () => {
+test('Vertebra Lock is the selected live identity and uses an authored 3D model', () => {
   const brand = readFileSync(join(root, 'src/shared/components/Brand.astro'), 'utf8');
+  const layout = readFileSync(join(root, 'src/shared/layouts/BaseLayout.astro'), 'utf8');
   const company = readFileSync(join(root, 'src/targets/company/pages/index.astro'), 'utf8');
+  const study = readFileSync(join(root, 'src/targets/company/pages/logo-study.astro'), 'utf8');
   const scene = readFileSync(join(root, 'src/shared/scripts/three-scenes.ts'), 'utf8');
   const model = join(root, 'src/shared/assets/models/camm-robotic-snake.glb');
 
-  assert.match(brand, /mark\.png/);
+  for (const source of [brand, layout, company]) {
+    assert.match(source, /vertebra-lock\.webp/);
+    assert.doesNotMatch(source, /mark\.png/);
+  }
+  assert.match(study, /data-selected/);
+  assert.match(study, /01 \/ Selected/);
   assert.match(company, /camm-robotic-snake\.glb/);
   assert.match(scene, /GLTFLoader/);
   assert.match(scene, /SnakeHead/);
@@ -192,9 +199,10 @@ test('the live identity uses the supplied snake mark and an authored 3D model', 
 });
 
 test('each app hero uses its own authored Blender model', () => {
+  const scene = readFileSync(join(root, 'src/shared/scripts/three-scenes.ts'), 'utf8');
   const expected = {
-    bronzed: 'bronzed-heliostat.glb',
-    stellar: 'stellar-ritual-loom.glb',
+    bronzed: 'bronzed-solar-dial.glb',
+    stellar: 'stellar-star-compass.glb',
   };
 
   for (const [target, filename] of Object.entries(expected)) {
@@ -204,6 +212,11 @@ test('each app hero uses its own authored Blender model', () => {
     assert.ok(existsSync(model), `Missing ${target} authored hero model`);
     assert.ok(statSync(model).size > 50_000, `${filename} is too small to contain authored detail`);
   }
+
+  for (const part of ['SolarCore', 'SolarCorona', 'SolarOrbit', 'SolarGnomon', 'StarCore', 'StarOrbit', 'StarNode03', 'StarNode06', 'StarNode09']) {
+    assert.match(scene, new RegExp(part), `Three.js motion is missing ${part}`);
+  }
+  assert.doesNotMatch(scene, /HeliostatLens|FilterCarriage|LoomLeafMorning|LoomPrism/);
 });
 
 test('supporting surfaces use finished image assets instead of CSS drawings', () => {
@@ -221,8 +234,25 @@ test('supporting surfaces use finished image assets instead of CSS drawings', ()
 
   const systemAssets = readdirSync(join(root, 'src/shared/assets/art/systems')).filter((file) => file.endsWith('.webp'));
   const guideAssets = readdirSync(join(root, 'src/shared/assets/art/guides')).filter((file) => file.endsWith('.webp'));
-  assert.equal(systemAssets.length, 4);
-  assert.equal(guideAssets.length, 6);
+  const productAssets = readdirSync(join(root, 'src/shared/assets/art/products')).filter((file) => file.endsWith('.webp'));
+  assert.deepEqual(systemAssets.sort(), [
+    'artemis-signal-bow.webp',
+    'atlas-orbit-stack.webp',
+    'chronos-cadence-ring.webp',
+    'morpheus-dream-ribbon.webp',
+  ]);
+  assert.deepEqual(guideAssets.sort(), [
+    'bronzed-cloud-filter.webp',
+    'bronzed-spf-shield.webp',
+    'bronzed-uv-scale.webp',
+    'stellar-369-orbit.webp',
+    'stellar-affirmation-resonator.webp',
+    'stellar-vision-constellation.webp',
+  ]);
+  assert.deepEqual(productAssets.sort(), [
+    'bronzed-solar-symbol.webp',
+    'stellar-star-symbol.webp',
+  ]);
 });
 
 test('the Three.js worlds load authored models into a calibrated optical stage', () => {

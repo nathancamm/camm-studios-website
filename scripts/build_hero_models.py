@@ -182,32 +182,6 @@ def torus(
     return parent_to(obj, parent)
 
 
-def tube(
-    name: str,
-    points: list[tuple[float, float, float]],
-    radius: float,
-    mat: bpy.types.Material,
-    target: bpy.types.Collection,
-    *,
-    parent: bpy.types.Object | None = None,
-) -> bpy.types.Object:
-    curve_data = bpy.data.curves.new(name, "CURVE")
-    curve_data.dimensions = "3D"
-    curve_data.resolution_u = 18
-    curve_data.bevel_depth = radius
-    curve_data.bevel_resolution = 5
-    spline = curve_data.splines.new("BEZIER")
-    spline.bezier_points.add(len(points) - 1)
-    for point, coordinate in zip(spline.bezier_points, points):
-        point.co = coordinate
-        point.handle_left_type = "AUTO"
-        point.handle_right_type = "AUTO"
-    obj = bpy.data.objects.new(name, curve_data)
-    target.objects.link(obj)
-    curve_data.materials.append(mat)
-    return parent_to(obj, parent)
-
-
 def wedge(
     name: str,
     center: tuple[float, float, float],
@@ -229,6 +203,49 @@ def wedge(
     mesh.materials.append(mat)
     obj = bpy.data.objects.new(name, mesh)
     target.objects.link(obj)
+    return parent_to(obj, parent)
+
+
+def star_prism(
+    name: str,
+    location: tuple[float, float, float],
+    outer_radius: float,
+    inner_radius: float,
+    depth: float,
+    points: int,
+    mat: bpy.types.Material,
+    target: bpy.types.Collection,
+    *,
+    rotation: tuple[float, float, float] = (0.0, 0.0, 0.0),
+    parent: bpy.types.Object | None = None,
+) -> bpy.types.Object:
+    perimeter = points * 2
+    vertices: list[tuple[float, float, float]] = []
+    for y in (-depth / 2, depth / 2):
+        for index in range(perimeter):
+            angle = math.pi / 2 - index * math.pi / points
+            radius = outer_radius if index % 2 == 0 else inner_radius
+            vertices.append((math.cos(angle) * radius, y, math.sin(angle) * radius))
+
+    front = list(range(perimeter))
+    back = list(reversed(range(perimeter, perimeter * 2)))
+    sides = [
+        (index, (index + 1) % perimeter, (index + 1) % perimeter + perimeter, index + perimeter)
+        for index in range(perimeter)
+    ]
+    mesh = bpy.data.meshes.new(name)
+    mesh.from_pydata(vertices, [], [front, back, *sides])
+    mesh.materials.append(mat)
+    obj = bpy.data.objects.new(name, mesh)
+    obj.location = location
+    obj.rotation_euler = rotation
+    target.objects.link(obj)
+    bevel = obj.modifiers.new("MachinedEdge", "BEVEL")
+    bevel.width = min(0.055, depth * 0.22)
+    bevel.segments = 4
+    bevel.limit_method = "ANGLE"
+    bpy.context.view_layer.objects.active = obj
+    bpy.ops.object.modifier_apply(modifier=bevel.name)
     return parent_to(obj, parent)
 
 
@@ -305,164 +322,198 @@ def build_snake(target: bpy.types.Collection, mats: dict[str, bpy.types.Material
 
 
 def build_bronzed(target: bpy.types.Collection, mats: dict[str, bpy.types.Material]) -> bpy.types.Object:
-    root = empty("BronzedHeliostat", target)
-    base = empty("HeliostatBase", target, root)
-    rounded_box("AzimuthPlinth", (0, 0.18, -1.52), (4.25, 1.18, 0.58), 0.22, mats["ceramic"], target, parent=base, bevel_segments=7)
-    rounded_box("AzimuthRecess", (0, -0.44, -1.4), (3.35, 0.12, 0.16), 0.06, mats["graphite"], target, parent=base)
-    torus("AzimuthRing", (0.25, 0.08, -0.22), 1.62, 0.12, mats["silver"], target, parent=base)
-    torus("AzimuthGlassTrack", (0.25, -0.08, -0.22), 1.37, 0.055, mats["glass"], target, parent=base)
-
-    lens_group = empty("HeliostatLens", target, root)
-    lens_group.location = (0.32, -0.22, 0.15)
-    lens_group.rotation_euler = (math.radians(-4), math.radians(-13), math.radians(-6))
-    cylinder("FresnelLens", (0, 0, 0), 1.17, 0.3, mats["glass"], target, rotation=(math.pi / 2, 0, 0), parent=lens_group, vertices=96)
-    torus("LensGimbal", (0, 0, 0), 1.25, 0.095, mats["silver"], target, parent=lens_group)
-    for index in range(1, 19):
-        torus(f"FresnelGroove_{index:02d}", (0, -0.18, 0), index * 0.058, 0.008, mats["graphite_soft"], target, parent=lens_group)
+    root = empty("BronzedSolarDial", target)
+    base = empty("SolarBase", target, root)
+    rounded_box("SolarPlinth", (0, 0.24, -1.82), (4.55, 1.18, 0.5), 0.19, mats["ceramic_white"], target, parent=base, bevel_segments=7)
+    rounded_box("SolarPlinthInset", (0, -0.38, -1.73), (3.52, 0.12, 0.12), 0.04, mats["graphite"], target, parent=base)
+    rounded_box("SolarAxle", (0, 0.13, 0.22), (3.65, 0.3, 0.3), 0.09, mats["silver"], target, parent=base)
 
     for side in (-1, 1):
-        x = side * 1.36 + 0.32
-        rounded_box(f"GimbalArm_{'L' if side < 0 else 'R'}", (x, 0.02, 0.0), (0.22, 0.42, 2.15), 0.08, mats["silver"], target, parent=root)
-        cylinder(f"GimbalBearing_{'L' if side < 0 else 'R'}", (x, -0.28, 0.08), 0.22, 0.22, mats["graphite"], target, rotation=(math.pi / 2, 0, 0), parent=root)
-
-    gnomon = rounded_box("HeliostatGnomon", (0.38, -0.6, 0.58), (0.16, 0.2, 2.45), 0.06, mats["glass"], target, rotation=(0, math.radians(-14), 0), parent=root)
-    gnomon.rotation_euler.y = math.radians(-14)
-
-    filters = empty("FilterCarriage", target, root)
-    for index in range(4):
-        z = 0.95 - index * 0.52
-        plate = rounded_box(
-            f"Filter_{index + 1}",
-            (-2.0 + index * 0.06, -0.25 - index * 0.04, z),
-            (0.72, 0.12, 0.38),
-            0.08,
-            mats["orange_glass"] if index == 3 else mats["glass"],
-            target,
-            rotation=(0, math.radians(-8), math.radians(-3)),
-            parent=filters,
-        )
-        rounded_box(f"FilterRail_{index + 1}", (-2.48, -0.16, z), (0.42, 0.1, 0.08), 0.03, mats["graphite"], target, parent=filters)
-        plate["filter_index"] = index + 1
-
-    for index in range(12):
-        angle = index * math.tau / 12
-        x = 0.25 + math.cos(angle) * 1.72
-        z = -0.22 + math.sin(angle) * 1.72
+        x = side * 1.62
         rounded_box(
-            f"Shutter_{index + 1:02d}",
-            (x, -0.25, z),
-            (0.16, 0.12, 0.08 if index % 3 else 0.15),
-            0.025,
-            mats["orange"] if index == 2 else mats["graphite"],
+            f"SolarSupport_{'L' if side < 0 else 'R'}",
+            (x, 0.14, -0.82),
+            (0.27, 0.46, 1.86),
+            0.1,
+            mats["graphite_soft"],
             target,
-            rotation=(0, -angle, 0),
             parent=base,
         )
+        cylinder(
+            f"SolarBearing_{'L' if side < 0 else 'R'}",
+            (x, -0.1, 0.22),
+            0.25,
+            0.23,
+            mats["graphite"],
+            target,
+            rotation=(math.pi / 2, 0, 0),
+            parent=base,
+            vertices=48,
+        )
+        cylinder(
+            f"SolarBearingPin_{'L' if side < 0 else 'R'}",
+            (x, -0.25, 0.22),
+            0.105,
+            0.12,
+            mats["silver"],
+            target,
+            rotation=(math.pi / 2, 0, 0),
+            parent=base,
+            vertices=32,
+        )
 
-    beam = tube(
-        "SolarBeam",
-        [(2.7, -0.58, 1.75), (1.5, -0.6, 1.05), (0.38, -0.62, 0.32), (-0.8, -0.64, -1.0)],
-        0.045,
-        mats["orange"],
-        target,
-        parent=root,
-    )
-    beam["signal"] = "uv-path"
-    root.rotation_euler = (math.radians(-3), math.radians(-6), math.radians(-2))
+    center = (0, -0.22, 0.24)
+    core = empty("SolarCore", target, root)
+    core.location = center
+    cylinder("SolarCeramicCore", (0, 0, 0), 0.9, 0.38, mats["ceramic_white"], target, rotation=(math.pi / 2, 0, 0), parent=core, vertices=96)
+    cylinder("SolarHub", (0, -0.23, 0), 0.28, 0.12, mats["silver"], target, rotation=(math.pi / 2, 0, 0), parent=core, vertices=64)
+    cylinder("SolarHubCap", (0, -0.31, 0), 0.12, 0.06, mats["graphite"], target, rotation=(math.pi / 2, 0, 0), parent=core, vertices=48)
+
+    corona = empty("SolarCorona", target, root)
+    corona.location = center
+    for index in range(12):
+        angle = index * math.tau / 12
+        ray_distance = 1.37
+        x = math.cos(angle) * ray_distance
+        z = math.sin(angle) * ray_distance
+        rounded_box(
+            f"SolarRay_{index + 1:02d}",
+            (x, 0.03, z),
+            (0.78, 0.24, 0.23),
+            0.075,
+            mats["ceramic_white"],
+            target,
+            rotation=(0, -angle, 0),
+            parent=corona,
+            bevel_segments=5,
+        )
+        cylinder(
+            f"SolarRayJoint_{index + 1:02d}",
+            (math.cos(angle) * 1.02, -0.09, math.sin(angle) * 1.02),
+            0.085,
+            0.14,
+            mats["silver"],
+            target,
+            rotation=(math.pi / 2, 0, 0),
+            parent=corona,
+            vertices=32,
+        )
+
+    orbit = empty("SolarOrbit", target, root)
+    orbit.location = center
+    torus("SolarCalibrationOrbit", (0, 0.08, 0), 2.02, 0.035, mats["orange"], target, parent=orbit)
+    for index in range(4):
+        angle = math.radians(18 + index * 90)
+        sphere(
+            f"SolarOrbitNode_{index + 1:02d}",
+            (math.cos(angle) * 2.02, -0.02, math.sin(angle) * 2.02),
+            0.075,
+            mats["silver"],
+            target,
+            parent=orbit,
+            segments=20,
+        )
+
+    gnomon = empty("SolarGnomon", target, root)
+    gnomon.location = center
+    gnomon.rotation_euler.y = math.radians(-18)
+    rounded_box("SolarPointer", (0.72, -0.36, 0), (1.48, 0.12, 0.11), 0.04, mats["orange"], target, parent=gnomon)
+    cylinder("SolarPointerPivot", (0, -0.38, 0), 0.16, 0.08, mats["graphite"], target, rotation=(math.pi / 2, 0, 0), parent=gnomon, vertices=48)
+
+    root.rotation_euler = (math.radians(-2), math.radians(-5), math.radians(-1))
     return root
 
 
 def build_stellar(target: bpy.types.Collection, mats: dict[str, bpy.types.Material]) -> bpy.types.Object:
-    root = empty("StellarRitualLoom", target)
-    leaves = [
-        ("LoomLeafMorning", math.radians(90), 3),
-        ("LoomLeafAfternoon", math.radians(210), 6),
-        ("LoomLeafEvening", math.radians(330), 9),
-    ]
-    for leaf_index, (name, angle, count) in enumerate(leaves):
-        center_x = math.cos(angle) * 1.28
-        center_z = math.sin(angle) * 1.28
+    root = empty("StellarStarCompass", target)
+    base = empty("StarBase", target, root)
+    rounded_box("StarPlinth", (0, 0.24, -1.82), (4.45, 1.14, 0.5), 0.19, mats["ceramic_white"], target, parent=base, bevel_segments=7)
+    rounded_box("StarPlinthInset", (0, -0.37, -1.73), (3.4, 0.12, 0.12), 0.04, mats["graphite"], target, parent=base)
+    rounded_box("StarAxle", (0, 0.13, 0.22), (3.55, 0.28, 0.28), 0.085, mats["silver"], target, parent=base)
+
+    for side in (-1, 1):
+        x = side * 1.58
         rounded_box(
-            f"SpineArm_{leaf_index + 1}",
-            (math.cos(angle) * 0.88, 0.22, math.sin(angle) * 0.88),
-            (1.75, 0.14, 0.15),
-            0.055,
-            mats["silver"],
+            f"StarSupport_{'L' if side < 0 else 'R'}",
+            (x, 0.14, -0.82),
+            (0.27, 0.44, 1.86),
+            0.1,
+            mats["graphite_soft"],
             target,
-            rotation=(0, -angle, 0),
-            parent=root,
+            parent=base,
         )
-        leaf = empty(name, target, root)
-        leaf.location = (center_x, 0, center_z)
-        leaf.rotation_euler.y = -angle
-        rounded_box(
-            f"{name}Glass",
-            (0, 0, 0),
-            (2.05, 0.32, 0.9),
-            0.26,
-            mats["frosted_glass"],
-            target,
-            parent=leaf,
-            bevel_segments=7,
-        )
-        rounded_box(f"{name}Rail", (0, 0.02, 0), (1.42, 0.08, 0.08), 0.035, mats["silver"], target, parent=leaf)
-        hinge_x = math.cos(angle) * 0.28
-        hinge_z = math.sin(angle) * 0.28
         cylinder(
-            f"Hinge_{leaf_index + 1}",
-            (hinge_x, -0.1, hinge_z),
-            0.19,
-            0.34,
+            f"StarBearing_{'L' if side < 0 else 'R'}",
+            (x, -0.1, 0.22),
+            0.24,
+            0.23,
             mats["graphite"],
             target,
             rotation=(math.pi / 2, 0, 0),
-            parent=root,
+            parent=base,
+            vertices=48,
         )
-        columns = math.ceil(count / 3)
-        for node_index in range(count):
-            row = node_index % 3
-            column = node_index // 3
-            along = -0.52 + (column / max(1, columns - 1)) * 1.04 if columns > 1 else 0
-            across = (row - 1) * 0.18
-            local_x = along
-            local_z = across
-            world_x = center_x + math.cos(-angle) * local_x + math.sin(-angle) * local_z
-            world_z = center_z - math.sin(-angle) * local_x + math.cos(-angle) * local_z
-            sphere(
-                f"Node_{count}_{node_index + 1:02d}",
-                (world_x, -0.27, world_z),
-                0.055 if count < 9 else 0.046,
-                mats["lavender"] if node_index % 3 == 0 else mats["silver"],
-                target,
-                parent=root,
-                segments=20,
-            )
-
-    bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=3, radius=0.54, location=(0, -0.34, 0))
-    prism = bpy.context.object
-    prism.name = "LoomPrism"
-    prism.rotation_euler = (math.radians(18), math.radians(28), math.radians(9))
-    prism.data.materials.append(mats["glass"])
-    move_to_collection(prism, target)
-    prism.parent = root
-
-    for index, (_, angle, _) in enumerate(leaves, start=1):
-        tube(
-            f"LoomFilament_{index}",
-            [
-                (math.cos(angle - 0.72) * 0.46, -0.42, math.sin(angle - 0.72) * 0.46),
-                (math.cos(angle - 0.26) * 1.42, -0.43, math.sin(angle - 0.26) * 1.42),
-                (math.cos(angle) * 2.2, -0.44, math.sin(angle) * 2.2),
-                (math.cos(angle + 0.26) * 1.42, -0.43, math.sin(angle + 0.26) * 1.42),
-                (math.cos(angle + 0.72) * 0.46, -0.42, math.sin(angle + 0.72) * 0.46),
-            ],
-            0.04,
-            mats["lavender"],
+        cylinder(
+            f"StarBearingPin_{'L' if side < 0 else 'R'}",
+            (x, -0.25, 0.22),
+            0.1,
+            0.12,
+            mats["silver"],
             target,
-            parent=root,
+            rotation=(math.pi / 2, 0, 0),
+            parent=base,
+            vertices=32,
         )
-    rounded_box("LoomSlider", (1.42, -0.46, -0.82), (0.3, 0.19, 0.2), 0.07, mats["graphite"], target, rotation=(0, math.radians(-24), 0), parent=root)
-    root.rotation_euler = (math.radians(-3), math.radians(6), math.radians(-2))
+
+    center = (0, -0.22, 0.24)
+    star = empty("StarCore", target, root)
+    star.location = center
+    star_prism("StarGraphiteBody", (0, 0, 0), 1.26, 0.53, 0.38, 8, mats["graphite_soft"], target, parent=star)
+    star_prism("StarCeramicFacet", (0, -0.24, 0), 0.5, 0.22, 0.1, 8, mats["ceramic_white"], target, rotation=(0, math.radians(22.5), 0), parent=star)
+    cylinder("StarPivot", (0, -0.32, 0), 0.16, 0.09, mats["graphite"], target, rotation=(math.pi / 2, 0, 0), parent=star, vertices=48)
+
+    orbit = empty("StarOrbit", target, root)
+    orbit.location = center
+    torus("StarCompassRing", (0, 0.1, 0), 1.68, 0.055, mats["silver"], target, parent=orbit)
+    torus("StarLilacOrbit", (0, -0.06, 0), 1.92, 0.028, mats["lavender"], target, parent=orbit)
+    node_specs = [
+        ("StarNode03", math.radians(24)),
+        ("StarNode06", math.radians(144)),
+        ("StarNode09", math.radians(264)),
+    ]
+    for name, angle in node_specs:
+        x = math.cos(angle) * 1.92
+        z = math.sin(angle) * 1.92
+        sphere(name, (x, -0.16, z), 0.105, mats["silver"], target, parent=orbit, segments=24)
+        rounded_box(
+            f"{name}Mount",
+            (math.cos(angle) * 1.78, 0.02, math.sin(angle) * 1.78),
+            (0.3, 0.12, 0.08),
+            0.03,
+            mats["graphite"],
+            target,
+            rotation=(0, -angle, 0),
+            parent=orbit,
+        )
+
+    for index in range(12):
+        angle = index * math.tau / 12
+        sphere(
+            f"StarCalibrationPin_{index + 1:02d}",
+            (math.cos(angle) * 1.5, 0.0, math.sin(angle) * 1.5),
+            0.035,
+            mats["lavender"] if index in (2, 5, 8) else mats["graphite_soft"],
+            target,
+            parent=orbit,
+            segments=16,
+        )
+
+    counterweight = empty("StarCounterweight", target, root)
+    counterweight.location = (0, -0.22, -1.28)
+    rounded_box("StarCounterweightStem", (0, 0.05, 0.37), (0.11, 0.11, 0.7), 0.04, mats["silver"], target, parent=counterweight)
+    sphere("StarCounterweightMass", (0, 0, 0), 0.22, mats["graphite"], target, parent=counterweight, segments=32)
+
+    root.rotation_euler = (math.radians(-2), math.radians(4), math.radians(-1))
     return root
 
 
@@ -553,15 +604,13 @@ def main() -> None:
     render_collection = collection("RENDER_ONLY")
     mats = {
         "glass": material("OpticalGlass", (0.78, 0.84, 0.88, 1), roughness=0.055, transmission=0.92, ior=1.46),
-        "frosted_glass": material("FrostedOpticalGlass", (0.72, 0.79, 0.84, 1), roughness=0.13, transmission=0.72, ior=1.46),
         "lens": material("SensorLens", (0.06, 0.09, 0.12, 1), roughness=0.08, metallic=0.08, transmission=0.32, ior=1.52),
         "graphite": material("Graphite", (0.035, 0.05, 0.065, 1), metallic=0.62, roughness=0.2),
         "graphite_soft": material("GraphiteSoft", (0.11, 0.14, 0.17, 1), metallic=0.25, roughness=0.32),
         "silver": material("BrushedSilver", (0.56, 0.62, 0.67, 1), metallic=0.72, roughness=0.2),
-        "ceramic": material("SatinCeramic", (0.82, 0.86, 0.89, 1), roughness=0.25),
+        "ceramic_white": material("CoolWhiteCeramic", (0.91, 0.94, 0.97, 1), roughness=0.28),
         "orange": material("BronzedSignal", (0.89, 0.18, 0.035, 1), roughness=0.18, emission=(0.89, 0.18, 0.035, 1), emission_strength=1.5),
-        "orange_glass": material("BronzedFilter", (0.9, 0.32, 0.08, 1), roughness=0.08, transmission=0.8, ior=1.46),
-        "lavender": material("StellarFilament", (0.28, 0.32, 0.9, 1), roughness=0.17, emission=(0.28, 0.32, 0.9, 1), emission_strength=0.7),
+        "lavender": material("StellarFilament", (0.48, 0.42, 0.9, 1), roughness=0.2, emission=(0.48, 0.42, 0.9, 1), emission_strength=0.55),
     }
 
     if args.model == "snake":
