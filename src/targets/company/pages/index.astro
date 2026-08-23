@@ -4,16 +4,11 @@ import BaseLayout from '@shared/layouts/BaseLayout.astro';
 import Nav from '@shared/components/Nav.astro';
 import Footer from '@shared/components/Footer.astro';
 import ThreeScene from '@shared/components/ThreeScene.astro';
-import SystemCard from '@shared/components/SystemCard.astro';
 import mark from '@shared/assets/brand/concepts/vertebra-lock.webp';
 import bronzedIcon from '@shared/assets/product/bronzed-icon.png';
 import stellarIcon from '@shared/assets/product/stellar-icon.png';
 import bronzedPortalArt from '@shared/assets/art/products/bronzed-solar-symbol.webp';
 import stellarPortalArt from '@shared/assets/art/products/stellar-star-symbol.webp';
-import artemisArt from '@shared/assets/art/systems/artemis-signal-bow.webp';
-import atlasArt from '@shared/assets/art/systems/atlas-orbit-stack.webp';
-import morpheusArt from '@shared/assets/art/systems/morpheus-dream-ribbon.webp';
-import chronosArt from '@shared/assets/art/systems/chronos-cadence-ring.webp';
 import { companySite } from '@shared/data/site';
 import '@shared/styles/company.css';
 
@@ -53,13 +48,13 @@ const structuredData = {
 const operatingLoop = [
   {
     number: '01',
-    title: 'Research the store',
-    body: 'Ideas start in App Store data. Artemis scans search terms and categories to find demand that existing apps serve poorly.',
+    title: 'Start with a real problem',
+    body: 'Every app begins with a problem people already have, not a feature idea looking for an audience.',
   },
   {
     number: '02',
-    title: 'Validate before building',
-    body: 'An idea becomes a brief only when searches, reviews, and the competition all say the need is real.',
+    title: 'Check it is worth building',
+    body: 'An idea only moves forward once the studio is confident the need is real and can be served well by a small app.',
   },
   {
     number: '03',
@@ -68,40 +63,8 @@ const operatingLoop = [
   },
   {
     number: '04',
-    title: 'Operate and improve',
-    body: 'Atlas gathers sales, subscriptions, advertising, and review data nightly. That data decides what gets improved next.',
-  },
-];
-
-const systems = [
-  {
-    name: 'Artemis',
-    role: 'Keyword research',
-    kind: 'artemis' as const,
-    art: artemisArt,
-    description: 'A command line tool that mines App Store search data to surface niches where demand outpaces the apps serving it.',
-  },
-  {
-    name: 'Atlas',
-    role: 'Studio data',
-    kind: 'atlas' as const,
-    art: atlasArt,
-    description: 'One database that collects sales, subscriptions, advertising, attribution, and analytics for every app, every night.',
-  },
-  {
-    name: 'Morpheus',
-    role: 'Creative production',
-    kind: 'morpheus' as const,
-    art: morpheusArt,
-    status: 'In development',
-    description: 'A pipeline for producing marketing creative and App Store assets without a design team.',
-  },
-  {
-    name: 'Chronos',
-    role: 'Studio planning',
-    kind: 'chronos' as const,
-    art: chronosArt,
-    description: 'Turns the studio backlog into daily and weekly plans, so limited hours go where they matter most.',
+    title: 'Keep improving',
+    body: 'Live apps are watched closely and updated often. Reviews and support requests decide what gets improved next.',
   },
 ];
 
@@ -109,7 +72,7 @@ const questions = [
   ['What is Camm Studios?', 'An independent app studio run by a single developer. It designs, builds, and operates its own iOS apps rather than working for clients.'],
   ['What apps are live?', 'Bronzed, a tan timer and UV index app, and Stellar, a daily affirmations and journaling app. Both are on the App Store.'],
   ['Is Camm Studios an agency?', 'No. The studio builds and operates its own products only. It does not take client or contract work.'],
-  ['How are new apps chosen?', 'By evidence. The studio looks for App Store searches that current apps answer poorly, and only builds when the demand shows up in the data.'],
+  ['How are new apps chosen?', 'Slowly and carefully. An app only gets built when the problem is clear and the studio believes it can solve it better than what already exists.'],
   ['How does the studio use AI?', 'For research, prototyping, and the repetitive parts of shipping. Product decisions, releases, and support are handled by a person.'],
   ['Where do I get product support?', 'Each app has its own site with a support page. Follow the product links below, or email info@cammstudios.com.'],
 ];
@@ -122,7 +85,7 @@ const questions = [
   image={socialImage}
   structuredData={structuredData}
 >
-  <Nav links={[{ href: '#operate', label: 'How it works' }, { href: '#systems', label: 'Systems' }, { href: '#apps', label: 'Apps' }]} />
+  <Nav links={[{ href: '#operate', label: 'How it works' }, { href: '#apps', label: 'Apps' }]} />
   <main id="main">
     <section class="company-hero shell">
       <div class="company-hero__copy">
@@ -179,21 +142,10 @@ const questions = [
       </div>
     </section>
 
-    <section class="systems-section shell" id="systems" aria-labelledby="systems-title">
-      <header class="section-heading">
-        <p class="eyebrow">Studio systems / 03</p>
-        <h2 id="systems-title">The tools behind the products.</h2>
-        <p>Running a portfolio solo only works with good tooling. These are the internal systems that keep the studio moving.</p>
-      </header>
-      <div class="systems-grid">
-        {systems.map((system) => <SystemCard {...system} />)}
-      </div>
-    </section>
-
     <section class="apps-section" id="apps" aria-labelledby="apps-title">
       <div class="shell">
         <header class="section-heading section-heading--wide">
-          <p class="eyebrow">Live products / 04</p>
+          <p class="eyebrow">Live products / 03</p>
           <h2 id="apps-title">Two problems.<br />Two focused apps.</h2>
         </header>
         <div class="apps-grid">
@@ -215,7 +167,7 @@ const questions = [
 
     <section class="company-faq shell" aria-labelledby="company-faq-title">
       <header class="section-heading">
-        <p class="eyebrow">Questions / 05</p>
+        <p class="eyebrow">Questions / 04</p>
         <h2 id="company-faq-title">Straight answers about the studio.</h2>
       </header>
       <div class="faq-list">

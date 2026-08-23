@@ -271,14 +271,14 @@ test('finished artwork has restrained depth motion and reduced-motion safeguards
   }
 });
 
-test('the company site exposes the original glass monogram and real internal systems', () => {
+test('the company site shows the glass monogram and keeps internal operations private', () => {
   const company = readFileSync(join(root, 'dist/company/index.html'), 'utf8');
 
   assert.match(company, /data-three-scene=["']monogram["']/i);
-  assert.match(company, /id=["']systems["']/i);
   for (const system of ['Artemis', 'Atlas', 'Morpheus', 'Chronos']) {
-    assert.match(company, new RegExp(`>${system}<`, 'i'), `Company page is missing ${system}`);
+    assert.doesNotMatch(company, new RegExp(system, 'i'), `Company page leaks internal tool ${system}`);
   }
+  assert.doesNotMatch(company, /App Store search data|keyword research|attribution/i);
 });
 
 test('each app has its own Three.js product world and at least three SEO articles', () => {
