@@ -1,0 +1,45 @@
+---
+type SceneName = 'monogram' | 'bronzed' | 'stellar';
+
+interface Props {
+  scene: SceneName;
+  label: string;
+  accent?: string;
+  secondary?: string;
+  class?: string;
+}
+
+const {
+  scene,
+  label,
+  accent = '#f06a4f',
+  secondary = '#8fc6ff',
+  class: className = '',
+} = Astro.props;
+---
+
+<div class:list={['three-scene', className]} data-three-frame>
+  <canvas
+    data-three-scene={scene}
+    data-accent={accent}
+    data-secondary={secondary}
+    aria-label={label}
+    role="img"
+  >{label}</canvas>
+  <div class="three-scene__fallback" aria-hidden="true">
+    <span class="three-scene__arc"></span>
+    <span class="three-scene__signal"></span>
+  </div>
+</div>
+
+<script>
+  const loadScene = () => import('../scripts/three-scenes');
+  const idleWindow = window as unknown as {
+    requestIdleCallback?: (callback: IdleRequestCallback, options?: IdleRequestOptions) => number;
+  };
+  if (idleWindow.requestIdleCallback) {
+    idleWindow.requestIdleCallback(() => void loadScene(), { timeout: 1200 });
+  } else {
+    setTimeout(() => void loadScene(), 0);
+  }
+</script>

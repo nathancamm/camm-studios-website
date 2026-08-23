@@ -1,36 +1,63 @@
 ---
 import { getCollection } from 'astro:content';
-import { Picture } from 'astro:assets';
+import { getImage } from 'astro:assets';
 import BaseLayout from '@shared/layouts/BaseLayout.astro';
 import Nav from '@shared/components/Nav.astro';
 import Footer from '@shared/components/Footer.astro';
-import blogUv from '@shared/assets/art/blog-uv.png';
-import blog369 from '@shared/assets/art/blog-369.png';
-import { getCurrentApp } from '@shared/data/apps';
+import app from '@app-data';
 import '@shared/styles/blog.css';
 
-const app = getCurrentApp();
 const posts = (await getCollection('blog', ({ data }) => data.app === app.target && !data.draft))
   .sort((a, b) => b.data.publicationDate.valueOf() - a.data.publicationDate.valueOf());
-const images = { 'blog-uv': blogUv, 'blog-369': blog369 };
+const intro = app.target === 'bronzed'
+  ? 'Clear answers about UV, SPF, weather, and planning time outdoors.'
+  : 'Grounded ways to use affirmations, journaling, vision boards, and daily reflection.';
+const socialAsset = await getImage({ src: app.icon, width: 512, format: 'webp', quality: 86 });
 ---
 
-<BaseLayout title={`${app.name} Journal — Practical guides`} description={app.blogSummary} canonical={new URL('/blog', Astro.site)} themeClass={app.themeClass}>
-  <Nav product={app.name} links={[{ href: '/', label: app.name }, { href: '/blog', label: 'Journal' }, { href: '/support', label: 'Support' }]} storeUrl={app.storeUrl} />
+<BaseLayout
+  title={`${app.name} Guides — Practical answers and routines`}
+  description={intro}
+  canonical={new URL('/blog', Astro.site)}
+  image={new URL(socialAsset.src, Astro.site)}
+  themeClass={app.themeClass}
+>
+  <Nav product={app.name} links={[{ href: '/', label: app.name }, { href: '/blog', label: 'Guides' }, { href: '/support', label: 'Support' }]} storeUrl={app.storeUrl} />
   <main id="main" class="blog-index shell">
-    <header class="blog-index__header" data-reveal>
-      <p class="eyebrow">{app.name} Journal</p>
-      <h1>Useful context for a more intentional day.</h1>
-      <p class="lede">Clear guides built around the same problem {app.name} helps you solve.</p>
+    <header class="blog-index__header">
+      <div>
+        <p class="eyebrow" data-reveal>{app.name} guides</p>
+        <h1 data-word-reveal>Useful context before the next step.</h1>
+      </div>
+      <div class="blog-index__intro" data-reveal>
+        <p>{intro}</p>
+        <span>{posts.length.toString().padStart(2, '0')} published guides</span>
+      </div>
     </header>
-    <section aria-label="Articles">
-      {posts.map((post) => (
-        <a class="post-card" href={`/blog/${post.data.slug}`}>
-          <div><p class="post-card__meta">{post.data.publicationDate.toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</p><h2>{post.data.title}</h2><p>{post.data.summary}</p><span class="button">Read article</span></div>
-          <div class="post-card__image"><Picture src={images[post.data.heroImage]} alt={post.data.alt} widths={[480, 720, 960]} sizes="(max-width: 800px) calc(100vw - 32px), 38vw" formats={['avif', 'webp']} /></div>
+
+    <section class="post-grid" aria-label={`${app.name} articles`}>
+      {posts.map((post, index) => (
+        <a class="post-card" href={`/blog/${post.data.slug}`} data-reveal>
+          <div class="post-card__visual" aria-hidden="true">
+            <span class="post-card__number">{(index + 1).toString().padStart(2, '0')}</span>
+            <div class="post-card__orbit"><span></span><span></span><span></span></div>
+            <span class="post-card__topic">{post.data.keywords[0]}</span>
+          </div>
+          <div class="post-card__body">
+            <p>{post.data.publicationDate.toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            <h2>{post.data.title}</h2>
+            <span>Read guide ↗</span>
+          </div>
         </a>
       ))}
     </section>
+
+    <aside class="editorial-note" data-reveal>
+      <p class="eyebrow">Editorial approach</p>
+      <p>{app.target === 'bronzed'
+        ? 'Health and UV guidance is sourced, limitations stay visible, and the app is never presented as protection from sun damage.'
+        : 'Reflection practices are presented as tools for attention and habit, never as guarantees of external outcomes.'}</p>
+    </aside>
   </main>
   <Footer product={app.name} />
 </BaseLayout>

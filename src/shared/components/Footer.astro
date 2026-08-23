@@ -8,8 +8,8 @@ const { product } = Astro.props;
 
 <footer class="site-footer">
   <div class="footer__top">
-    <p class="eyebrow">Camm Studios</p>
-    <p class="footer__line">Small apps. Clear purpose. Built to get better.</p>
+    <p class="eyebrow">Camm Studios / Independent app company</p>
+    <p class="footer__line">Focused products.<br />Shared intelligence.<br />Compounding craft.</p>
   </div>
   <div class="footer__bottom">
     <p>© {new Date().getFullYear()} Camm Studios</p>
@@ -18,7 +18,9 @@ const { product } = Astro.props;
       <a href="/support">Support</a>
       <a href="/privacy">Privacy</a>
       <a href="/terms">Terms</a>
-      <a href="https://www.cammstudios.com">Company</a>
+      {product
+        ? <a href="https://www.cammstudios.com">Company</a>
+        : <><a href="https://bronzed.cammstudios.com">Bronzed</a><a href="https://stellar.cammstudios.com">Stellar</a></>}
     </nav>
   </div>
 </footer>

@@ -13,6 +13,9 @@ if (!target || !(target in targets)) {
 }
 
 const source = target === 'company' ? './src/targets/company' : './src/targets/app';
+const appData = target === 'stellar'
+  ? './src/shared/data/apps/stellar.ts'
+  : './src/shared/data/apps/bronzed.ts';
 
 export default defineConfig({
   site: targets[target as keyof typeof targets],
@@ -29,6 +32,7 @@ export default defineConfig({
     resolve: {
       alias: {
         '@shared': new URL('./src/shared', import.meta.url).pathname,
+        '@app-data': new URL(appData, import.meta.url).pathname,
       },
     },
   },

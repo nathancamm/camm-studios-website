@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
-  <title id="title">Camm Studios</title>
-  <path d="M12 40V29C12 17.4 21.4 8 33 8s21 9.4 21 21v11" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
-  <path d="M16 50h25l10-10" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="15" cy="50" r="6" fill="#E4571A"/>
+  <title id="title">Camm Studios aperture mark</title>
+  <path d="M47 16A22 22 0 1 0 47 48" fill="none" stroke="#F4F2EA" stroke-width="9" stroke-linecap="round"/>
+  <path d="M48 20A16 16 0 1 0 48 44" fill="none" stroke="#F4F2EA" stroke-width="2" stroke-linecap="round" opacity=".38"/>
+  <circle cx="49" cy="32" r="4" fill="#F06A4F"/>
 </svg>

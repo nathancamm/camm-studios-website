@@ -1,7 +1,6 @@
 ---
 import LegalLayout from '@shared/layouts/LegalLayout.astro';
-import { getCurrentApp } from '@shared/data/apps';
-const app = getCurrentApp();
+import app from '@app-data';
 const isBronzed = app.target === 'bronzed';
 ---
 

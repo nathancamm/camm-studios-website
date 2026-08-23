@@ -5,8 +5,6 @@ title: "UV Index explained: what each level means for your time outdoors."
 summary: "A practical guide to the global UV scale, when sun protection matters, and why temperature can mislead you."
 publicationDate: 2026-08-16
 updatedDate: 2026-08-16
-heroImage: blog-uv
-alt: "A sequence of abstract cobalt sun dials showing increasing orange UV signals."
 keywords:
   - UV Index explained
   - UV levels

@@ -5,8 +5,6 @@ title: "How to use the 369 manifestation method as a daily ritual."
 summary: "A grounded way to use three daily writing moments for attention, reflection, and steady habit building."
 publicationDate: 2026-08-16
 updatedDate: 2026-08-16
-heroImage: blog-369
-alt: "Three cobalt circles linked by a return path and marked with three, six, and nine orange points."
 keywords:
   - 369 method
   - manifestation journal

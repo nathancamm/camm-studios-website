@@ -1,0 +1,64 @@
+---
+type SystemKind = 'artemis' | 'atlas' | 'morpheus' | 'chronos';
+
+interface Props {
+  name: string;
+  role: string;
+  description: string;
+  kind: SystemKind;
+  status?: string;
+}
+
+const { name, role, description, kind, status } = Astro.props;
+---
+
+<article class="system-card" data-reveal>
+  <header class="system-card__header">
+    <div>
+      <h3>{name}</h3>
+      <p>{role}</p>
+    </div>
+    {status && <span>{status}</span>}
+  </header>
+  <div class:list={['system-card__visual', `system-card__visual--${kind}`]} aria-hidden="true">
+    {kind === 'artemis' && (
+      <svg viewBox="0 0 520 320">
+        <g class="diagram-orbits">
+          <ellipse cx="260" cy="172" rx="192" ry="94" />
+          <ellipse cx="260" cy="172" rx="136" ry="66" />
+          <ellipse cx="260" cy="172" rx="80" ry="38" />
+        </g>
+        <path class="diagram-scan" d="M260 42V290" />
+        <g class="diagram-points"><circle cx="106" cy="159" r="4" /><circle cx="182" cy="114" r="4" /><circle cx="319" cy="124" r="5" /><circle cx="414" cy="181" r="4" /><circle cx="260" cy="172" r="9" /></g>
+      </svg>
+    )}
+    {kind === 'atlas' && (
+      <svg viewBox="0 0 520 320">
+        <g class="diagram-planes">
+          <path d="M260 58 424 142 260 226 96 142Z" />
+          <path d="M260 104 404 178 260 252 116 178Z" />
+          <path d="M260 150 382 212 260 274 138 212Z" />
+        </g>
+        <g class="diagram-columns"><path d="M260 58V274" /><path d="M96 142 138 212" /><path d="M424 142 382 212" /></g>
+        <circle class="diagram-core" cx="260" cy="166" r="28" />
+      </svg>
+    )}
+    {kind === 'morpheus' && (
+      <svg viewBox="0 0 520 320">
+        <g class="diagram-frames"><rect x="76" y="74" width="122" height="172" rx="4" /><rect x="199" y="74" width="122" height="172" rx="4" /><rect x="322" y="74" width="122" height="172" rx="4" /></g>
+        <path class="diagram-ribbon" d="M104 197C156 106 205 106 260 160s104 54 156-37" />
+        <path class="diagram-ribbon diagram-ribbon--ghost" d="M104 223C156 132 205 132 260 186s104 54 156-37" />
+        <circle class="diagram-core" cx="260" cy="160" r="8" />
+      </svg>
+    )}
+    {kind === 'chronos' && (
+      <svg viewBox="0 0 520 320">
+        <g class="diagram-time"><circle cx="260" cy="166" r="120" /><circle cx="260" cy="166" r="82" /><circle cx="260" cy="166" r="44" /></g>
+        <path class="diagram-hand" d="M260 166 260 70M260 166l72 42" />
+        <g class="diagram-ticks"><path d="M260 38V54M388 166H372M260 294V278M132 166H148" /></g>
+        <circle class="diagram-core" cx="260" cy="166" r="9" />
+      </svg>
+    )}
+  </div>
+  <p class="system-card__description">{description}</p>
+</article>

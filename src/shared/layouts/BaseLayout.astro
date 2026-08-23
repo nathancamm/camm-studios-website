@@ -36,6 +36,8 @@ const rssUrl = target === 'bronzed' || target === 'stellar' ? new URL('/rss.xml'
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="color-scheme" content="dark" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -70,70 +72,8 @@ const rssUrl = target === 'bronzed' || target === 'stellar' ? new URL('/rss.xml'
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <slot />
-    <script is:inline>
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const menuButton = document.querySelector('.menu-toggle');
-      const menuPanel = document.querySelector('.nav-panel');
-
-      const setMenu = (open) => {
-        if (!menuButton || !menuPanel) return;
-        menuButton.setAttribute('aria-expanded', String(open));
-        menuButton.querySelector('.sr-only').textContent = open ? 'Close menu' : 'Open menu';
-        document.documentElement.classList.toggle('menu-open', open);
-      };
-
-      menuButton?.addEventListener('click', () => {
-        setMenu(menuButton.getAttribute('aria-expanded') !== 'true');
-      });
-
-      menuPanel?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMenu(false)));
-
-      document.querySelectorAll('[data-word-reveal]').forEach((element) => {
-        const words = element.textContent.trim().split(/\s+/);
-        element.textContent = '';
-        words.forEach((word, index) => {
-          const span = document.createElement('span');
-          span.className = 'word';
-          span.style.setProperty('--word-index', index);
-          span.textContent = `${word} `;
-          element.appendChild(span);
-        });
-      });
-
-      if (reduceMotion) {
-        document.documentElement.classList.add('reduce-motion');
-        document.querySelectorAll('[data-reveal]').forEach((element) => element.classList.add('is-visible'));
-      } else {
-        const revealObserver = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('is-visible');
-              revealObserver.unobserve(entry.target);
-            }
-          });
-        }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
-
-        document.querySelectorAll('[data-reveal]').forEach((element) => revealObserver.observe(element));
-
-        const parallax = document.querySelectorAll('[data-parallax]');
-        let scheduled = false;
-        const updateParallax = () => {
-          const viewport = window.innerHeight;
-          parallax.forEach((element) => {
-            const rect = element.getBoundingClientRect();
-            const progress = Math.max(-1, Math.min(1, (rect.top + rect.height / 2 - viewport / 2) / viewport));
-            element.style.setProperty('--parallax-y', `${progress * -16}px`);
-          });
-          scheduled = false;
-        };
-        window.addEventListener('scroll', () => {
-          if (!scheduled) {
-            requestAnimationFrame(updateParallax);
-            scheduled = true;
-          }
-        }, { passive: true });
-        updateParallax();
-      }
+    <script>
+      import '../scripts/site';
     </script>
   </body>
 </html>

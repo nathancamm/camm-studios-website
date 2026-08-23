@@ -1,39 +1,55 @@
+.theme-bronzed {
+  --accent: #f06a4f;
+}
+
+.theme-stellar {
+  --accent: #8d95ee;
+}
+
 .legal {
   display: grid;
-  grid-template-columns: minmax(240px, 0.75fr) minmax(0, 1.5fr);
-  gap: clamp(48px, 8vw, 128px);
-  padding-top: 192px;
-  padding-bottom: var(--space-12);
+  grid-template-columns: minmax(240px, 0.68fr) minmax(0, 1.32fr);
+  gap: var(--spacing-900);
+  padding-top: calc(var(--spacing-900) + var(--spacing-700));
+  padding-bottom: var(--spacing-900);
 }
 
 .legal__header {
   position: sticky;
-  top: 128px;
+  top: var(--spacing-900);
   align-self: start;
 }
 
 .legal__header h1 {
-  margin-bottom: var(--space-5);
-  font-size: clamp(48px, 6vw, 96px);
-  font-weight: 520;
+  max-width: 680px;
+  margin-bottom: var(--spacing-200);
+  color: transparent;
+  background: linear-gradient(90deg, #ffffff, #9b9b9b);
+  background-clip: text;
+  font-size: 60px;
+  line-height: 1;
 }
 
 .legal__updated {
-  color: var(--ink-soft);
+  color: var(--paper-dim);
   font-size: 14px;
+  line-height: 20px;
 }
 
 .legal__body {
   max-width: 760px;
+  color: var(--paper-muted);
+  font-size: 16px;
+  line-height: 24px;
 }
 
 .legal__body h2 {
-  margin-top: var(--space-10);
-  margin-bottom: var(--space-5);
-  padding-top: var(--space-6);
+  margin: var(--spacing-700) 0 var(--spacing-200);
+  padding-top: var(--spacing-300);
   border-top: 1px solid var(--line);
-  font-size: clamp(24px, 3vw, 36px);
-  font-weight: 560;
+  color: var(--paper);
+  font-size: 30px;
+  line-height: 36px;
 }
 
 .legal__body h2:first-child {
@@ -41,37 +57,42 @@
 }
 
 .legal__body h3 {
-  margin-top: var(--space-7);
-  margin-bottom: var(--space-4);
+  margin: var(--spacing-400) 0 var(--spacing-100);
+  color: var(--paper);
   font-size: 20px;
-  font-weight: 650;
-  letter-spacing: -0.02em;
-}
-
-.legal__body p,
-.legal__body li {
-  color: var(--ink-soft);
+  line-height: 28px;
 }
 
 .legal__body strong {
-  color: var(--ink);
+  color: var(--paper);
 }
 
 .legal__body ul {
-  padding-left: var(--space-6);
+  padding-left: var(--spacing-300);
 }
 
 .legal__body li + li {
-  margin-top: var(--space-3);
+  margin-top: var(--spacing-75);
+}
+
+.legal__body a {
+  color: var(--accent);
 }
 
 @media (max-width: 800px) {
   .legal {
     grid-template-columns: 1fr;
-    padding-top: 136px;
+    gap: var(--spacing-700);
+    padding-top: calc(var(--spacing-900) + var(--spacing-400));
   }
 
   .legal__header {
     position: static;
+  }
+}
+
+@media (max-width: 480px) {
+  .legal__header h1 {
+    font-size: 48px;
   }
 }

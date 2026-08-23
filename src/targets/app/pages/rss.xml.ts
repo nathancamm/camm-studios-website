@@ -1,13 +1,13 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 import type { APIRoute } from 'astro';
-import { getCurrentApp } from '@shared/data/apps';
+import app from '@app-data';
 
 export const GET: APIRoute = async (context) => {
-  const app = getCurrentApp();
-  const posts = await getCollection('blog', ({ data }) => data.app === app.target && !data.draft);
+  const posts = (await getCollection('blog', ({ data }) => data.app === app.target && !data.draft))
+    .sort((a, b) => b.data.publicationDate.valueOf() - a.data.publicationDate.valueOf());
   return rss({
-    title: `${app.name} Journal`,
+    title: `${app.name} Guides`,
     description: app.blogSummary,
     site: context.site!,
     items: posts.map((post) => ({

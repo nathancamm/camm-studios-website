@@ -1,152 +1,226 @@
 ---
-import { Picture } from 'astro:assets';
+import { Image } from 'astro:assets';
 import BaseLayout from '@shared/layouts/BaseLayout.astro';
 import Nav from '@shared/components/Nav.astro';
 import Footer from '@shared/components/Footer.astro';
-import companyArt from '@shared/assets/art/company-system.png';
-import bronzedArt from '@shared/assets/art/bronzed-system.png';
-import stellarArt from '@shared/assets/art/stellar-system.png';
+import ThreeScene from '@shared/components/ThreeScene.astro';
+import SystemCard from '@shared/components/SystemCard.astro';
 import mark from '@shared/assets/brand/mark.svg';
+import bronzedIcon from '@shared/assets/product/bronzed-icon.png';
+import stellarIcon from '@shared/assets/product/stellar-icon.png';
 import { companySite } from '@shared/data/site';
 import '@shared/styles/company.css';
 
 const canonical = new URL('/', Astro.site);
-const socialImage = new URL(companyArt.src, Astro.site);
+const socialImage = new URL(mark.src, Astro.site);
+const products = {
+  bronzed: {
+    name: 'Bronzed',
+    appStoreTitle: 'Bronzed — Tan Timer & UV Index',
+    url: 'https://bronzed.cammstudios.com',
+    icon: bronzedIcon,
+  },
+  stellar: {
+    name: 'Stellar',
+    appStoreTitle: 'Stellar — Mantra & Ritual',
+    url: 'https://stellar.cammstudios.com',
+    icon: stellarIcon,
+  },
+};
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: companySite.name,
   url: companySite.url,
-  logo: new URL(mark.src, Astro.site).toString(),
+  logo: socialImage.toString(),
   email: companySite.email,
+  description: companySite.description,
+  owns: Object.values(products).map((app) => ({
+    '@type': 'MobileApplication',
+    name: app.appStoreTitle,
+    url: app.url,
+  })),
 };
+
+const operatingLoop = [
+  {
+    number: '01',
+    title: 'Find the signal',
+    body: 'We study store searches, reviews, category gaps, and recurring friction. The goal is a problem people already try to solve.',
+  },
+  {
+    number: '02',
+    title: 'Prove the need',
+    body: 'We test whether the problem is clear, recurring, and suited to a focused product before adding scope.',
+  },
+  {
+    number: '03',
+    title: 'Build the useful part',
+    body: 'We shape one native experience around the strongest need. Privacy, clarity, and local context are product decisions.',
+  },
+  {
+    number: '04',
+    title: 'Keep learning',
+    body: 'Once the product is live, product, store, and support signals show us what to improve and what to remove.',
+  },
+];
+
+const systems = [
+  {
+    name: 'Artemis',
+    role: 'Opportunity discovery',
+    kind: 'artemis' as const,
+    description: 'Collects App Store search and category signals for human review, helping us investigate overlooked consumer problems.',
+  },
+  {
+    name: 'Atlas',
+    role: 'Portfolio intelligence',
+    kind: 'atlas' as const,
+    description: 'Brings store, subscription, advertising, attribution, and product data together for portfolio decisions.',
+  },
+  {
+    name: 'Morpheus',
+    role: 'Creative production',
+    kind: 'morpheus' as const,
+    status: 'In development',
+    description: 'Structures short form creative work from brief through generation, review, and learning. Publishing stays human approved.',
+  },
+  {
+    name: 'Chronos',
+    role: 'Operating cadence',
+    kind: 'chronos' as const,
+    description: 'Turns studio tasks into daily and weekly plans, then improves time estimates from completed work.',
+  },
+];
+
+const questions = [
+  ['What does Camm Studios build?', 'We build and operate focused consumer apps. Each product lives on its own site with product details, support, guides, privacy information, and App Store access.'],
+  ['How do you choose what to build?', 'We start with evidence from search behaviour, reviews, category gaps, and recurring consumer friction. A promising signal still needs human judgment before it becomes a product.'],
+  ['Is Camm Studios a client agency?', 'Our focus is building and improving our own app portfolio. The company site explains that operating model rather than offering development services.'],
+  ['How does the studio use AI?', 'AI helps us search wider, prototype faster, and reduce repetitive work. People decide what is useful, responsible, clear, and ready to ship.'],
+  ['What are the internal systems?', 'Artemis, Atlas, Morpheus, and Chronos are tools we use or are developing for opportunity discovery, portfolio intelligence, creative work, and studio planning.'],
+  ['Where can I get product support?', 'Bronzed and Stellar each have their own support and legal pages. Follow the product link below, then choose Support from its navigation.'],
+];
 ---
 
 <BaseLayout
-  title="Camm Studios — Focused apps for overlooked problems"
-  description={companySite.description}
+  title="Camm Studios — Consumer apps that compound"
+  description="Camm Studios finds overlooked consumer needs, builds focused native apps, and improves them through a shared operating system."
   canonical={canonical}
   image={socialImage}
   structuredData={structuredData}
 >
-  <div class="company-intro" data-company-intro aria-hidden="true">
-    <div class="company-intro__inner">
-      <div class="company-intro__signal"></div>
-      <p>A small signal can become a useful product.</p>
-    </div>
-  </div>
-  <Nav links={[{ href: '#process', label: 'Process' }, { href: '#portfolio', label: 'Apps' }, { href: '/support', label: 'Support' }]} />
+  <Nav links={[{ href: '#operate', label: 'How we operate' }, { href: '#systems', label: 'Systems' }, { href: '#apps', label: 'Apps' }]} />
   <main id="main">
     <section class="company-hero shell">
-      <div class="company-hero__grid">
-        <h1 data-word-reveal>We find overlooked problems and build focused apps that earn their place on your phone.</h1>
-        <div class="company-hero__aside" data-reveal>
-          <p>Camm Studios uses data and AI to find real needs, build native products, launch globally, and improve them over time.</p>
-          <div class="company-hero__actions">
-            <a class="button button--ink" href="#process">Read our process</a>
-            <p class="proof">Two live, native iOS products</p>
-          </div>
+      <div class="company-hero__copy">
+        <p class="eyebrow" data-reveal>Independent consumer app company</p>
+        <h1 data-word-reveal>We build consumer apps that compound.</h1>
+        <p class="company-hero__lede" data-reveal>Camm Studios turns overlooked demand into focused native products, then improves them through a shared operating system.</p>
+        <div class="company-hero__actions" data-reveal>
+          <a class="button button--light" href="#operate">See how we operate</a>
+          <p><span>Live products</span><a href="https://bronzed.cammstudios.com">Bronzed</a><a href="https://stellar.cammstudios.com">Stellar</a></p>
+        </div>
+      </div>
+      <div class="company-hero__object">
+        <ThreeScene
+          scene="monogram"
+          label="The Camm Studios aperture: three glass crescents aligned into a letter C around an orange signal"
+          accent="#f06a4f"
+          secondary="#8fc6ff"
+        />
+        <div class="object-index" aria-hidden="true"><span>APERTURE / 001</span><span>REFRACTIVE IDENTITY</span></div>
+      </div>
+    </section>
+
+    <section class="reading-moment shell" aria-labelledby="company-thesis">
+      <p class="eyebrow">The studio thesis</p>
+      <h2 id="company-thesis" data-reading-reveal>From signal to software to scale. Every product makes the studio sharper for the next.</h2>
+    </section>
+
+    <section class="operate-section" id="operate" aria-labelledby="operate-title">
+      <div class="shell operate-section__layout">
+        <header class="operate-section__intro">
+          <p class="eyebrow">How we operate / 01</p>
+          <h2 id="operate-title">One loop.<br />Four decisions.</h2>
+          <p>We do not begin with a feature list. We begin with evidence, narrow the problem, ship the clearest version, and let real use challenge our assumptions.</p>
+        </header>
+        <div class="operating-loop">
+          {operatingLoop.map((step) => (
+            <article class="loop-step" data-reveal>
+              <p class="loop-step__number">{step.number}</p>
+              <div><h3>{step.title}</h3><p>{step.body}</p></div>
+            </article>
+          ))}
         </div>
       </div>
     </section>
 
-    <figure class="system-figure" data-reveal data-parallax>
-      <Picture src={companyArt} alt="An orange signal moving through discovery, focus, distribution, and feedback stages in a cobalt system." widths={[640, 960, 1280, 1536]} sizes="(max-width: 800px) calc(100vw - 32px), calc(100vw - 8vw)" formats={['avif', 'webp']} loading="eager" fetchpriority="high" />
-      <figcaption><span>One signal. Four deliberate stages.</span><span>Discover · Build · Launch · Learn</span></figcaption>
-    </figure>
-
-    <section class="section shell thesis" aria-labelledby="thesis-title">
-      <p class="eyebrow">The thesis</p>
-      <p class="thesis__statement" id="thesis-title" data-reveal>Useful apps rarely begin with more features. They begin with a problem clear enough to solve well.</p>
+    <section class="judgment-section">
+      <div class="shell judgment-section__layout">
+        <p class="eyebrow">Our judgment / 02</p>
+        <h2 data-reading-reveal>AI shortens the path. People decide what deserves to ship.</h2>
+        <div class="judgment-section__body" data-reveal>
+          <p>Automation helps us move from broad evidence to working software quickly.</p>
+          <p>People still decide what is useful, understandable, responsible, and worth keeping.</p>
+        </div>
+      </div>
     </section>
 
-    <section class="section process" id="process" aria-labelledby="process-title">
+    <section class="systems-section shell" id="systems" aria-labelledby="systems-title">
+      <header class="section-heading">
+        <p class="eyebrow">Studio systems / 03</p>
+        <h2 id="systems-title">The tools behind the products.</h2>
+        <p>We build internal systems to make decisions with more context and less guesswork. Automation supports judgment. It does not replace it.</p>
+      </header>
+      <div class="systems-grid">
+        {systems.map((system) => <SystemCard {...system} />)}
+      </div>
+    </section>
+
+    <section class="apps-section" id="apps" aria-labelledby="apps-title">
       <div class="shell">
-        <div class="process__intro">
-          <p class="eyebrow">How we operate</p>
-          <h2 class="section-title" id="process-title" data-reveal>From overlooked signal to product that keeps learning.</h2>
-        </div>
-        <div class="process__grid">
-          <div class="process__chapters">
-            <article class="chapter" data-reveal>
-              <p class="chapter__number">01 / Discover</p>
-              <h3>Discover overlooked consumer needs.</h3>
-              <p>We study search behaviour, product gaps, and recurring friction. The goal is a need with a clear shape.</p>
-            </article>
-            <article class="chapter" data-reveal>
-              <p class="chapter__number">02 / Build</p>
-              <h3>Build one focused native solution.</h3>
-              <p>We reduce the idea to its most useful interaction, then craft it for the platform it lives on.</p>
-            </article>
-            <article class="chapter" data-reveal>
-              <p class="chapter__number">03 / Launch</p>
-              <h3>Launch globally with strong localization.</h3>
-              <p>We treat language and local context as product work, so each app can feel at home in more places.</p>
-            </article>
-            <article class="chapter" data-reveal>
-              <p class="chapter__number">04 / Learn</p>
-              <h3>Learn from real use and improve continuously.</h3>
-              <p>Behaviour reveals what earns attention. We use that signal to refine the product with care.</p>
-            </article>
-          </div>
-          <div class="process__visual" aria-hidden="true">
-            <Picture src={companyArt} alt="" widths={[640, 960, 1280]} sizes="(max-width: 900px) calc(100vw - 32px), 48vw" formats={['avif', 'webp']} />
-            <div class="process__key"><span>Find</span><span>Shape</span><span>Reach</span><span>Return</span></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section shell judgement" aria-labelledby="judgement-title">
-      <h2 class="judgement__title" id="judgement-title" data-word-reveal>AI native. Human judged.</h2>
-      <div class="judgement__copy" data-reveal>
-        <p>AI helps us move from broad signals to working software quickly. People decide what is useful, understandable, safe, and worth keeping.</p>
-        <p>Speed matters. Taste, responsibility, and product judgement matter more.</p>
-      </div>
-    </section>
-
-    <section class="section capabilities" aria-labelledby="capabilities-title">
-      <div class="shell">
-        <p class="eyebrow">Capabilities</p>
-        <h2 class="section-title" id="capabilities-title" data-reveal>A compact studio built for the whole product cycle.</h2>
-        <div class="capability-grid">
-          <article class="capability"><p class="capability__number">01</p><h3>Opportunity research</h3><p>Search patterns, reviews, category gaps, and product evidence.</p></article>
-          <article class="capability"><p class="capability__number">02</p><h3>Native product design</h3><p>Focused interfaces shaped around real platform behaviour.</p></article>
-          <article class="capability"><p class="capability__number">03</p><h3>Global distribution</h3><p>Localization, app store presentation, and useful content.</p></article>
-          <article class="capability"><p class="capability__number">04</p><h3>Continuous learning</h3><p>Measured use, careful interpretation, and regular improvement.</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section portfolio" id="portfolio" aria-labelledby="portfolio-title">
-      <div class="shell">
-        <p class="eyebrow">Live products</p>
-        <h2 class="section-title" id="portfolio-title" data-reveal>Two apps. Two clear jobs.</h2>
-        <div class="portfolio-grid">
-          <a class="portfolio-card" href="https://bronzed.cammstudios.com" data-reveal>
-            <div class="portfolio-card__art"><Picture src={bronzedArt} alt="An abstract solar measurement system for Bronzed." widths={[480, 720, 960]} sizes="(max-width: 680px) calc(100vw - 32px), 46vw" formats={['avif', 'webp']} /></div>
-            <div class="portfolio-card__body"><div><p class="eyebrow">Weather and wellbeing</p><h3>Bronzed</h3><p>Live UV and personal context become a clearer outdoor time estimate.</p></div><span class="portfolio-card__arrow" aria-hidden="true">↗</span></div>
+        <header class="section-heading section-heading--wide">
+          <p class="eyebrow">Live products / 04</p>
+          <h2 id="apps-title">Different problems.<br />The same focused operating system.</h2>
+        </header>
+        <div class="apps-grid">
+          <a class="app-portal app-portal--bronzed" href="https://bronzed.cammstudios.com" data-reveal>
+            <div class="app-portal__top"><span>Weather and wellbeing</span><span>↗</span></div>
+            <div class="app-portal__identity"><Image src={products.bronzed.icon} alt="Bronzed app icon" width={128} height={128} format="webp" /><h3>Bronzed</h3></div>
+            <p>Live UV and personal context, turned into clearer outdoor guidance.</p>
+            <div class="app-portal__orbit" aria-hidden="true"><span></span><span></span><span></span></div>
           </a>
-          <a class="portfolio-card" href="https://stellar.cammstudios.com" data-reveal>
-            <div class="portfolio-card__art"><Picture src={stellarArt} alt="An abstract three phase ritual system for Stellar." widths={[480, 720, 960]} sizes="(max-width: 680px) calc(100vw - 32px), 46vw" formats={['avif', 'webp']} /></div>
-            <div class="portfolio-card__body"><div><p class="eyebrow">Daily reflection</p><h3>Stellar</h3><p>Affirmations, journaling, and vision boards form a steady daily ritual.</p></div><span class="portfolio-card__arrow" aria-hidden="true">↗</span></div>
+          <a class="app-portal app-portal--stellar" href="https://stellar.cammstudios.com" data-reveal>
+            <div class="app-portal__top"><span>Daily reflection</span><span>↗</span></div>
+            <div class="app-portal__identity"><Image src={products.stellar.icon} alt="Stellar app icon" width={128} height={128} format="webp" /><h3>Stellar</h3></div>
+            <p>Affirmations, journaling, and vision boards, brought into a steady daily ritual.</p>
+            <div class="app-portal__orbit" aria-hidden="true"><span></span><span></span><span></span></div>
           </a>
         </div>
       </div>
+    </section>
+
+    <section class="company-faq shell" aria-labelledby="company-faq-title">
+      <header class="section-heading">
+        <p class="eyebrow">Questions / 05</p>
+        <h2 id="company-faq-title">A clearer view of the studio.</h2>
+      </header>
+      <div class="faq-list">
+        {questions.map(([question, answer], index) => (
+          <details data-reveal>
+            <summary><span>0{index + 1}</span>{question}</summary>
+            <p>{answer}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="company-close shell">
+      <p class="eyebrow">The portfolio is live</p>
+      <h2>Start with the product<br />that solves your problem.</h2>
+      <div><a class="button button--light" href="https://bronzed.cammstudios.com">Explore Bronzed</a><a class="button" href="https://stellar.cammstudios.com">Explore Stellar</a></div>
     </section>
   </main>
   <Footer />
-  <script is:inline>
-    const intro = document.querySelector('[data-company-intro]');
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let seen = false;
-    try { seen = sessionStorage.getItem('camm-intro-seen') === '1'; } catch {}
-    if (!intro || reduced || seen) {
-      intro?.remove();
-    } else {
-      try { sessionStorage.setItem('camm-intro-seen', '1'); } catch {}
-      window.setTimeout(() => intro.classList.add('is-done'), 1900);
-      window.setTimeout(() => intro.remove(), 2900);
-    }
-  </script>
 </BaseLayout>

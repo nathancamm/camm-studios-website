@@ -13,6 +13,7 @@ interface Props {
 }
 
 const { product, storeUrl, links = [] } = Astro.props;
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
 <header class="site-header">
@@ -24,9 +25,13 @@ const { product, storeUrl, links = [] } = Astro.props;
     </button>
     <div class="nav-panel" id="nav-panel">
       <div class="nav-links">
-        {links.map((link) => <a href={link.href}>{link.label}</a>)}
+        {links.map((link, index) => {
+          const hrefPath = link.href.replace(/\/$/, '') || '/';
+          const isCurrent = !link.href.startsWith('#') && hrefPath === currentPath;
+          return <a href={link.href} aria-current={isCurrent ? 'page' : undefined}><span>0{index + 1}</span>{link.label}</a>;
+        })}
       </div>
-      {storeUrl && <a class="button button--compact button--ink" href={storeUrl}>Get the app</a>}
+      {storeUrl && <a class="button button--compact button--light" href={storeUrl}>Get {product}</a>}
     </div>
   </nav>
 </header>

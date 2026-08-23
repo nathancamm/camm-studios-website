@@ -11,8 +11,6 @@ const blog = defineCollection({
     summary: z.string().min(20),
     publicationDate: z.coerce.date(),
     updatedDate: z.coerce.date(),
-    heroImage: z.enum(['blog-uv', 'blog-369']),
-    alt: z.string().min(10),
     keywords: z.array(z.string()).min(1),
     sources: z.array(z.object({ label: z.string(), url: z.url() })),
     draft: z.boolean().default(false),
