@@ -39,6 +39,14 @@ function easeOutBack(t: number) {
   return 1 + c3 * (t - 1) ** 3 + c1 * (t - 1) ** 2;
 }
 
+function easeInOutCubic(t: number) {
+  return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
+}
+
+function phaseProgress(elapsed: number, start: number, duration: number) {
+  return MathUtils.clamp((elapsed - start) / duration, 0, 1);
+}
+
 function glassMaterial() {
   return new MeshPhysicalMaterial({
     color: new Color('#9fb4c6'),
@@ -93,6 +101,7 @@ function glassPanel(width: number, height: number, depth: number, radius: number
 
 function servoJoint(radius = 0.44) {
   const joint = new Group();
+  joint.name = 'servo';
   const hub = new Mesh(new CylinderGeometry(radius, radius, 1.05, 28), metalMaterial());
   hub.rotation.x = Math.PI / 2;
   const ring = new Mesh(new TorusGeometry(radius * 0.94, radius * 0.16, 12, 32), glossBlackMaterial());
@@ -118,46 +127,61 @@ function rivetRow(target: Object3D, count: number, length: number, vertical: boo
 }
 
 /**
- * The Camm monogram: a translucent robotic serpent coiled into the C mark.
- * Glass vertebra panels, dark servo joints, and a camera eye on the head.
+ * The Camm monogram: a translucent robotic serpent that starts as a flat
+ * strip of vertebra panels, then folds itself into the C mark at its
+ * dark servo joints. A camera eye wakes on the head once assembled.
  */
 function buildMonogram(): SceneWorld {
   const group = new Group();
-  const chain: Mesh[] = [];
-  const joints: Group[] = [];
 
-  const addSegment = (mesh: Mesh, x: number, y: number) => {
-    mesh.position.set(x, y, 0);
-    mesh.userData.base = mesh.position.clone();
-    group.add(mesh);
-    chain.push(mesh);
-    return mesh;
-  };
+  // The serpent is a fold chain rooted at the bottom bar. Each pivot
+  // carries a servo joint and the next run of the body.
+  const root = new Group();
+  group.add(root);
 
-  const tail = addSegment(glassPanel(1.8, 1.7, 1.0, 0.42), 3.05, -1.95);
-  const bottomBar = addSegment(glassPanel(5.9, 1.5, 1.0, 0.45), -0.35, -3.05);
-  const leftColumn = addSegment(glassPanel(1.5, 5.6, 1.0, 0.45), -3.3, 0);
-  const midStub = addSegment(glassPanel(4.4, 1.4, 0.95, 0.4), -1.05, 0.1);
-  const topBar = addSegment(glassPanel(5.9, 1.5, 1.0, 0.45), -0.35, 3.05);
-  const head = addSegment(glassPanel(2.1, 2.0, 1.15, 0.42), 3.3, 1.75);
+  const bottomBar = glassPanel(5.9, 1.5, 1.0, 0.36);
+  root.add(bottomBar);
+
+  const tailPivot = new Group();
+  tailPivot.position.set(2.6, 0, 0);
+  const tail = glassPanel(1.8, 1.7, 1.0, 0.34);
+  tail.position.set(1.36, 0, 0);
+  tailPivot.add(tail, servoJoint());
+  root.add(tailPivot);
+
+  const colPivot = new Group();
+  colPivot.position.set(-2.95, 0, 0);
+  const leftColumn = glassPanel(5.6, 1.5, 1.0, 0.36);
+  leftColumn.position.set(3.05, 0, 0);
+  const topPivot = new Group();
+  topPivot.position.set(6.1, 0, 0);
+  const topBar = glassPanel(5.9, 1.5, 1.0, 0.36);
+  topBar.position.set(2.95, 0, 0);
+  const headPivot = new Group();
+  headPivot.position.set(5.55, 0, 0);
+  const head = glassPanel(2.1, 2.0, 1.15, 0.34);
+  head.position.set(1.48, 0, 0);
+  headPivot.add(head, servoJoint());
+  topPivot.add(topBar, headPivot, servoJoint());
+  colPivot.add(leftColumn, topPivot, servoJoint());
+  root.add(colPivot);
+
+  const midStub = glassPanel(4.4, 1.4, 0.95, 0.32);
+  midStub.position.set(-1.05, 0.1, -0.05);
+  group.add(midStub);
 
   rivetRow(topBar, 5, 4.4, false, 0.52);
   rivetRow(bottomBar, 5, 4.4, false, 0.52);
-  rivetRow(leftColumn, 4, 4.4, true, 0.52);
+  rivetRow(leftColumn, 4, 4.4, false, 0.52);
   rivetRow(midStub, 3, 2.4, false, 0.5);
+  rivetRow(head, 2, 1.3, false, 0.6);
 
-  const jointSpots: Array<[number, number]> = [
-    [-2.55, 3.05],
-    [2.3, 2.85],
-    [-2.55, -3.05],
-    [2.25, -2.95],
+  const folds = [
+    { pivot: colPivot, from: Math.PI, to: Math.PI / 2, start: 0.55, duration: 1.0 },
+    { pivot: topPivot, from: 0, to: -Math.PI / 2, start: 0.95, duration: 1.0 },
+    { pivot: headPivot, from: 0, to: -1.08, start: 1.35, duration: 0.85 },
+    { pivot: tailPivot, from: 0, to: 0.94, start: 1.35, duration: 0.85 },
   ];
-  jointSpots.forEach(([x, y]) => {
-    const joint = servoJoint();
-    joint.position.set(x, y, 0);
-    group.add(joint);
-    joints.push(joint);
-  });
 
   const eye = new Group();
   const bezel = new Mesh(new CylinderGeometry(0.62, 0.66, 0.2, 32), glossBlackMaterial());
@@ -179,43 +203,68 @@ function buildMonogram(): SceneWorld {
   eye.add(bezel, bezelRing, lens, iris);
   eye.position.set(0, 0, 0.62);
   head.add(eye);
-  rivetRow(head, 2, 1.3, false, 0.6);
 
-  group.scale.setScalar(0.4);
-  group.position.y = 0.1;
+  const chain = [tail, bottomBar, leftColumn, topBar, head];
+  chain.forEach((part) => {
+    part.userData.base = part.position.clone();
+  });
+  const joints = [tailPivot, colPivot, topPivot, headPivot].map(
+    (pivot) => pivot.children.find((child) => child.name === 'servo') as Group,
+  );
+  const midStubBase = midStub.position.clone();
+  const assembledAt = 2.3;
 
-  const glassParts = [tail, bottomBar, leftColumn, midStub, topBar, head];
+  const pose = (elapsed: number, rest: boolean) => {
+    const build = rest ? 1 : easeInOutCubic(phaseProgress(elapsed, 0.2, 2.0));
+    folds.forEach((fold) => {
+      const t = rest ? 1 : easeOutBack(phaseProgress(elapsed, fold.start, fold.duration));
+      fold.pivot.rotation.z = MathUtils.lerp(fold.from, fold.to, t);
+    });
+    // Keep the head and tail blocks upright while they swing on their joints.
+    head.rotation.z = -(colPivot.rotation.z + topPivot.rotation.z + headPivot.rotation.z);
+    tail.rotation.z = -tailPivot.rotation.z;
+    // Zoom from the wide flat strip into the final framed mark, dipping
+    // low through the mid fold so the rising chain stays in frame.
+    const bez = (a: number, c: number, b: number, t: number) => a * (1 - t) ** 2 + 2 * c * (1 - t) * t + b * t * t;
+    group.scale.setScalar(MathUtils.lerp(0.17, 0.4, build));
+    root.position.set(bez(6.2, 3.2, -0.35, build), bez(0.6, -5.2, -3.05, build), 0);
+    // The middle rung slides out of the column once the fold has landed.
+    const slide = rest ? 1 : easeOutBack(phaseProgress(elapsed, assembledAt - 0.2, 0.7));
+    midStub.visible = slide > 0.02;
+    midStub.scale.set(Math.max(slide, 0.001), 1, 1);
+    midStub.position.x = MathUtils.lerp(-2.9, midStubBase.x, slide);
+    return build;
+  };
 
   return {
     group,
     update(elapsed, pointer, rest) {
-      glassParts.forEach((part, index) => {
-        const intro = rest ? 1 : MathUtils.clamp((elapsed - index * 0.09) / 0.65, 0, 1);
-        part.scale.setScalar(intro < 1 ? Math.max(easeOutBack(intro), 0.001) : 1);
+      pose(elapsed, rest);
+      const settled = rest ? 10 : Math.max(elapsed - assembledAt, 0);
 
-        const base = part.userData.base as { x: number; y: number };
-        const slither = rest ? 0 : Math.sin(elapsed * 1.35 - index * 1.05) * 0.05;
-        const wide = part === topBar || part === bottomBar || part === midStub;
-        part.position.x = base.x + (wide ? slither : 0);
-        part.position.y = base.y + (wide ? 0 : slither);
-        part.position.z = rest ? 0 : Math.sin(elapsed * 0.9 - index * 0.7) * 0.04;
+      chain.forEach((part, index) => {
+        const base = part.userData.base as { x: number; y: number; z: number };
+        const wave = rest || settled <= 0 ? 0 : Math.sin(settled * 1.3 - index * 1.05);
+        part.position.x = base.x + wave * 0.05;
+        part.position.z = base.z + (rest || settled <= 0 ? 0 : Math.sin(settled * 0.9 - index * 0.7) * 0.04);
 
         const material = part.material as MeshPhysicalMaterial;
-        const phase = (elapsed + 1.2) % 5;
+        const phase = (settled + 1.2) % 5;
         const center = 0.4 + index * 0.26;
-        material.emissiveIntensity = rest ? 0 : Math.exp(-((phase - center) ** 2) / 0.028) * 0.5;
+        material.emissiveIntensity = rest || settled <= 0 ? 0 : Math.exp(-((phase - center) ** 2) / 0.028) * 0.5;
       });
 
       joints.forEach((joint, index) => {
-        joint.rotation.z = rest ? 0 : elapsed * (index % 2 === 0 ? 0.5 : -0.5) + index;
+        if (!joint) return;
+        joint.rotation.z = rest ? 0 : elapsed * (index % 2 === 0 ? 0.6 : -0.6) + index;
       });
 
-      head.rotation.z = rest ? 0 : Math.sin(elapsed * 0.7) * 0.03;
       eye.rotation.y = MathUtils.lerp(eye.rotation.y, pointer.x * 0.32, 0.08);
       eye.rotation.x = MathUtils.lerp(eye.rotation.x, pointer.y * 0.26, 0.08);
-      const aperture = rest ? 1 : 1 + Math.sin(elapsed * 2.1) * 0.08;
+      const awake = rest ? 1 : phaseProgress(elapsed, assembledAt, 0.6);
+      const aperture = rest ? 1 : 1 + Math.sin(settled * 2.1) * 0.08;
       iris.scale.set(aperture, 1, aperture);
-      irisMaterial.emissiveIntensity = rest ? 0.9 : 0.8 + Math.sin(elapsed * 2.1) * 0.35;
+      irisMaterial.emissiveIntensity = awake * (rest ? 0.9 : 0.8 + Math.sin(settled * 2.1) * 0.35);
     },
   };
 }
@@ -414,6 +463,7 @@ class SceneRuntime {
 
     this.world = builders[this.name](accent);
     this.scene.add(this.world.group);
+    this.startedAt = performance.now();
 
     this.resizeObserver = new ResizeObserver(() => this.resize());
     this.resizeObserver.observe(canvas);
@@ -424,8 +474,7 @@ class SceneRuntime {
     canvas.addEventListener('webglcontextlost', this.onContextLost);
     canvas.addEventListener('webglcontextrestored', this.onContextRestored);
 
-    this.startedAt = performance.now();
-    this.render(this.startedAt);
+    this.render(performance.now());
     requestAnimationFrame(() => this.frame?.classList.add('is-rendered'));
   }
 
@@ -466,7 +515,9 @@ class SceneRuntime {
   }
 
   private readonly render = (time: number) => {
-    const elapsed = (time - this.startedAt) * 0.001;
+    const slow = window.location.search.includes('slowfold') ? 0.25 : 1;
+    const elapsed = (time - this.startedAt) * 0.001 * slow;
+    (this.canvas as HTMLCanvasElement & { __elapsed?: number }).__elapsed = elapsed;
     const rest = reduceMotion.matches;
     this.world.group.rotation.y = MathUtils.lerp(this.world.group.rotation.y, this.pointer.x * 0.16, 0.05);
     this.world.group.rotation.x = MathUtils.lerp(this.world.group.rotation.x, -0.04 - this.pointer.y * 0.1, 0.05);

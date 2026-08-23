@@ -137,9 +137,9 @@ test('product pages use the live locale neutral App Store links', () => {
 
 test('company page leads with the honest studio story', () => {
   const company = readFileSync(join(root, 'dist/company/index.html'), 'utf8');
-  assert.match(company, /one person studio/i);
-  assert.match(company, /See the apps/i);
-  assert.match(company, /Find a real problem/i);
+  assert.match(company, /build and improve focused iOS apps/i);
+  assert.match(company, /See the products/i);
+  assert.match(company, /agility of one person/i);
   assert.doesNotMatch(company, /consumer apps that compound/i);
   assert.doesNotMatch(company, /CALIBRATED/);
 });
