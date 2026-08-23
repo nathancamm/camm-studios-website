@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" role="img" aria-labelledby="title desc">
+  <title id="title">Aperture Stack</title>
+  <desc id="desc">Three clear crystal crescent plates arranged at different depths.</desc>
+  <defs>
+    <linearGradient id="stack-back" x1="70" y1="36" x2="235" y2="206" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff" stop-opacity=".7"/>
+      <stop offset="1" stop-color="#6f7a86" stop-opacity=".24"/>
+    </linearGradient>
+    <linearGradient id="stack-middle" x1="80" y1="38" x2="220" y2="202" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff" stop-opacity=".82"/>
+      <stop offset=".52" stop-color="#d8dee5" stop-opacity=".32"/>
+      <stop offset="1" stop-color="#68737f" stop-opacity=".28"/>
+    </linearGradient>
+    <linearGradient id="stack-front" x1="91" y1="46" x2="211" y2="194" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff" stop-opacity=".92"/>
+      <stop offset=".52" stop-color="#edf0f4" stop-opacity=".4"/>
+      <stop offset="1" stop-color="#89939e" stop-opacity=".34"/>
+    </linearGradient>
+    <filter id="stack-shadow" x="25" y="5" width="275" height="245" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="14" stdDeviation="10" flood-color="#1b222b" flood-opacity=".16"/>
+    </filter>
+  </defs>
+  <g filter="url(#stack-shadow)" fill="none" stroke-linecap="square">
+    <path d="M235 52A88 88 0 1 0 235 188" stroke="url(#stack-back)" stroke-width="24" transform="translate(-8 6)"/>
+    <path d="M229 48A84 84 0 1 0 229 192" stroke="#58636f" stroke-opacity=".34" stroke-width="1.5" transform="translate(-8 6)"/>
+    <path d="M230 48A84 84 0 1 0 230 192" stroke="url(#stack-middle)" stroke-width="22" transform="translate(0 1)"/>
+    <path d="M224 54A76 76 0 1 0 224 186" stroke="#ffffff" stroke-opacity=".74" stroke-width="2"/>
+    <path d="M222 55A76 76 0 1 0 222 185" stroke="url(#stack-front)" stroke-width="18" transform="translate(7 -4)"/>
+    <path d="M219 58A71 71 0 1 0 219 182" stroke="#ffffff" stroke-opacity=".8" stroke-width="2" transform="translate(7 -4)"/>
+  </g>
+</svg>

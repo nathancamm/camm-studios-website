@@ -1,9 +1,11 @@
 .theme-bronzed {
   --accent: #f06a4f;
+  --accent-ink: #b63826;
 }
 
 .theme-stellar {
   --accent: #8d95ee;
+  --accent-ink: #5547b8;
 }
 
 .legal {
@@ -24,7 +26,7 @@
   max-width: 680px;
   margin-bottom: var(--spacing-200);
   color: transparent;
-  background: linear-gradient(90deg, #ffffff, #9b9b9b);
+  background: linear-gradient(90deg, #0d141b, #62707d);
   background-clip: text;
   font-size: 60px;
   line-height: 1;
@@ -76,7 +78,7 @@
 }
 
 .legal__body a {
-  color: var(--accent);
+  color: var(--accent-ink);
 }
 
 @media (max-width: 800px) {

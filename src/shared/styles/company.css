@@ -20,7 +20,7 @@
   max-width: 680px;
   margin-bottom: var(--spacing-300);
   color: transparent;
-  background: linear-gradient(90deg, #ffffff, #9b9b9b);
+  background: linear-gradient(90deg, #0d141b, #62707d);
   background-clip: text;
   font-size: 72px;
   line-height: 1;
@@ -59,7 +59,7 @@
 }
 
 .company-hero__actions > p a:hover {
-  color: var(--signal-soft);
+  color: var(--signal);
 }
 
 .company-hero__object {
@@ -155,12 +155,13 @@
 
 .judgment-section {
   padding-block: var(--spacing-900);
-  color: var(--obsidian);
-  background: var(--paper);
+  color: var(--ink);
+  background: rgba(231, 237, 242, 0.78);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 0 rgba(17, 24, 32, 0.08);
 }
 
 .judgment-section .eyebrow {
-  color: #a83f2f;
+  color: var(--accent-ink);
 }
 
 .judgment-section__layout {
@@ -179,23 +180,23 @@
 }
 
 .judgment-section .reading-word {
-  color: rgba(19, 18, 9, 0.28);
+  color: rgba(17, 24, 32, 0.24);
 }
 
 .judgment-section .reading-word.is-lit {
-  color: var(--obsidian);
+  color: var(--ink);
 }
 
 .judgment-section__body p {
   margin-bottom: var(--spacing-200);
-  color: #57544b;
+  color: var(--paper-muted);
   font-size: 16px;
   line-height: 24px;
 }
 
 .judgment-section__body p:last-child {
   margin: 0;
-  color: var(--obsidian);
+  color: var(--ink);
 }
 
 .systems-section {
@@ -214,6 +215,7 @@
   border: 1px solid var(--line);
   border-radius: var(--radius-xl);
   background: var(--surface);
+  box-shadow: 0 24px 64px rgba(30, 45, 58, 0.07);
   transition: border-color 700ms var(--ease), transform 700ms var(--ease);
 }
 
@@ -247,7 +249,7 @@
   padding: var(--spacing-50) var(--spacing-75);
   border: 1px solid var(--line);
   border-radius: 999px;
-  color: var(--signal-soft);
+  color: var(--paper-muted);
   font-size: 12px;
   line-height: 16px;
   white-space: nowrap;
@@ -259,7 +261,11 @@
   place-items: center;
   overflow: hidden;
   border-block: 1px solid var(--line);
-  background: var(--black);
+  background-color: #edf2f6;
+  background-image:
+    radial-gradient(ellipse at 50% 30%, rgba(255, 255, 255, 0.88), transparent 68%),
+    radial-gradient(circle at center, rgba(35, 49, 62, 0.12) 0 1px, transparent 1.15px);
+  background-size: 100% 100%, 24px 24px;
 }
 
 .system-card__visual svg {
@@ -279,14 +285,14 @@
 .diagram-ticks,
 .diagram-frames {
   fill: none;
-  stroke: rgba(244, 242, 234, 0.36);
+  stroke: rgba(31, 46, 59, 0.38);
   stroke-width: 1;
 }
 
 .diagram-orbits ellipse:nth-child(2),
 .diagram-planes path:nth-child(2),
 .diagram-time circle:nth-child(2) {
-  stroke: rgba(240, 106, 79, 0.76);
+  stroke: rgba(66, 82, 96, 0.78);
 }
 
 .diagram-scan,
@@ -301,12 +307,12 @@
 
 .diagram-ribbon--ghost {
   stroke: var(--optical);
-  opacity: 0.4;
+  opacity: 0.52;
 }
 
 .diagram-points circle,
 .diagram-core {
-  fill: var(--paper);
+  fill: #ffffff;
   stroke: var(--signal);
   stroke-width: 1;
 }
@@ -338,7 +344,7 @@
 .apps-section {
   padding-block: var(--spacing-900);
   border-block: 1px solid var(--line);
-  background: var(--obsidian);
+  background: rgba(237, 242, 246, 0.72);
 }
 
 .section-heading--wide {
@@ -361,7 +367,12 @@
   padding: var(--spacing-300);
   border: 1px solid var(--line);
   border-radius: var(--radius-xl);
-  background: var(--black);
+  background:
+    radial-gradient(ellipse at 50% 28%, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.62) 72%),
+    radial-gradient(circle at center, rgba(35, 49, 62, 0.1) 0 1px, transparent 1.15px),
+    #edf2f6;
+  background-size: 100% 100%, 24px 24px, 100% 100%;
+  box-shadow: 0 24px 64px rgba(30, 45, 58, 0.08);
   text-decoration: none;
   transition: border-color 700ms var(--ease), transform 700ms var(--ease);
 }
@@ -409,7 +420,7 @@
   width: 96px;
   height: 96px;
   border-radius: var(--radius-xl);
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.48);
+  box-shadow: 0 24px 64px rgba(30, 45, 58, 0.15);
 }
 
 .app-portal__identity h3 {
@@ -628,6 +639,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .judgment-section .reading-word {
-    color: var(--obsidian);
+    color: var(--ink);
   }
 }

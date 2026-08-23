@@ -1,11 +1,13 @@
 .theme-bronzed {
   --accent: #f06a4f;
   --accent-soft: #ffd6a8;
+  --accent-ink: #b63826;
 }
 
 .theme-stellar {
   --accent: #8d95ee;
   --accent-soft: #cbd0ff;
+  --accent-ink: #5547b8;
 }
 
 .blog-index {
@@ -27,7 +29,7 @@
   max-width: 680px;
   margin: 0;
   color: transparent;
-  background: linear-gradient(90deg, #ffffff, #9b9b9b);
+  background: linear-gradient(90deg, #0d141b, #62707d);
   background-clip: text;
   font-size: 72px;
   line-height: 1;
@@ -80,7 +82,11 @@
   min-height: 420px;
   overflow: hidden;
   border-bottom: 1px solid var(--line);
-  background: var(--black);
+  background-color: #edf2f6;
+  background-image:
+    radial-gradient(ellipse at 50% 32%, rgba(255, 255, 255, 0.94), transparent 68%),
+    radial-gradient(circle at center, rgba(35, 49, 62, 0.11) 0 1px, transparent 1.15px);
+  background-size: 100% 100%, 24px 24px;
 }
 
 .post-card__number,
@@ -97,7 +103,7 @@
 .post-card__number {
   top: var(--spacing-300);
   left: var(--spacing-300);
-  color: var(--accent);
+  color: var(--accent-ink);
 }
 
 .post-card__topic {
@@ -128,7 +134,7 @@
 
 .post-card__orbit span:nth-child(2) {
   inset: 64px;
-  border-color: rgba(244, 242, 234, 0.28);
+  border-color: rgba(35, 49, 62, 0.24);
   transform: rotateX(68deg);
 }
 
@@ -173,7 +179,7 @@
 }
 
 .post-card__body > span {
-  color: var(--accent-soft);
+  color: var(--accent-ink);
   font-size: 14px;
   font-weight: 650;
 }
@@ -229,7 +235,7 @@
   max-width: 920px;
   margin: 0;
   color: transparent;
-  background: linear-gradient(90deg, #ffffff, #9b9b9b);
+  background: linear-gradient(90deg, #0d141b, #62707d);
   background-clip: text;
   font-size: 60px;
   line-height: 1;
@@ -261,7 +267,11 @@
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: var(--radius-xl);
-  background: var(--surface);
+  background-color: #edf2f6;
+  background-image:
+    radial-gradient(ellipse at 50% 32%, rgba(255, 255, 255, 0.94), transparent 68%),
+    radial-gradient(circle at center, rgba(35, 49, 62, 0.11) 0 1px, transparent 1.15px);
+  background-size: 100% 100%, 24px 24px;
 }
 
 .article-signal > span {
@@ -299,7 +309,7 @@
 
 .article-signal > div span:nth-child(2) {
   inset: 72px;
-  border-color: rgba(244, 242, 234, 0.32);
+  border-color: rgba(35, 49, 62, 0.26);
   transform: rotateX(66deg);
 }
 
@@ -396,7 +406,7 @@
 }
 
 .article-body a {
-  color: var(--accent-soft);
+  color: var(--accent-ink);
 }
 
 .article-sources {
@@ -466,13 +476,14 @@
 
 .related-guides a > p {
   margin: 0;
-  color: var(--accent-soft);
+  color: var(--accent-ink);
 }
 
 .article-cta {
   padding-block: var(--spacing-900);
-  color: var(--black);
-  background: var(--accent);
+  border-block: 1px solid var(--line);
+  color: var(--ink);
+  background: color-mix(in srgb, var(--accent) 9%, var(--canvas));
 }
 
 .article-cta > div {
@@ -483,7 +494,7 @@
 }
 
 .article-cta .eyebrow {
-  color: color-mix(in srgb, var(--black) 68%, var(--accent));
+  color: var(--accent-ink);
 }
 
 .article-cta h2 {
@@ -494,9 +505,9 @@
 }
 
 .article-cta .button--store {
-  border-color: var(--black);
-  color: var(--paper);
-  background: var(--black);
+  border-color: var(--ink);
+  color: var(--canvas);
+  background: var(--ink);
 }
 
 @media (max-width: 900px) {

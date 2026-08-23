@@ -1,8 +1,8 @@
 import {
   ACESFilmicToneMapping,
-  AdditiveBlending,
   AmbientLight,
   BufferGeometry,
+  CanvasTexture,
   Color,
   DirectionalLight,
   DoubleSide,
@@ -44,15 +44,17 @@ const runtimes = new Map<HTMLCanvasElement, SceneRuntime>();
 function makeGlass(color: Color) {
   return new MeshPhysicalMaterial({
     color,
-    metalness: 0.02,
-    roughness: 0.08,
-    transmission: 0.94,
-    thickness: 0.9,
-    ior: 1.38,
+    metalness: 0,
+    roughness: 0.07,
+    transmission: 1,
+    thickness: 1.1,
+    ior: 1.46,
+    attenuationColor: new Color('#f5f8fa'),
+    attenuationDistance: 10,
     clearcoat: 1,
-    clearcoatRoughness: 0.08,
-    iridescence: 0.18,
-    iridescenceIOR: 1.3,
+    clearcoatRoughness: 0.03,
+    specularIntensity: 1,
+    dispersion: 0.015,
     opacity: 1,
     side: DoubleSide,
   });
@@ -109,48 +111,77 @@ function particleField(count: number, radius: number, color: Color, size = 0.035
   geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
   return new Points(
     geometry,
-    new PointsMaterial({ color, size, transparent: true, opacity: 0.72, blending: AdditiveBlending }),
+    new PointsMaterial({ color, size, transparent: true, opacity: 0.48 }),
   );
+}
+
+function dotMatrix(columns: number, rows: number, spacing: number, color: Color, opacity: number, size: number) {
+  const positions: number[] = [];
+  for (let row = 0; row < rows; row += 1) {
+    for (let column = 0; column < columns; column += 1) {
+      const x = (column - (columns - 1) / 2) * spacing;
+      const y = (row - (rows - 1) / 2) * spacing;
+      const z = Math.sin(column * 0.42) * 0.012 + Math.cos(row * 0.36) * 0.012;
+      positions.push(x, y, z);
+    }
+  }
+
+  const geometry = new BufferGeometry();
+  geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
+  const field = new Points(
+    geometry,
+    new PointsMaterial({ color, size, transparent: true, opacity, sizeAttenuation: true }),
+  );
+  field.renderOrder = -1;
+  return field;
+}
+
+function stageTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 768;
+  canvas.height = 512;
+  const context = canvas.getContext('2d');
+  if (context) {
+    const gradient = context.createRadialGradient(384, 36, 0, 384, 120, 460);
+    gradient.addColorStop(0, '#ffffff');
+    gradient.addColorStop(0.52, '#f1f4f7');
+    gradient.addColorStop(1, '#e2e8ed');
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+  }
+  const texture = new CanvasTexture(canvas);
+  texture.colorSpace = SRGBColorSpace;
+  return texture;
 }
 
 function monogramModel(accent: Color, secondary: Color): SceneModel {
   const root = new Group();
+  const mark = new Group();
   const geometry = makeCrescent();
-  const layers: Mesh[] = [];
+  const lens = new Mesh(geometry, makeGlass(accent));
+  addEdge(lens, new Color('#40505d'), 0.26);
+  lens.renderOrder = 2;
+  mark.add(lens);
+  mark.rotation.set(-0.14, -0.5, -0.08);
+  root.add(mark);
 
-  [secondary, new Color('#f4f2ea'), accent].forEach((color, index) => {
-    const mesh = new Mesh(geometry, makeGlass(color));
-    mesh.position.z = (index - 1) * 0.34;
-    mesh.scale.setScalar(1 - index * 0.025);
-    addEdge(mesh, color, index === 1 ? 0.7 : 0.38);
-    root.add(mesh);
-    layers.push(mesh);
-  });
-
-  const signal = new Mesh(
-    new SphereGeometry(0.1, 24, 24),
-    new MeshStandardMaterial({ color: accent, emissive: accent, emissiveIntensity: 4, roughness: 0.2 }),
-  );
-  root.add(signal);
-
-  const field = particleField(96, 3.35, secondary, 0.022);
-  field.rotation.z = 0.42;
-  root.add(field);
-
-  root.rotation.set(-0.12, -0.48, -0.08);
+  const nearField = dotMatrix(31, 23, 0.25, new Color('#52616e'), 0.34, 0.024);
+  nearField.position.z = -1.05;
+  root.add(nearField);
+  const farField = dotMatrix(19, 15, 0.44, secondary, 0.13, 0.02);
+  farField.position.set(0.12, -0.06, -2.2);
+  root.add(farField);
 
   return {
     root,
     update: (time, pointer) => {
-      const drift = reduceMotion.matches ? 0 : Math.sin(time * 0.45);
-      root.rotation.y = MathUtils.lerp(root.rotation.y, -0.48 + pointer.x * 0.18, 0.045);
-      root.rotation.x = MathUtils.lerp(root.rotation.x, -0.12 - pointer.y * 0.12, 0.045);
-      layers.forEach((layer, index) => {
-        layer.position.z = (index - 1) * (0.34 + drift * 0.055);
-        layer.rotation.z = (index - 1) * drift * 0.012;
-      });
-      signal.position.set(1.53 + Math.cos(time * 0.72) * 0.11, Math.sin(time * 0.72) * 0.34, 0.72);
-      field.rotation.y = time * 0.025;
+      const drift = reduceMotion.matches ? 0 : Math.sin(time * 0.42) * 0.018;
+      mark.rotation.y = MathUtils.lerp(mark.rotation.y, -0.5 + pointer.x * 0.16, 0.045);
+      mark.rotation.x = MathUtils.lerp(mark.rotation.x, -0.14 - pointer.y * 0.1 + drift, 0.045);
+      mark.position.y = drift * 2;
+      nearField.position.x = MathUtils.lerp(nearField.position.x, pointer.x * -0.045, 0.035);
+      nearField.position.y = MathUtils.lerp(nearField.position.y, pointer.y * 0.035, 0.035);
+      farField.position.x = MathUtils.lerp(farField.position.x, 0.12 + pointer.x * -0.02, 0.025);
     },
   };
 }
@@ -284,21 +315,21 @@ class SceneRuntime {
     this.renderer.toneMappingExposure = 1.08;
     this.renderer.setClearColor(0x000000, 0);
 
-    this.camera.position.set(0, 0, name === 'monogram' ? 8.1 : 8.5);
+    this.camera.position.set(0, 0, name === 'monogram' ? 10.4 : 8.5);
     this.scene.add(new AmbientLight(0xffffff, 1.25));
     const key = new DirectionalLight(0xffffff, 6.5);
     key.position.set(4, 6, 7);
     this.scene.add(key);
-    const warm = new PointLight(accent, 38, 14, 2);
-    warm.position.set(-3.8, -2, 4.5);
-    this.scene.add(warm);
-    const cool = new PointLight(secondary, 34, 14, 2);
-    cool.position.set(4, 2.4, 3.2);
-    this.scene.add(cool);
+    const left = new PointLight(name === 'monogram' ? 0xffffff : accent, 18, 14, 2);
+    left.position.set(-3.8, -2, 4.5);
+    this.scene.add(left);
+    const right = new PointLight(name === 'monogram' ? 0xdde3e8 : secondary, 16, 14, 2);
+    right.position.set(4, 2.4, 3.2);
+    this.scene.add(right);
 
     const backplate = new Mesh(
       new PlaneGeometry(16, 11),
-      new MeshBasicMaterial({ color: 0x10110f }),
+      new MeshBasicMaterial({ map: stageTexture() }),
     );
     backplate.position.z = -4.5;
     this.scene.add(backplate);

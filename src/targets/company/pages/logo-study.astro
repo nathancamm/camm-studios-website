@@ -1,0 +1,114 @@
+---
+import BaseLayout from '@shared/layouts/BaseLayout.astro';
+import Nav from '@shared/components/Nav.astro';
+import cammLens from '@shared/assets/brand/concepts/camm-lens.svg';
+import apertureStack from '@shared/assets/brand/concepts/aperture-stack.svg';
+import glassCable from '@shared/assets/brand/concepts/glass-cable.svg';
+import crystalBracket from '@shared/assets/brand/concepts/crystal-bracket.svg';
+import irisCut from '@shared/assets/brand/concepts/iris-cut.svg';
+import '@shared/styles/logo-study.css';
+
+const canonical = new URL('/logo-study/', Astro.site);
+---
+
+<BaseLayout
+  title="Camm Studios logo study"
+  description="A private comparison of five neutral Camm Studios identity concepts."
+  canonical={canonical}
+  robots="noindex, nofollow"
+>
+  <div class="logo-study-page">
+    <Nav links={[{ href: '/', label: 'Company' }]} />
+    <main id="main" class="logo-study shell">
+      <header class="logo-study__header">
+        <div>
+          <p class="eyebrow">Identity study / private</p>
+          <h1>Five clear ways<br />to draw Camm.</h1>
+        </div>
+        <p>The same initial, built as five different optical objects. Each concept keeps a direct neutral form for the navigation mark.</p>
+      </header>
+
+      <section class="logo-study__grid" aria-label="Camm Studios logo concepts">
+        <article class="logo-concept" data-recommended>
+          <div class="logo-concept__stage">
+            <p class="logo-concept__index">01 / Recommended</p>
+            <img src={cammLens.src} alt="Camm Lens crystal C concept" width="320" height="240" />
+          </div>
+          <div class="logo-concept__body">
+            <div class="logo-concept__title"><p>Concept 01</p><h2>Camm Lens</h2><a href={cammLens.src} download>Download SVG ↘</a></div>
+            <p>One deep crescent with decisive diagonal cuts. Its broad face gives the dot field enough material to bend.</p>
+            <dl>
+              <div><dt>Motion</dt><dd>A slight turn reveals the lens depth.</dd></div>
+              <div><dt>Nav mark</dt><dd>One solid C with diagonal terminals.</dd></div>
+            </dl>
+          </div>
+        </article>
+
+        <article class="logo-concept">
+          <div class="logo-concept__stage">
+            <p class="logo-concept__index">02 / Layered</p>
+            <img src={apertureStack.src} alt="Aperture Stack crystal C concept" width="320" height="240" />
+          </div>
+          <div class="logo-concept__body">
+            <div class="logo-concept__title"><p>Concept 02</p><h2>Aperture Stack</h2><a href={apertureStack.src} download>Download SVG ↘</a></div>
+            <p>Three slim crescents sit at different depths. Together they turn one signal into an operating system.</p>
+            <dl>
+              <div><dt>Motion</dt><dd>The layers separate with restrained parallax.</dd></div>
+              <div><dt>Nav mark</dt><dd>Three nested C strokes.</dd></div>
+            </dl>
+          </div>
+        </article>
+
+        <article class="logo-concept">
+          <div class="logo-concept__stage">
+            <p class="logo-concept__index">03 / Continuous</p>
+            <img src={glassCable.src} alt="Glass Cable crystal C concept" width="320" height="240" />
+          </div>
+          <div class="logo-concept__body">
+            <div class="logo-concept__title"><p>Concept 03</p><h2>Glass Cable</h2><a href={glassCable.src} download>Download SVG ↘</a></div>
+            <p>A continuous rounded arc creates the softest expression. Polished terminals make the construction tactile.</p>
+            <dl>
+              <div><dt>Motion</dt><dd>A highlight travels around the arc.</dd></div>
+              <div><dt>Nav mark</dt><dd>One heavy C stroke with round caps.</dd></div>
+            </dl>
+          </div>
+        </article>
+
+        <article class="logo-concept">
+          <div class="logo-concept__stage">
+            <p class="logo-concept__index">04 / Structural</p>
+            <img src={crystalBracket.src} alt="Crystal Bracket C concept" width="320" height="240" />
+          </div>
+          <div class="logo-concept__body">
+            <div class="logo-concept__title"><p>Concept 04</p><h2>Crystal Bracket</h2><a href={crystalBracket.src} download>Download SVG ↘</a></div>
+            <p>Three faceted prisms make an angular C. The small joins give the mark a deliberate engineered rhythm.</p>
+            <dl>
+              <div><dt>Motion</dt><dd>Each facet catches light on its own beat.</dd></div>
+              <div><dt>Nav mark</dt><dd>Three joined graphite polygons.</dd></div>
+            </dl>
+          </div>
+        </article>
+
+        <article class="logo-concept">
+          <div class="logo-concept__stage">
+            <p class="logo-concept__index">05 / Spatial</p>
+            <img src={irisCut.src} alt="Iris Cut crystal C concept" width="320" height="240" />
+          </div>
+          <div class="logo-concept__body">
+            <div class="logo-concept__title"><p>Concept 05</p><h2>Iris Cut</h2><a href={irisCut.src} download>Download SVG ↘</a></div>
+            <p>Three tapered blades orbit an open centre. The missing fourth blade creates the C through negative space.</p>
+            <dl>
+              <div><dt>Motion</dt><dd>The blades shift on opposing shallow axes.</dd></div>
+              <div><dt>Nav mark</dt><dd>Three tapered segments around a void.</dd></div>
+            </dl>
+          </div>
+        </article>
+      </section>
+
+      <footer class="logo-study__footer">
+        <p>Private design study. This page is excluded from search indexing.</p>
+        <a href="/">Return to Camm Studios</a>
+      </footer>
+    </main>
+  </div>
+</BaseLayout>

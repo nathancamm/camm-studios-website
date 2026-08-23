@@ -1,16 +1,18 @@
 .theme-bronzed {
   --accent: #f06a4f;
   --accent-soft: #ffd6a8;
+  --accent-ink: #b63826;
 }
 
 .theme-stellar {
   --accent: #8d95ee;
   --accent-soft: #cbd0ff;
+  --accent-ink: #5547b8;
 }
 
 .theme-bronzed ::selection,
 .theme-stellar ::selection {
-  color: var(--black);
+  color: var(--ink);
   background: var(--accent-soft);
 }
 
@@ -42,7 +44,7 @@
   width: 56px;
   height: 56px;
   border-radius: var(--radius-lg);
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.44);
+  box-shadow: 0 24px 64px rgba(30, 45, 58, 0.14);
 }
 
 .app-identity p,
@@ -64,7 +66,7 @@
   max-width: 680px;
   margin-bottom: var(--spacing-300);
   color: transparent;
-  background: linear-gradient(90deg, #ffffff, #9b9b9b);
+  background: linear-gradient(90deg, #0d141b, #62707d);
   background-clip: text;
   font-size: 72px;
   line-height: 1;
@@ -133,7 +135,7 @@
 }
 
 .product-index > div > span {
-  color: var(--accent);
+  color: var(--accent-ink);
   font-size: 12px;
   line-height: 16px;
 }
@@ -187,7 +189,12 @@
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: var(--radius-xl);
-  background: var(--black);
+  background-color: #edf2f6;
+  background-image:
+    radial-gradient(ellipse at 50% 26%, rgba(255, 255, 255, 0.96), transparent 68%),
+    radial-gradient(circle at center, rgba(35, 49, 62, 0.11) 0 1px, transparent 1.15px);
+  background-size: 100% 100%, 24px 24px;
+  box-shadow: 0 32px 80px rgba(30, 45, 58, 0.08);
 }
 
 .product-stage > p {
@@ -220,7 +227,7 @@
   border: 1px solid var(--line-strong);
   border-radius: 40px;
   background: var(--surface-raised);
-  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.58);
+  box-shadow: 0 32px 80px rgba(30, 45, 58, 0.18);
   transform: rotateY(-6deg) rotateX(2deg);
   transition: transform 900ms var(--ease);
 }
@@ -257,7 +264,7 @@
 
 .feature-row > span {
   margin-top: var(--spacing-50);
-  color: var(--accent);
+  color: var(--accent-ink);
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.1em;
@@ -300,7 +307,7 @@
 
 .step > p {
   margin-bottom: var(--spacing-900);
-  color: var(--accent);
+  color: var(--accent-ink);
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.12em;
@@ -329,12 +336,14 @@
   gap: var(--spacing-700);
   padding: var(--spacing-700);
   border-radius: var(--radius-xl);
-  color: var(--obsidian);
-  background: var(--paper);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 24px 64px rgba(30, 45, 58, 0.08);
 }
 
 .privacy-panel .eyebrow {
-  color: color-mix(in srgb, var(--accent) 78%, var(--obsidian));
+  color: var(--accent-ink);
 }
 
 .privacy-panel h2 {
@@ -349,13 +358,13 @@
 }
 
 .privacy-panel > div:last-child p {
-  color: #57544b;
+  color: var(--paper-muted);
   font-size: 16px;
   line-height: 24px;
 }
 
 .privacy-panel .text-link {
-  color: var(--obsidian);
+  color: var(--ink);
 }
 
 .app-faq {
@@ -426,7 +435,7 @@
 }
 
 .guide-card > div span:first-child {
-  color: var(--accent);
+  color: var(--accent-ink);
 }
 
 .guide-card h3 {
@@ -443,19 +452,20 @@
 
 .guide-card__arrow {
   margin-top: auto;
-  color: var(--accent-soft);
+  color: var(--accent-ink);
   font-size: 14px;
   font-weight: 650;
 }
 
 .download-panel {
   padding-block: var(--spacing-900);
-  color: var(--black);
-  background: var(--accent);
+  border-block: 1px solid var(--line);
+  color: var(--ink);
+  background: color-mix(in srgb, var(--accent) 9%, var(--canvas));
 }
 
 .download-panel .eyebrow {
-  color: color-mix(in srgb, var(--black) 68%, var(--accent));
+  color: var(--accent-ink);
 }
 
 .download-panel h2 {
@@ -466,9 +476,9 @@
 }
 
 .download-panel .button--store {
-  border-color: var(--black);
-  color: var(--paper);
-  background: var(--black);
+  border-color: var(--ink);
+  color: var(--canvas);
+  background: var(--ink);
 }
 
 @media (min-width: 1440px) {

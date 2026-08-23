@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" role="img" aria-labelledby="title desc">
+  <title id="title">Iris Cut</title>
+  <desc id="desc">Three tapered clear crystal blades create a C around an open centre.</desc>
+  <defs>
+    <linearGradient id="iris-top" x1="75" y1="34" x2="211" y2="102" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff" stop-opacity=".94"/>
+      <stop offset=".5" stop-color="#d7dde4" stop-opacity=".4"/>
+      <stop offset="1" stop-color="#737e89" stop-opacity=".34"/>
+    </linearGradient>
+    <linearGradient id="iris-left" x1="45" y1="72" x2="114" y2="183" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f7f9fb" stop-opacity=".88"/>
+      <stop offset=".55" stop-color="#c8d0d8" stop-opacity=".38"/>
+      <stop offset="1" stop-color="#68737f" stop-opacity=".34"/>
+    </linearGradient>
+    <linearGradient id="iris-bottom" x1="70" y1="150" x2="213" y2="211" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff" stop-opacity=".88"/>
+      <stop offset=".54" stop-color="#d9dfe5" stop-opacity=".4"/>
+      <stop offset="1" stop-color="#727d88" stop-opacity=".36"/>
+    </linearGradient>
+    <filter id="iris-shadow" x="25" y="8" width="275" height="230" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="15" stdDeviation="11" flood-color="#1b222b" flood-opacity=".19"/>
+    </filter>
+  </defs>
+  <g filter="url(#iris-shadow)" stroke-linejoin="round">
+    <path d="M214 48C170 23 113 29 78 66L112 99C135 79 167 74 196 88Z" fill="url(#iris-top)" stroke="#ffffff" stroke-opacity=".74"/>
+    <path d="M78 66C45 95 42 143 67 177L109 150C95 130 97 105 113 88Z" fill="url(#iris-left)" stroke="#89939e" stroke-opacity=".46"/>
+    <path d="M67 177C98 216 159 224 207 193L180 156C155 173 129 171 108 150Z" fill="url(#iris-bottom)" stroke="#ffffff" stroke-opacity=".68"/>
+    <path d="M91 63C121 35 166 31 201 49" fill="none" stroke="#ffffff" stroke-opacity=".82" stroke-width="3" stroke-linecap="round"/>
+    <path d="M57 91C46 119 50 146 66 168" fill="none" stroke="#ffffff" stroke-opacity=".62" stroke-width="3" stroke-linecap="round"/>
+    <path d="M80 184C110 211 157 216 194 194" fill="none" stroke="#ffffff" stroke-opacity=".72" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

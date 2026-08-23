@@ -8,6 +8,7 @@ const root = new URL('..', import.meta.url).pathname;
 const routeFiles = {
   company: [
     'index.html',
+    'logo-study/index.html',
     'support/index.html',
     'privacy/index.html',
     'terms/index.html',
@@ -139,6 +140,38 @@ test('company page leads with the studio operating model', () => {
   assert.match(company, /See how we operate/i);
   assert.match(company, /consumer apps that compound/i);
   assert.match(company, /From signal to software to scale/i);
+});
+
+test('every rendered page declares the cool light color scheme', () => {
+  for (const [target, files] of Object.entries(routeFiles)) {
+    for (const file of files.filter((path) => path.endsWith('.html'))) {
+      const html = readFileSync(join(root, 'dist', target, file), 'utf8');
+      assert.match(html, /<meta name="color-scheme" content="light"/i, `${target}/${file} is not light themed`);
+      assert.match(html, /<meta name="theme-color" content="#f7f9fc"/i, `${target}/${file} has the wrong browser chrome color`);
+    }
+  }
+});
+
+test('the light visual system uses a measured dot matrix for depth', () => {
+  const css = readFileSync(join(root, 'src/shared/styles/global.css'), 'utf8');
+  assert.match(css, /--canvas:\s*#f7f9fc/i);
+  assert.match(css, /radial-gradient\(circle[^;]+var\(--dot\)/is);
+  assert.match(css, /background-size:\s*[^;]*24px\s+24px/i);
+});
+
+test('the private logo study contains five neutral crystal C directions', () => {
+  const study = readFileSync(join(root, 'dist/company/logo-study/index.html'), 'utf8');
+  const concepts = readdirSync(join(root, 'src/shared/assets/brand/concepts')).filter((file) => file.endsWith('.svg'));
+  assert.equal((study.match(/<article class="logo-concept(?:"|\s)/g) ?? []).length, 5);
+  assert.equal(concepts.length, 5);
+  assert.match(study, /noindex, nofollow/i);
+  for (const name of ['Camm Lens', 'Aperture Stack', 'Glass Cable', 'Crystal Bracket', 'Iris Cut']) {
+    assert.match(study, new RegExp(`>${name}<`, 'i'), `Logo study is missing ${name}`);
+  }
+  for (const file of concepts) {
+    const svg = readFileSync(join(root, 'src/shared/assets/brand/concepts', file), 'utf8');
+    assert.doesNotMatch(svg, /#(?:f06a4f|8d95ee|8fc6ff|ffd6a8|cbd0ff)/i, `${file} contains a tinted brand color`);
+  }
 });
 
 test('the company site exposes the original glass monogram and real internal systems', () => {

@@ -22,6 +22,18 @@ async function assertAnimatedHeadingReadable(page, label) {
   assert.deepEqual(unreadable, [], `${label} has transparent or incomplete animated heading words`);
 }
 
+async function assertLightTheme(page, label) {
+  const palette = await page.evaluate(() => {
+    const body = getComputedStyle(document.body);
+    return { background: body.backgroundColor, color: body.color };
+  });
+  const channels = (value) => value.match(/[\d.]+/g)?.slice(0, 3).map(Number) ?? [];
+  const background = channels(palette.background);
+  const color = channels(palette.color);
+  assert.ok(background.length === 3 && background.every((channel) => channel >= 240), `${label} does not have a cool white background: ${palette.background}`);
+  assert.ok(color.length === 3 && color.every((channel) => channel <= 40), `${label} does not use dark graphite text: ${palette.color}`);
+}
+
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 
@@ -46,6 +58,7 @@ try {
       assert.ok(await page.locator('[data-three-frame]').evaluate((element) => element.classList.contains('is-rendered') || element.classList.contains('is-unavailable')), `${site.name} scene never resolved at ${width}px`);
       assert.deepEqual(runtimeErrors, [], `${site.name} logged runtime errors at ${width}px`);
       await assertAnimatedHeadingReadable(page, `${site.name} at ${width}px`);
+      await assertLightTheme(page, `${site.name} at ${width}px`);
 
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
       assert.ok(overflow <= 1, `${site.name} overflows by ${overflow}px at ${width}px`);
@@ -75,12 +88,13 @@ try {
   await reducedPage.goto(sites[0].url, { waitUntil: 'networkidle' });
   const hiddenReveals = await reducedPage.locator('[data-reveal]').evaluateAll((elements) => elements.filter((element) => Number.parseFloat(getComputedStyle(element).opacity) < 1).length);
   assert.equal(hiddenReveals, 0, 'Reduced motion left hidden content');
-  const dimReadingWords = await reducedPage.locator('.reading-word').evaluateAll((elements) => elements.filter((element) => !['rgb(244, 242, 234)', 'rgb(19, 18, 9)'].includes(getComputedStyle(element).color)).length);
+  const dimReadingWords = await reducedPage.locator('.reading-word').evaluateAll((elements) => elements.filter((element) => getComputedStyle(element).color !== 'rgb(17, 24, 32)').length);
   assert.equal(dimReadingWords, 0, 'Reduced motion left the reading reveal incomplete');
   assert.ok(await reducedPage.locator('[data-three-frame]').evaluate((element) => element.classList.contains('is-rendered') || element.classList.contains('is-unavailable')), 'Reduced motion did not resolve the static Three.js frame');
   await reducedContext.close();
 
   const detailRoutes = [
+    { site: sites[0], slug: 'logo-study', route: '/logo-study/' },
     { site: sites[0], slug: 'privacy', route: '/privacy/' },
     { site: sites[1], slug: 'guides', route: '/blog/' },
     { site: sites[1], slug: 'cloudy-day-uv', route: '/blog/cloudy-day-uv/' },
@@ -108,6 +122,7 @@ try {
       assert.deepEqual(brokenImages, [], `${detail.site.name}${detail.route} has broken images at ${width}px`);
       assert.deepEqual(runtimeErrors, [], `${detail.site.name}${detail.route} logged runtime errors at ${width}px`);
       await assertAnimatedHeadingReadable(page, `${detail.site.name}${detail.route} at ${width}px`);
+      await assertLightTheme(page, `${detail.site.name}${detail.route} at ${width}px`);
       await page.screenshot({ path: `${output}${detail.site.name}-${detail.slug}-${width}.png`, fullPage: true });
       await context.close();
     }
@@ -118,7 +133,7 @@ try {
     const page = await context.newPage();
     await context.addInitScript(() => sessionStorage.setItem('camm-intro-seen', '1'));
     const routes = site.name === 'company'
-      ? ['/', '/support/', '/privacy/', '/terms/']
+      ? ['/', '/logo-study/', '/support/', '/privacy/', '/terms/']
       : ['/', '/blog/', '/support/', '/privacy/', '/terms/', '/rss.xml', '/sitemap.xml'];
     for (const route of routes) {
       const response = await page.goto(`${site.url}${route}`, { waitUntil: 'domcontentloaded' });
