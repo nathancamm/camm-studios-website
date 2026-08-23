@@ -1,5 +1,10 @@
 import icon from '../../assets/product/bronzed-icon.png';
 import screenshot from '../../assets/product/bronzed-screenshot.png';
+import heroModel from '../../assets/models/bronzed-heliostat.glb?url';
+import instrumentArt from '../../assets/art/products/bronzed-instrument.webp';
+import uvIndexArt from '../../assets/art/guides/bronzed-uv-index.webp';
+import cloudyDayArt from '../../assets/art/guides/bronzed-cloudy-day-uv.webp';
+import sunscreenArt from '../../assets/art/guides/bronzed-sunscreen-spf.webp';
 import type { AppDefinition } from '../app-definition';
 
 const bronzed: AppDefinition = {
@@ -14,6 +19,13 @@ const bronzed: AppDefinition = {
   category: 'Weather and Health & Fitness',
   icon,
   screenshot,
+  heroModel,
+  instrumentArt,
+  guideArt: {
+    'uv-index-explained': uvIndexArt,
+    'cloudy-day-uv': cloudyDayArt,
+    'sunscreen-spf-and-uv-index': sunscreenArt,
+  },
   accent: '#e4571a',
   themeClass: 'theme-bronzed',
   features: [

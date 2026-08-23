@@ -230,7 +230,7 @@ test('the Three.js worlds load authored models into a calibrated optical stage',
   assert.match(scene, /RoomEnvironment/);
   assert.match(scene, /PMREMGenerator/);
   assert.match(scene, /GLTFLoader/);
-  assert.match(scene, /data\.modelUrl/);
+  assert.match(scene, /dataset\.modelUrl/);
   assert.match(scene, /loadAsync/);
   assert.match(scene, /Box3/);
   assert.match(scene, /model\.getObjectByName/);

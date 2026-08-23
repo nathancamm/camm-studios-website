@@ -5,9 +5,17 @@ import Nav from '@shared/components/Nav.astro';
 import Footer from '@shared/components/Footer.astro';
 import ThreeScene from '@shared/components/ThreeScene.astro';
 import SystemCard from '@shared/components/SystemCard.astro';
-import mark from '@shared/assets/brand/mark.svg';
+import mark from '@shared/assets/brand/mark.png';
+import snakeModel from '@shared/assets/models/camm-robotic-snake.glb?url';
+import snakePoster from '@shared/assets/brand/concepts/vertebra-lock.webp';
 import bronzedIcon from '@shared/assets/product/bronzed-icon.png';
 import stellarIcon from '@shared/assets/product/stellar-icon.png';
+import bronzedPortalArt from '@shared/assets/art/products/bronzed-instrument.webp';
+import stellarPortalArt from '@shared/assets/art/products/stellar-instrument.webp';
+import artemisArt from '@shared/assets/art/systems/artemis.webp';
+import atlasArt from '@shared/assets/art/systems/atlas.webp';
+import morpheusArt from '@shared/assets/art/systems/morpheus.webp';
+import chronosArt from '@shared/assets/art/systems/chronos.webp';
 import { companySite } from '@shared/data/site';
 import '@shared/styles/company.css';
 
@@ -19,12 +27,14 @@ const products = {
     appStoreTitle: 'Bronzed — Tan Timer & UV Index',
     url: 'https://bronzed.cammstudios.com',
     icon: bronzedIcon,
+    portalArt: bronzedPortalArt,
   },
   stellar: {
     name: 'Stellar',
     appStoreTitle: 'Stellar — Mantra & Ritual',
     url: 'https://stellar.cammstudios.com',
     icon: stellarIcon,
+    portalArt: stellarPortalArt,
   },
 };
 const structuredData = {
@@ -70,18 +80,21 @@ const systems = [
     name: 'Artemis',
     role: 'Opportunity discovery',
     kind: 'artemis' as const,
+    art: artemisArt,
     description: 'Collects App Store search and category signals for human review, helping us investigate overlooked consumer problems.',
   },
   {
     name: 'Atlas',
     role: 'Portfolio intelligence',
     kind: 'atlas' as const,
+    art: atlasArt,
     description: 'Brings store, subscription, advertising, attribution, and product data together for portfolio decisions.',
   },
   {
     name: 'Morpheus',
     role: 'Creative production',
     kind: 'morpheus' as const,
+    art: morpheusArt,
     status: 'In development',
     description: 'Structures short form creative work from brief through generation, review, and learning. Publishing stays human approved.',
   },
@@ -89,6 +102,7 @@ const systems = [
     name: 'Chronos',
     role: 'Operating cadence',
     kind: 'chronos' as const,
+    art: chronosArt,
     description: 'Turns studio tasks into daily and weekly plans, then improves time estimates from completed work.',
   },
 ];
@@ -125,11 +139,12 @@ const questions = [
       <div class="company-hero__object">
         <ThreeScene
           scene="monogram"
-          label="The Camm Studios crystal lens: a colorless glass C refracting a calibrated dot field"
+          label="A clear robotic snake preserving the Camm Studios C silhouette, with articulated joints and an optical eye"
+          modelUrl={snakeModel}
+          poster={snakePoster}
           accent="#ffffff"
-          secondary="#aab4be"
         />
-        <div class="object-index" aria-hidden="true"><span>PRISM TERMINALS / 001</span><span>REFRACTIVE IDENTITY</span></div>
+        <div class="object-index" aria-hidden="true"><span>ROBOTIC SERPENT / 001</span><span>REFRACTIVE IDENTITY</span></div>
       </div>
     </section>
 
@@ -189,21 +204,13 @@ const questions = [
             <div class="app-portal__top"><span>Weather and wellbeing</span><span>↗</span></div>
             <div class="app-portal__identity"><Image src={products.bronzed.icon} alt="Bronzed app icon" width={128} height={128} format="webp" /><h3>Bronzed</h3></div>
             <p>Live UV and personal context, turned into clearer outdoor guidance.</p>
-            <div class="app-portal__instrument app-portal__instrument--solar" aria-hidden="true">
-              <span class="portal-calibration"></span><span class="portal-ticks"></span><span class="portal-lens"></span>
-              <span class="portal-arc"></span><span class="portal-cloud portal-cloud--one"></span><span class="portal-cloud portal-cloud--two"></span>
-              <span class="portal-scan"></span><span class="portal-node portal-node--one"></span><span class="portal-node portal-node--two"></span>
-            </div>
+            <Image class="app-portal__art" src={products.bronzed.portalArt} alt="" width={1024} quality={88} loading="lazy" aria-hidden="true" />
           </a>
           <a class="app-portal app-portal--stellar" href="https://stellar.cammstudios.com" data-reveal>
             <div class="app-portal__top"><span>Daily reflection</span><span>↗</span></div>
             <div class="app-portal__identity"><Image src={products.stellar.icon} alt="Stellar app icon" width={128} height={128} format="webp" /><h3>Stellar</h3></div>
             <p>Affirmations, journaling, and vision boards, brought into a steady daily ritual.</p>
-            <div class="app-portal__instrument app-portal__instrument--ritual" aria-hidden="true">
-              <span class="portal-track portal-track--three"></span><span class="portal-track portal-track--six"></span><span class="portal-track portal-track--nine"></span>
-              <span class="portal-rosette"></span><span class="portal-seed"></span>
-              <span class="portal-node portal-node--one"></span><span class="portal-node portal-node--two"></span><span class="portal-node portal-node--three"></span><span class="portal-node portal-node--four"></span>
-            </div>
+            <Image class="app-portal__art" src={products.stellar.portalArt} alt="" width={1024} quality={88} loading="lazy" aria-hidden="true" />
           </a>
         </div>
       </div>

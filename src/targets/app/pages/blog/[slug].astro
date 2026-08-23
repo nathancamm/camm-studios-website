@@ -1,6 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
-import { getImage } from 'astro:assets';
+import { getImage, Image } from 'astro:assets';
 import type { GetStaticPaths } from 'astro';
 import BaseLayout from '@shared/layouts/BaseLayout.astro';
 import Nav from '@shared/components/Nav.astro';
@@ -22,19 +22,9 @@ const relatedPosts = (await getCollection('blog', ({ data }) => data.app === app
   .sort((a, b) => b.data.publicationDate.valueOf() - a.data.publicationDate.valueOf())
   .slice(0, 2);
 const canonical = new URL(`/blog/${post.data.slug}`, Astro.site);
-const socialAsset = await getImage({ src: app.icon, width: 512, format: 'webp', quality: 86 });
+const guideArt = app.guideArt[post.data.slug];
+const socialAsset = await getImage({ src: guideArt, width: 1200, format: 'webp', quality: 88 });
 const socialImage = new URL(socialAsset.src, Astro.site);
-const visualKinds: Record<string, string> = app.target === 'bronzed'
-  ? {
-      'uv-index-explained': 'uv-scale',
-      'cloudy-day-uv': 'cloud-layers',
-      'sunscreen-spf-and-uv-index': 'filter-stack',
-    }
-  : {
-      '369-method-daily-ritual': 'ritual-369',
-      'write-a-personal-affirmation': 'signal-line',
-      'vision-board-routine': 'focus-matrix',
-    };
 const structuredData = [
   {
     '@context': 'https://schema.org',
@@ -80,12 +70,7 @@ const structuredData = [
 
     <div class="article-signal shell" aria-hidden="true" data-reveal>
       <span>{post.data.keywords[0]}</span>
-      <div class="post-card__instrument article-signal__instrument" data-visual={visualKinds[post.data.slug]}>
-        <span class="journal-axis"></span><span class="journal-ring journal-ring--outer"></span><span class="journal-ring journal-ring--inner"></span>
-        <span class="journal-layer journal-layer--one"></span><span class="journal-layer journal-layer--two"></span><span class="journal-layer journal-layer--three"></span>
-        <span class="journal-trace"></span><span class="journal-scan"></span><span class="journal-core"></span>
-        <span class="journal-node journal-node--one"></span><span class="journal-node journal-node--two"></span><span class="journal-node journal-node--three"></span>
-      </div>
+      <Image class="article-signal__art" src={guideArt} alt="" width={1200} quality={90} loading="eager" />
       <span>{app.name} / {post.data.publicationDate.getFullYear()}</span>
     </div>
 

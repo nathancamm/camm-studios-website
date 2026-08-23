@@ -41,7 +41,6 @@ const privacyCopy = app.target === 'bronzed'
 const readingStatement = app.target === 'bronzed'
   ? 'The weather tells you what is happening. Bronzed helps you decide what to do next.'
   : 'Intentions fade when they have nowhere to live. Stellar gives them a quiet place to return.';
-const sceneSecondary = app.target === 'bronzed' ? '#ffd6a8' : '#b8c2ff';
 ---
 
 <BaseLayout
@@ -77,8 +76,9 @@ const sceneSecondary = app.target === 'bronzed' ? '#ffd6a8' : '#b8c2ff';
         <ThreeScene
           scene={app.target}
           label={app.target === 'bronzed' ? 'A clear UV measurement lens with attenuation bands and calibrated index marks' : 'A clear 3, 6, and 9 ritual instrument resolving into a crystal rosette'}
+          modelUrl={app.heroModel}
+          poster={app.instrumentArt}
           accent={app.accent}
-          secondary={sceneSecondary}
         />
         <div class="object-index" aria-hidden="true"><span>{app.target.toUpperCase()} / LIVE</span><span>NATIVE iOS</span></div>
       </div>
@@ -98,12 +98,7 @@ const sceneSecondary = app.target === 'bronzed' ? '#ffd6a8' : '#b8c2ff';
     <section class="product-story" id="features" aria-labelledby="features-title">
       <div class="shell product-story__layout">
         <div class="product-stage" data-product={app.target} data-reveal>
-          <div class="product-stage__instrument" aria-hidden="true">
-            <span class="product-stage__grid"></span><span class="product-stage__halo product-stage__halo--outer"></span>
-            <span class="product-stage__halo product-stage__halo--middle"></span><span class="product-stage__halo product-stage__halo--inner"></span>
-            <span class="product-stage__arc"></span><span class="product-stage__trace product-stage__trace--one"></span><span class="product-stage__trace product-stage__trace--two"></span>
-            <span class="product-stage__scan"></span><span class="product-stage__datum product-stage__datum--one"></span><span class="product-stage__datum product-stage__datum--two"></span>
-          </div>
+          <Image class="product-stage__art" src={app.instrumentArt} alt="" width={1024} quality={88} loading="lazy" aria-hidden="true" />
           <div class="device-frame">
             <Image src={app.screenshot} alt={`Real ${app.name} app interface`} width={390} format="webp" quality={90} loading="eager" />
           </div>
@@ -163,6 +158,7 @@ const sceneSecondary = app.target === 'bronzed' ? '#ffd6a8' : '#b8c2ff';
       <div class="guide-grid">
         {posts.map((post, index) => (
           <a class="guide-card" href={`/blog/${post.data.slug}`} data-reveal>
+            <Image class="guide-card__art" src={app.guideArt[post.data.slug]} alt="" width={1200} quality={86} loading="lazy" aria-hidden="true" />
             <div><span>0{index + 1}</span><span>{post.data.publicationDate.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}</span></div>
             <h3>{post.data.title}</h3>
             <p>{post.data.summary}</p>

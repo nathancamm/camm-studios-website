@@ -1,5 +1,10 @@
 import icon from '../../assets/product/stellar-icon.png';
 import screenshot from '../../assets/product/stellar-screenshot.png';
+import heroModel from '../../assets/models/stellar-ritual-loom.glb?url';
+import instrumentArt from '../../assets/art/products/stellar-instrument.webp';
+import methodArt from '../../assets/art/guides/stellar-369-method.webp';
+import affirmationArt from '../../assets/art/guides/stellar-personal-affirmation.webp';
+import visionBoardArt from '../../assets/art/guides/stellar-vision-board-routine.webp';
 import type { AppDefinition } from '../app-definition';
 
 const stellar: AppDefinition = {
@@ -14,6 +19,13 @@ const stellar: AppDefinition = {
   category: 'Lifestyle',
   icon,
   screenshot,
+  heroModel,
+  instrumentArt,
+  guideArt: {
+    '369-method-daily-ritual': methodArt,
+    'write-a-personal-affirmation': affirmationArt,
+    'vision-board-routine': visionBoardArt,
+  },
   accent: '#5b67df',
   themeClass: 'theme-stellar',
   features: [
