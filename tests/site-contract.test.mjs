@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import test from 'node:test';
 
@@ -159,25 +159,70 @@ test('the light visual system uses a measured dot matrix for depth', () => {
   assert.match(css, /background-size:\s*[^;]*24px\s+24px/i);
 });
 
-test('the private logo study contains five neutral crystal C directions', () => {
+test('the private logo study contains five source-grounded robotic snake directions', () => {
   const study = readFileSync(join(root, 'dist/company/logo-study/index.html'), 'utf8');
-  const concepts = readdirSync(join(root, 'src/shared/assets/brand/concepts')).filter((file) => file.endsWith('.svg'));
+  const conceptsDir = join(root, 'src/shared/assets/brand/concepts');
+  const concepts = readdirSync(conceptsDir).filter((file) => file.endsWith('.webp'));
   assert.equal((study.match(/<article class="logo-concept(?:"|\s)/g) ?? []).length, 5);
   assert.equal(concepts.length, 5);
   assert.match(study, /noindex, nofollow/i);
-  for (const name of ['Prism Terminals', 'Aperture Step', 'Inner Halo', 'Equator Split', 'Crown Facet']) {
+  assert.match(study, /C-shaped snake/i);
+  for (const name of ['Vertebra Lock', 'Nerve Rail', 'Servo Snout', 'Maglock Coil', 'Iris Sentinel']) {
     assert.match(study, new RegExp(`>${name}<`, 'i'), `Logo study is missing ${name}`);
   }
-  assert.doesNotMatch(study, /Camm Lens|Aperture Stack|Glass Cable|Crystal Bracket|Iris Cut/i);
+  assert.doesNotMatch(study, /Prism Terminals|Aperture Step|Inner Halo|Equator Split|Crown Facet/i);
   for (const file of concepts) {
-    const svg = readFileSync(join(root, 'src/shared/assets/brand/concepts', file), 'utf8');
-    const vectorElements = svg.match(/<(?:path|ellipse|circle|line|rect|polygon)\b/g) ?? [];
-    assert.doesNotMatch(svg, /#(?:f06a4f|8d95ee|8fc6ff|ffd6a8|cbd0ff)/i, `${file} contains a tinted brand color`);
-    assert.match(svg, /data-camm-aperture=["']true["']/i, `${file} does not preserve the current C aperture`);
-    assert.match(svg, /M51 16L43 23A15 15 0 1 0 43 41L51 48A25 25 0 1 1 51 16Z/i, `${file} does not include the current C silhouette`);
-    assert.match(svg, /prefers-reduced-motion:\s*reduce/i, `${file} does not stop its optical animation`);
-    assert.ok(vectorElements.length >= 12, `${file} needs more optical construction detail`);
+    assert.ok(statSync(join(conceptsDir, file)).size > 20_000, `${file} is not a finished logo render`);
   }
+});
+
+test('the live identity uses the supplied snake mark and an authored 3D model', () => {
+  const brand = readFileSync(join(root, 'src/shared/components/Brand.astro'), 'utf8');
+  const company = readFileSync(join(root, 'src/targets/company/pages/index.astro'), 'utf8');
+  const scene = readFileSync(join(root, 'src/shared/scripts/three-scenes.ts'), 'utf8');
+  const model = join(root, 'src/shared/assets/models/camm-robotic-snake.glb');
+
+  assert.match(brand, /mark\.png/);
+  assert.match(company, /camm-robotic-snake\.glb/);
+  assert.match(scene, /GLTFLoader/);
+  assert.match(scene, /SnakeHead/);
+  assert.match(scene, /SnakeEye/);
+  assert.ok(existsSync(model), 'Missing the authored Camm snake model');
+  assert.ok(statSync(model).size > 50_000, 'The Camm snake model is too small to contain authored detail');
+});
+
+test('each app hero uses its own authored Blender model', () => {
+  const expected = {
+    bronzed: 'bronzed-heliostat.glb',
+    stellar: 'stellar-ritual-loom.glb',
+  };
+
+  for (const [target, filename] of Object.entries(expected)) {
+    const definition = readFileSync(join(root, 'src/shared/data/apps', `${target}.ts`), 'utf8');
+    const model = join(root, 'src/shared/assets/models', filename);
+    assert.match(definition, new RegExp(filename.replace('.', '\\.')));
+    assert.ok(existsSync(model), `Missing ${target} authored hero model`);
+    assert.ok(statSync(model).size > 50_000, `${filename} is too small to contain authored detail`);
+  }
+});
+
+test('supporting surfaces use finished image assets instead of CSS drawings', () => {
+  const system = readFileSync(join(root, 'src/shared/components/SystemCard.astro'), 'utf8');
+  const company = readFileSync(join(root, 'src/targets/company/pages/index.astro'), 'utf8');
+  const app = readFileSync(join(root, 'src/targets/app/pages/index.astro'), 'utf8');
+  const journal = readFileSync(join(root, 'src/targets/app/pages/blog/index.astro'), 'utf8');
+  const article = readFileSync(join(root, 'src/targets/app/pages/blog/[slug].astro'), 'utf8');
+
+  assert.match(system, /<Image[^>]+src=\{art\}/s);
+  assert.match(company, /portalArt/);
+  assert.match(app, /instrumentArt/);
+  assert.match(journal, /guideArt/);
+  assert.match(article, /guideArt/);
+
+  const systemAssets = readdirSync(join(root, 'src/shared/assets/art/systems')).filter((file) => file.endsWith('.webp'));
+  const guideAssets = readdirSync(join(root, 'src/shared/assets/art/guides')).filter((file) => file.endsWith('.webp'));
+  assert.equal(systemAssets.length, 4);
+  assert.equal(guideAssets.length, 6);
 });
 
 test('the Three.js worlds use image-based lighting and calibrated instrument geometry', () => {
