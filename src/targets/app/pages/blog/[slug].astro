@@ -24,6 +24,17 @@ const relatedPosts = (await getCollection('blog', ({ data }) => data.app === app
 const canonical = new URL(`/blog/${post.data.slug}`, Astro.site);
 const socialAsset = await getImage({ src: app.icon, width: 512, format: 'webp', quality: 86 });
 const socialImage = new URL(socialAsset.src, Astro.site);
+const visualKinds: Record<string, string> = app.target === 'bronzed'
+  ? {
+      'uv-index-explained': 'uv-scale',
+      'cloudy-day-uv': 'cloud-layers',
+      'sunscreen-spf-and-uv-index': 'filter-stack',
+    }
+  : {
+      '369-method-daily-ritual': 'ritual-369',
+      'write-a-personal-affirmation': 'signal-line',
+      'vision-board-routine': 'focus-matrix',
+    };
 const structuredData = [
   {
     '@context': 'https://schema.org',
@@ -69,7 +80,12 @@ const structuredData = [
 
     <div class="article-signal shell" aria-hidden="true" data-reveal>
       <span>{post.data.keywords[0]}</span>
-      <div><span></span><span></span><span></span><i></i></div>
+      <div class="post-card__instrument article-signal__instrument" data-visual={visualKinds[post.data.slug]}>
+        <span class="journal-axis"></span><span class="journal-ring journal-ring--outer"></span><span class="journal-ring journal-ring--inner"></span>
+        <span class="journal-layer journal-layer--one"></span><span class="journal-layer journal-layer--two"></span><span class="journal-layer journal-layer--three"></span>
+        <span class="journal-trace"></span><span class="journal-scan"></span><span class="journal-core"></span>
+        <span class="journal-node journal-node--one"></span><span class="journal-node journal-node--two"></span><span class="journal-node journal-node--three"></span>
+      </div>
       <span>{app.name} / {post.data.publicationDate.getFullYear()}</span>
     </div>
 

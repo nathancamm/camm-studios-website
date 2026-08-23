@@ -498,7 +498,7 @@ p {
 }
 
 .reading-word {
-  color: rgba(17, 24, 32, 0.24);
+  color: rgba(17, 24, 32, 0.44);
   transition: color 700ms var(--ease);
 }
 

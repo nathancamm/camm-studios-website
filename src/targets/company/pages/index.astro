@@ -129,7 +129,7 @@ const questions = [
           accent="#ffffff"
           secondary="#aab4be"
         />
-        <div class="object-index" aria-hidden="true"><span>CRYSTAL LENS / 001</span><span>REFRACTIVE IDENTITY</span></div>
+        <div class="object-index" aria-hidden="true"><span>PRISM TERMINALS / 001</span><span>REFRACTIVE IDENTITY</span></div>
       </div>
     </section>
 
@@ -189,13 +189,21 @@ const questions = [
             <div class="app-portal__top"><span>Weather and wellbeing</span><span>↗</span></div>
             <div class="app-portal__identity"><Image src={products.bronzed.icon} alt="Bronzed app icon" width={128} height={128} format="webp" /><h3>Bronzed</h3></div>
             <p>Live UV and personal context, turned into clearer outdoor guidance.</p>
-            <div class="app-portal__orbit" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="app-portal__instrument app-portal__instrument--solar" aria-hidden="true">
+              <span class="portal-calibration"></span><span class="portal-ticks"></span><span class="portal-lens"></span>
+              <span class="portal-arc"></span><span class="portal-cloud portal-cloud--one"></span><span class="portal-cloud portal-cloud--two"></span>
+              <span class="portal-scan"></span><span class="portal-node portal-node--one"></span><span class="portal-node portal-node--two"></span>
+            </div>
           </a>
           <a class="app-portal app-portal--stellar" href="https://stellar.cammstudios.com" data-reveal>
             <div class="app-portal__top"><span>Daily reflection</span><span>↗</span></div>
             <div class="app-portal__identity"><Image src={products.stellar.icon} alt="Stellar app icon" width={128} height={128} format="webp" /><h3>Stellar</h3></div>
             <p>Affirmations, journaling, and vision boards, brought into a steady daily ritual.</p>
-            <div class="app-portal__orbit" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="app-portal__instrument app-portal__instrument--ritual" aria-hidden="true">
+              <span class="portal-track portal-track--three"></span><span class="portal-track portal-track--six"></span><span class="portal-track portal-track--nine"></span>
+              <span class="portal-rosette"></span><span class="portal-seed"></span>
+              <span class="portal-node portal-node--one"></span><span class="portal-node portal-node--two"></span><span class="portal-node portal-node--three"></span><span class="portal-node portal-node--four"></span>
+            </div>
           </a>
         </div>
       </div>

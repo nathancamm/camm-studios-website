@@ -76,7 +76,7 @@ const sceneSecondary = app.target === 'bronzed' ? '#ffd6a8' : '#b8c2ff';
       <div class="app-hero__object">
         <ThreeScene
           scene={app.target}
-          label={app.target === 'bronzed' ? 'A glass sun surrounded by live measurement rings' : 'A glass ritual sphere moving through three orbital phases'}
+          label={app.target === 'bronzed' ? 'A clear UV measurement lens with attenuation bands and calibrated index marks' : 'A clear 3, 6, and 9 ritual instrument resolving into a crystal rosette'}
           accent={app.accent}
           secondary={sceneSecondary}
         />
@@ -97,8 +97,13 @@ const sceneSecondary = app.target === 'bronzed' ? '#ffd6a8' : '#b8c2ff';
 
     <section class="product-story" id="features" aria-labelledby="features-title">
       <div class="shell product-story__layout">
-        <div class="product-stage" data-reveal>
-          <div class="product-stage__halo" aria-hidden="true"></div>
+        <div class="product-stage" data-product={app.target} data-reveal>
+          <div class="product-stage__instrument" aria-hidden="true">
+            <span class="product-stage__grid"></span><span class="product-stage__halo product-stage__halo--outer"></span>
+            <span class="product-stage__halo product-stage__halo--middle"></span><span class="product-stage__halo product-stage__halo--inner"></span>
+            <span class="product-stage__arc"></span><span class="product-stage__trace product-stage__trace--one"></span><span class="product-stage__trace product-stage__trace--two"></span>
+            <span class="product-stage__scan"></span><span class="product-stage__datum product-stage__datum--one"></span><span class="product-stage__datum product-stage__datum--two"></span>
+          </div>
           <div class="device-frame">
             <Image src={app.screenshot} alt={`Real ${app.name} app interface`} width={390} format="webp" quality={90} loading="eager" />
           </div>

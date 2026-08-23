@@ -165,12 +165,51 @@ test('the private logo study contains five neutral crystal C directions', () => 
   assert.equal((study.match(/<article class="logo-concept(?:"|\s)/g) ?? []).length, 5);
   assert.equal(concepts.length, 5);
   assert.match(study, /noindex, nofollow/i);
-  for (const name of ['Camm Lens', 'Aperture Stack', 'Glass Cable', 'Crystal Bracket', 'Iris Cut']) {
+  for (const name of ['Prism Terminals', 'Aperture Step', 'Inner Halo', 'Equator Split', 'Crown Facet']) {
     assert.match(study, new RegExp(`>${name}<`, 'i'), `Logo study is missing ${name}`);
   }
+  assert.doesNotMatch(study, /Camm Lens|Aperture Stack|Glass Cable|Crystal Bracket|Iris Cut/i);
   for (const file of concepts) {
     const svg = readFileSync(join(root, 'src/shared/assets/brand/concepts', file), 'utf8');
+    const vectorElements = svg.match(/<(?:path|ellipse|circle|line|rect|polygon)\b/g) ?? [];
     assert.doesNotMatch(svg, /#(?:f06a4f|8d95ee|8fc6ff|ffd6a8|cbd0ff)/i, `${file} contains a tinted brand color`);
+    assert.match(svg, /data-camm-aperture=["']true["']/i, `${file} does not preserve the current C aperture`);
+    assert.match(svg, /M51 16L43 23A15 15 0 1 0 43 41L51 48A25 25 0 1 1 51 16Z/i, `${file} does not include the current C silhouette`);
+    assert.match(svg, /prefers-reduced-motion:\s*reduce/i, `${file} does not stop its optical animation`);
+    assert.ok(vectorElements.length >= 12, `${file} needs more optical construction detail`);
+  }
+});
+
+test('the Three.js worlds use image-based lighting and calibrated instrument geometry', () => {
+  const scene = readFileSync(join(root, 'src/shared/scripts/three-scenes.ts'), 'utf8');
+  assert.match(scene, /RoomEnvironment/);
+  assert.match(scene, /PMREMGenerator/);
+  assert.match(scene, /function makeCalibrationRing/);
+  assert.match(scene, /function makeTickRing/);
+  assert.match(scene, /function makeConstellation/);
+  assert.match(scene, /function makeSolarInstrument/);
+});
+
+test('scientific card art has layered depth, sweep motion, and reduced-motion safeguards', () => {
+  const systems = readFileSync(join(root, 'src/shared/components/SystemCard.astro'), 'utf8');
+  const company = readFileSync(join(root, 'src/targets/company/pages/index.astro'), 'utf8');
+  const journal = readFileSync(join(root, 'src/targets/app/pages/blog/index.astro'), 'utf8');
+  const companyCss = readFileSync(join(root, 'src/shared/styles/company.css'), 'utf8');
+  const blogCss = readFileSync(join(root, 'src/shared/styles/blog.css'), 'utf8');
+  const appCss = readFileSync(join(root, 'src/shared/styles/app.css'), 'utf8');
+  const systemVectors = systems.match(/<(?:path|ellipse|circle|line|rect|polygon)\b/g) ?? [];
+
+  for (const className of ['diagram-grid', 'diagram-depth', 'diagram-pulse', 'diagram-sweep']) {
+    assert.match(systems, new RegExp(className), `System cards are missing ${className}`);
+  }
+  assert.ok(systemVectors.length >= 80, 'System cards need denser instrument geometry');
+  assert.match(company, /app-portal__instrument/);
+  assert.match(journal, /post-card__instrument/);
+  assert.match(companyCss, /@keyframes portal-instrument-orbit/);
+  assert.match(blogCss, /@keyframes journal-instrument-scan/);
+  assert.match(appCss, /@keyframes product-stage-scan/);
+  for (const css of [companyCss, blogCss, appCss]) {
+    assert.match(css, /prefers-reduced-motion:\s*reduce/i);
   }
 });
 

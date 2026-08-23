@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" role="img" aria-labelledby="title desc" data-camm-aperture="true">
+  <title id="title">Aperture Step</title>
+  <desc id="desc">The current Camm aperture formed from two clear coaxial crystal depths.</desc>
+  <style>
+    .step-inner { animation: step-settle 6.4s cubic-bezier(.32,.72,0,1) infinite; }
+    .step-flare { animation: step-flare 6.4s ease-in-out infinite; }
+    @keyframes step-settle { 0%,16% { transform: translate(1.6px,-.8px); } 34%,100% { transform: translate(0); } }
+    @keyframes step-flare { 0%,22%,72%,100% { opacity: 0; } 38%,55% { opacity: .76; } }
+    @media (prefers-reduced-motion: reduce) { .step-inner, .step-flare { animation: none; } }
+  </style>
+  <defs>
+    <linearGradient id="step-face" x1="9" y1="4" x2="55" y2="59" gradientUnits="userSpaceOnUse"><stop stop-color="#ffffff" stop-opacity=".95"/><stop offset=".25" stop-color="#788490" stop-opacity=".18"/><stop offset=".5" stop-color="#ffffff" stop-opacity=".72"/><stop offset=".8" stop-color="#394652" stop-opacity=".16"/><stop offset="1" stop-color="#ffffff" stop-opacity=".7"/></linearGradient>
+    <linearGradient id="step-inner-face" x1="16" y1="13" x2="47" y2="50" gradientUnits="userSpaceOnUse"><stop stop-color="#fefefe" stop-opacity=".82"/><stop offset=".44" stop-color="#56636f" stop-opacity=".13"/><stop offset=".66" stop-color="#ffffff" stop-opacity=".68"/><stop offset="1" stop-color="#73808c" stop-opacity=".22"/></linearGradient>
+    <linearGradient id="step-edge" x1="8" y1="5" x2="55" y2="57" gradientUnits="userSpaceOnUse"><stop stop-color="#ffffff"/><stop offset=".32" stop-color="#697682"/><stop offset=".58" stop-color="#ffffff"/><stop offset="1" stop-color="#35424d"/></linearGradient>
+    <clipPath id="step-clip"><path d="M51 16L43 23A15 15 0 1 0 43 41L51 48A25 25 0 1 1 51 16Z"/></clipPath>
+    <filter id="step-shadow" x="-35%" y="-30%" width="180%" height="190%"><feDropShadow dx="1" dy="5" stdDeviation="3" flood-color="#15202a" flood-opacity=".22"/></filter>
+  </defs>
+  <ellipse cx="160" cy="210" rx="76" ry="10" fill="#25313c" opacity=".1"/>
+  <ellipse cx="160" cy="203" rx="48" ry="5" fill="#ffffff" opacity=".58"/>
+  <g transform="translate(64 24) scale(3)" filter="url(#step-shadow)">
+    <path d="M51 16L43 23A15 15 0 1 0 43 41L51 48A25 25 0 1 1 51 16Z" fill="#44515d" opacity=".15" transform="translate(1.8 2.2)"/>
+    <path d="M51 16L43 23A15 15 0 1 0 43 41L51 48A25 25 0 1 1 51 16Z" fill="url(#step-face)" stroke="url(#step-edge)" stroke-width=".7"/>
+    <g clip-path="url(#step-clip)">
+      <path d="M1 9L25 2 20 62-3 54Z" fill="#ffffff" opacity=".21"/>
+      <path d="M25 2L34 2 29 62 20 62Z" fill="#283540" opacity=".08"/>
+      <path d="M35 1L58 13 49 52 35 63Z" fill="#ffffff" opacity=".19"/>
+      <path class="step-flare" d="M34 0L41 0 31 64 25 64Z" fill="#ffffff" opacity=".72"/>
+    </g>
+    <g class="step-inner">
+      <path d="M47 20A20 20 0 1 0 47 44" fill="none" stroke="#26333e" stroke-width="4.5" stroke-linecap="square" opacity=".1" transform="translate(1 1.2)"/>
+      <path d="M47 20A20 20 0 1 0 47 44" fill="none" stroke="url(#step-inner-face)" stroke-width="4.5" stroke-linecap="square" opacity=".86"/>
+      <path d="M47 20A20 20 0 1 0 47 44" fill="none" stroke="#ffffff" stroke-width=".42" stroke-linecap="round" opacity=".82"/>
+    </g>
+    <path d="M51 16L43 23M43 41L51 48" fill="none" stroke="#ffffff" stroke-width=".72" stroke-linecap="round" opacity=".78"/>
+    <path d="M15 12A25 25 0 0 0 6.5 31" fill="none" stroke="#ffffff" stroke-width="1.05" stroke-linecap="round" opacity=".64"/>
+    <path d="M8 45A25 25 0 0 0 23 56" fill="none" stroke="#46535f" stroke-width=".38" stroke-linecap="round" opacity=".58"/>
+  </g>
+</svg>

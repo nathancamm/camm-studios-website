@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" role="img" aria-labelledby="title desc" data-camm-aperture="true">
+  <title id="title">Inner Halo</title>
+  <desc id="desc">The current Camm aperture with a clear embedded signal arc inside its circular void.</desc>
+  <style>
+    .halo-signal { animation: halo-signal 6s cubic-bezier(.32,.72,0,1) infinite; }
+    .halo-glint { animation: halo-glint 6s ease-in-out infinite; }
+    @keyframes halo-signal { 0%,16% { stroke-dashoffset: 62; opacity: .18; } 44%,72% { stroke-dashoffset: 0; opacity: .86; } 100% { stroke-dashoffset: -62; opacity: .18; } }
+    @keyframes halo-glint { 0%,22%,74%,100% { opacity: 0; } 42%,54% { opacity: .8; } }
+    @media (prefers-reduced-motion: reduce) { .halo-signal, .halo-glint { animation: none; } }
+  </style>
+  <defs>
+    <linearGradient id="halo-face" x1="8" y1="4" x2="56" y2="58" gradientUnits="userSpaceOnUse"><stop stop-color="#ffffff" stop-opacity=".94"/><stop offset=".22" stop-color="#808c97" stop-opacity=".2"/><stop offset=".48" stop-color="#ffffff" stop-opacity=".68"/><stop offset=".76" stop-color="#34414c" stop-opacity=".15"/><stop offset="1" stop-color="#ffffff" stop-opacity=".72"/></linearGradient>
+    <linearGradient id="halo-edge" x1="8" y1="7" x2="54" y2="56" gradientUnits="userSpaceOnUse"><stop stop-color="#ffffff"/><stop offset=".3" stop-color="#64717d"/><stop offset=".55" stop-color="#ffffff"/><stop offset="1" stop-color="#34414c"/></linearGradient>
+    <linearGradient id="halo-ring" x1="30" y1="18" x2="45" y2="46" gradientUnits="userSpaceOnUse"><stop stop-color="#ffffff"/><stop offset=".48" stop-color="#76838e"/><stop offset="1" stop-color="#ffffff"/></linearGradient>
+    <clipPath id="halo-clip"><path d="M51 16L43 23A15 15 0 1 0 43 41L51 48A25 25 0 1 1 51 16Z"/></clipPath>
+    <filter id="halo-shadow" x="-35%" y="-30%" width="180%" height="190%"><feDropShadow dx="1" dy="5" stdDeviation="3" flood-color="#15202a" flood-opacity=".21"/></filter>
+  </defs>
+  <ellipse cx="160" cy="210" rx="76" ry="10" fill="#25313c" opacity=".1"/>
+  <ellipse cx="160" cy="203" rx="50" ry="5" fill="#ffffff" opacity=".58"/>
+  <g transform="translate(64 24) scale(3)" filter="url(#halo-shadow)">
+    <path d="M51 16L43 23A15 15 0 1 0 43 41L51 48A25 25 0 1 1 51 16Z" fill="#3b4854" opacity=".15" transform="translate(1.7 2.2)"/>
+    <path d="M51 16L43 23A15 15 0 1 0 43 41L51 48A25 25 0 1 1 51 16Z" fill="url(#halo-face)" stroke="url(#halo-edge)" stroke-width=".7"/>
+    <g clip-path="url(#halo-clip)">
+      <path d="M0 4L20 2 12 62-5 55Z" fill="#ffffff" opacity=".2"/>
+      <path d="M18 1L28 1 21 63 12 63Z" fill="#27343f" opacity=".08"/>
+      <path d="M32 1L40 2 31 62 24 62Z" fill="#ffffff" opacity=".24"/>
+      <path class="halo-glint" d="M37 0L45 2 35 62 29 64Z" fill="#ffffff" opacity=".68"/>
+    </g>
+    <path d="M42 25A12 12 0 1 0 42 39" fill="none" stroke="#25323d" stroke-width="1.8" stroke-linecap="round" opacity=".16" transform="translate(.7 .8)"/>
+    <path d="M42 25A12 12 0 1 0 42 39" fill="none" stroke="url(#halo-ring)" stroke-width="1.55" stroke-linecap="round" opacity=".7"/>
+    <path class="halo-signal" d="M42 25A12 12 0 1 0 42 39" fill="none" stroke="#ffffff" stroke-width=".72" stroke-linecap="round" stroke-dasharray="10 52"/>
+    <circle cx="42" cy="25" r="1.25" fill="#ffffff" stroke="#65727d" stroke-width=".35"/>
+    <circle cx="42" cy="39" r="1.25" fill="#f9fbfd" stroke="#65727d" stroke-width=".35"/>
+    <path d="M51 16L43 23M43 41L51 48" fill="none" stroke="#ffffff" stroke-width=".7" stroke-linecap="round" opacity=".68"/>
+    <path d="M16 11A25 25 0 0 0 6.8 29" fill="none" stroke="#ffffff" stroke-width="1.05" stroke-linecap="round" opacity=".66"/>
+  </g>
+</svg>

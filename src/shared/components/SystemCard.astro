@@ -23,40 +23,111 @@ const { name, role, description, kind, status } = Astro.props;
   <div class:list={['system-card__visual', `system-card__visual--${kind}`]} aria-hidden="true">
     {kind === 'artemis' && (
       <svg viewBox="0 0 520 320">
-        <g class="diagram-orbits">
-          <ellipse cx="260" cy="172" rx="192" ry="94" />
-          <ellipse cx="260" cy="172" rx="136" ry="66" />
-          <ellipse cx="260" cy="172" rx="80" ry="38" />
+        <defs>
+          <radialGradient id="artemis-lens" cx="50%" cy="42%" r="62%"><stop offset="0" stop-color="#fff" stop-opacity=".92"/><stop offset=".54" stop-color="#dfe6eb" stop-opacity=".36"/><stop offset="1" stop-color="#60707d" stop-opacity=".08"/></radialGradient>
+          <linearGradient id="artemis-beam" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff" stop-opacity=".05"/><stop offset=".48" stop-color="#526371" stop-opacity=".22"/><stop offset="1" stop-color="#fff" stop-opacity=".03"/></linearGradient>
+        </defs>
+        <g class="diagram-grid">
+          <path d="M36 84H484M36 124H484M36 164H484M36 204H484M36 244H484" />
+          <path d="M80 48V276M140 48V276M200 48V276M260 48V276M320 48V276M380 48V276M440 48V276" />
         </g>
-        <path class="diagram-scan" d="M260 42V290" />
-        <g class="diagram-points"><circle cx="106" cy="159" r="4" /><circle cx="182" cy="114" r="4" /><circle cx="319" cy="124" r="5" /><circle cx="414" cy="181" r="4" /><circle cx="260" cy="172" r="9" /></g>
+        <path class="diagram-depth" d="M74 250 196 102 384 78 458 196 332 264Z" />
+        <path class="diagram-depth diagram-depth--ghost" d="M78 258 201 110 388 86 462 204" />
+        <g class="diagram-orbits">
+          <ellipse cx="260" cy="166" rx="198" ry="104" />
+          <ellipse cx="260" cy="166" rx="154" ry="80" />
+          <ellipse cx="260" cy="166" rx="108" ry="54" />
+          <ellipse cx="260" cy="166" rx="62" ry="30" />
+        </g>
+        <path class="diagram-beam" d="M258 44 336 276H180Z" fill="url(#artemis-beam)" />
+        <path class="diagram-sweep" d="M104 220C172 116 294 82 416 138" />
+        <path class="diagram-scan" d="M260 40V288" />
+        <g class="diagram-points">
+          <circle cx="82" cy="177" r="3" /><circle cx="106" cy="143" r="4" /><circle cx="132" cy="203" r="3" />
+          <circle cx="162" cy="107" r="3" /><circle cx="182" cy="128" r="4" /><circle cx="207" cy="188" r="3" />
+          <circle cx="232" cy="92" r="3" /><circle cx="260" cy="166" r="10" fill="url(#artemis-lens)" />
+          <circle cx="288" cy="226" r="3" /><circle cx="316" cy="112" r="5" /><circle cx="338" cy="174" r="3" />
+          <circle cx="365" cy="202" r="4" /><circle cx="394" cy="126" r="3" /><circle cx="418" cy="181" r="4" />
+          <circle cx="446" cy="156" r="3" />
+        </g>
+        <g class="diagram-pulse"><circle cx="316" cy="112" r="15" /><circle cx="316" cy="112" r="25" /></g>
+        <path class="diagram-bracket" d="M44 62h26M44 62v26M476 62h-26M476 62v26M44 266h26M44 266v-26M476 266h-26M476 266v-26" />
       </svg>
     )}
     {kind === 'atlas' && (
       <svg viewBox="0 0 520 320">
-        <g class="diagram-planes">
-          <path d="M260 58 424 142 260 226 96 142Z" />
-          <path d="M260 104 404 178 260 252 116 178Z" />
-          <path d="M260 150 382 212 260 274 138 212Z" />
+        <defs>
+          <linearGradient id="atlas-plane" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff" stop-opacity=".72"/><stop offset=".5" stop-color="#cdd6dd" stop-opacity=".22"/><stop offset="1" stop-color="#52616e" stop-opacity=".06"/></linearGradient>
+          <radialGradient id="atlas-core"><stop stop-color="#fff"/><stop offset=".5" stop-color="#e5ebef" stop-opacity=".74"/><stop offset="1" stop-color="#6c7a86" stop-opacity=".22"/></radialGradient>
+        </defs>
+        <g class="diagram-grid">
+          <path d="M72 54 260 150 448 54M72 96 260 192 448 96M72 138 260 234 448 138" />
+          <path d="M112 34V220M180 34V255M260 34V292M340 34V255M408 34V220" />
         </g>
-        <g class="diagram-columns"><path d="M260 58V274" /><path d="M96 142 138 212" /><path d="M424 142 382 212" /></g>
-        <circle class="diagram-core" cx="260" cy="166" r="28" />
+        <g class="diagram-planes">
+          <path d="M260 44 430 130 260 216 90 130Z" fill="url(#atlas-plane)" />
+          <path d="M260 84 414 162 260 240 106 162Z" fill="url(#atlas-plane)" />
+          <path d="M260 124 398 194 260 264 122 194Z" fill="url(#atlas-plane)" />
+          <path d="M260 164 380 226 260 288 140 226Z" fill="url(#atlas-plane)" />
+        </g>
+        <g class="diagram-columns">
+          <path d="M260 44V288" /><path d="M90 130 140 226" /><path d="M430 130 380 226" />
+          <path d="M178 88 196 253" /><path d="M342 88 324 253" />
+        </g>
+        <g class="diagram-depth">
+          <path d="M149 112 184 130 184 201 149 183Z" /><path d="M371 112 336 130 336 201 371 183Z" />
+          <path d="M206 73 236 88 236 250 206 235Z" /><path d="M314 73 284 88 284 250 314 235Z" />
+        </g>
+        <g class="diagram-nodes">
+          <circle cx="149" cy="112" r="4" /><circle cx="371" cy="112" r="4" /><circle cx="178" cy="198" r="4" />
+          <circle cx="342" cy="198" r="4" /><circle cx="206" cy="73" r="4" /><circle cx="314" cy="73" r="4" />
+          <circle cx="236" cy="250" r="4" /><circle cx="284" cy="250" r="4" />
+        </g>
+        <circle class="diagram-core diagram-pulse" cx="260" cy="166" r="32" fill="url(#atlas-core)" />
+        <circle class="diagram-core" cx="260" cy="166" r="11" />
+        <path class="diagram-sweep" d="M118 151 260 224 402 151" />
       </svg>
     )}
     {kind === 'morpheus' && (
       <svg viewBox="0 0 520 320">
-        <g class="diagram-frames"><rect x="76" y="74" width="122" height="172" rx="4" /><rect x="199" y="74" width="122" height="172" rx="4" /><rect x="322" y="74" width="122" height="172" rx="4" /></g>
-        <path class="diagram-ribbon" d="M104 197C156 106 205 106 260 160s104 54 156-37" />
-        <path class="diagram-ribbon diagram-ribbon--ghost" d="M104 223C156 132 205 132 260 186s104 54 156-37" />
-        <circle class="diagram-core" cx="260" cy="160" r="8" />
+        <defs>
+          <linearGradient id="morpheus-frame" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff" stop-opacity=".76"/><stop offset=".55" stop-color="#d7dee4" stop-opacity=".18"/><stop offset="1" stop-color="#5e6d79" stop-opacity=".08"/></linearGradient>
+        </defs>
+        <g class="diagram-grid"><path d="M40 64H480M40 104H480M40 144H480M40 184H480M40 224H480M40 264H480" /><path d="M60 42V282M110 42V282M160 42V282M210 42V282M260 42V282M310 42V282M360 42V282M410 42V282M460 42V282" /></g>
+        <g class="diagram-depth"><path d="M64 82 76 70H190L202 82" /><path d="M187 82 199 70H313L325 82" /><path d="M310 82 322 70H436L448 82" /></g>
+        <g class="diagram-frames">
+          <rect x="64" y="82" width="126" height="164" rx="5" fill="url(#morpheus-frame)" />
+          <rect x="197" y="82" width="126" height="164" rx="5" fill="url(#morpheus-frame)" />
+          <rect x="330" y="82" width="126" height="164" rx="5" fill="url(#morpheus-frame)" />
+          <rect x="80" y="100" width="94" height="52" rx="3" /><rect x="213" y="100" width="94" height="52" rx="3" /><rect x="346" y="100" width="94" height="52" rx="3" />
+          <rect x="80" y="166" width="70" height="5" rx="2" /><rect x="80" y="180" width="88" height="5" rx="2" /><rect x="80" y="194" width="56" height="5" rx="2" />
+          <rect x="213" y="166" width="72" height="5" rx="2" /><rect x="213" y="180" width="88" height="5" rx="2" /><rect x="213" y="194" width="62" height="5" rx="2" />
+          <rect x="346" y="166" width="70" height="5" rx="2" /><rect x="346" y="180" width="88" height="5" rx="2" /><rect x="346" y="194" width="52" height="5" rx="2" />
+        </g>
+        <path class="diagram-ribbon" d="M92 220C142 104 203 108 260 160s108 48 170-42" />
+        <path class="diagram-ribbon diagram-ribbon--ghost" d="M92 236C142 120 203 124 260 176s108 48 170-42" />
+        <path class="diagram-sweep" d="M92 204C142 88 203 92 260 144s108 48 170-42" />
+        <polygon class="diagram-approval diagram-pulse" points="260,142 279,160 260,178 241,160" />
+        <circle class="diagram-core" cx="127" cy="138" r="6" /><circle class="diagram-core" cx="393" cy="126" r="6" />
+        <circle class="diagram-node" cx="92" cy="220" r="3" /><circle class="diagram-node" cx="430" cy="118" r="3" />
       </svg>
     )}
     {kind === 'chronos' && (
       <svg viewBox="0 0 520 320">
-        <g class="diagram-time"><circle cx="260" cy="166" r="120" /><circle cx="260" cy="166" r="82" /><circle cx="260" cy="166" r="44" /></g>
-        <path class="diagram-hand" d="M260 166 260 70M260 166l72 42" />
-        <g class="diagram-ticks"><path d="M260 38V54M388 166H372M260 294V278M132 166H148" /></g>
-        <circle class="diagram-core" cx="260" cy="166" r="9" />
+        <defs><radialGradient id="chronos-core"><stop stop-color="#fff"/><stop offset=".62" stop-color="#e1e7ec" stop-opacity=".7"/><stop offset="1" stop-color="#62717d" stop-opacity=".16"/></radialGradient></defs>
+        <g class="diagram-grid"><path d="M42 78H478M42 122H478M42 166H478M42 210H478M42 254H478" /><path d="M84 46V278M128 46V278M172 46V278M216 46V278M260 46V278M304 46V278M348 46V278M392 46V278M436 46V278" /></g>
+        <g class="diagram-time"><circle cx="260" cy="166" r="124" /><circle cx="260" cy="166" r="94" /><circle cx="260" cy="166" r="64" /><circle cx="260" cy="166" r="34" /></g>
+        <g class="diagram-lanes">
+          <rect x="88" y="82" width="54" height="14" rx="7" /><rect x="150" y="82" width="94" height="14" rx="7" /><rect x="252" y="82" width="44" height="14" rx="7" /><rect x="304" y="82" width="128" height="14" rx="7" />
+          <rect x="88" y="236" width="86" height="14" rx="7" /><rect x="182" y="236" width="46" height="14" rx="7" /><rect x="236" y="236" width="112" height="14" rx="7" /><rect x="356" y="236" width="76" height="14" rx="7" />
+        </g>
+        <path class="diagram-depth" d="M88 108H432M88 222H432" />
+        <path class="diagram-hand" d="M260 166 260 68M260 166l76 44" />
+        <path class="diagram-sweep" d="M260 42A124 124 0 0 1 367 228" />
+        <g class="diagram-ticks"><path d="M260 34V52M392 166H374M260 298V280M128 166H146M354 72 342 84M166 72 178 84M166 260 178 248M354 260 342 248" /></g>
+        <circle class="diagram-pulse" cx="260" cy="166" r="22" />
+        <circle class="diagram-core" cx="260" cy="166" r="10" fill="url(#chronos-core)" />
+        <circle class="diagram-node" cx="260" cy="68" r="4" /><circle class="diagram-node" cx="336" cy="210" r="4" />
       </svg>
     )}
   </div>

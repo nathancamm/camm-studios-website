@@ -13,6 +13,17 @@ const intro = app.target === 'bronzed'
   ? 'Clear answers about UV, SPF, weather, and planning time outdoors.'
   : 'Grounded ways to use affirmations, journaling, vision boards, and daily reflection.';
 const socialAsset = await getImage({ src: app.icon, width: 512, format: 'webp', quality: 86 });
+const visualKinds: Record<string, string> = app.target === 'bronzed'
+  ? {
+      'uv-index-explained': 'uv-scale',
+      'cloudy-day-uv': 'cloud-layers',
+      'sunscreen-spf-and-uv-index': 'filter-stack',
+    }
+  : {
+      '369-method-daily-ritual': 'ritual-369',
+      'write-a-personal-affirmation': 'signal-line',
+      'vision-board-routine': 'focus-matrix',
+    };
 ---
 
 <BaseLayout
@@ -40,7 +51,12 @@ const socialAsset = await getImage({ src: app.icon, width: 512, format: 'webp', 
         <a class="post-card" href={`/blog/${post.data.slug}`} data-reveal>
           <div class="post-card__visual" aria-hidden="true">
             <span class="post-card__number">{(index + 1).toString().padStart(2, '0')}</span>
-            <div class="post-card__orbit"><span></span><span></span><span></span></div>
+            <div class="post-card__instrument" data-visual={visualKinds[post.data.slug]}>
+              <span class="journal-axis"></span><span class="journal-ring journal-ring--outer"></span><span class="journal-ring journal-ring--inner"></span>
+              <span class="journal-layer journal-layer--one"></span><span class="journal-layer journal-layer--two"></span><span class="journal-layer journal-layer--three"></span>
+              <span class="journal-trace"></span><span class="journal-scan"></span><span class="journal-core"></span>
+              <span class="journal-node journal-node--one"></span><span class="journal-node journal-node--two"></span><span class="journal-node journal-node--three"></span>
+            </div>
             <span class="post-card__topic">{post.data.keywords[0]}</span>
           </div>
           <div class="post-card__body">

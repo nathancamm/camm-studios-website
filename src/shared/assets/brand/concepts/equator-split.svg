@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" role="img" aria-labelledby="title desc" data-camm-aperture="true">
+  <title id="title">Equator Split</title>
+  <desc id="desc">The current Camm aperture split across one engineered crystal equator.</desc>
+  <style>
+    .upper-plane { animation: upper-plane 6.8s cubic-bezier(.32,.72,0,1) infinite; }
+    .lower-plane { animation: lower-plane 6.8s cubic-bezier(.32,.72,0,1) infinite; }
+    .equator-flare { animation: equator-flare 6.8s ease-in-out infinite; }
+    @keyframes upper-plane { 0%,14% { transform: translateY(-1.2px); } 32%,100% { transform: translateY(0); } }
+    @keyframes lower-plane { 0%,14% { transform: translateY(1.2px); } 32%,100% { transform: translateY(0); } }
+    @keyframes equator-flare { 0%,24%,70%,100% { opacity: .15; } 36%,54% { opacity: .9; } }
+    @media (prefers-reduced-motion: reduce) { .upper-plane, .lower-plane, .equator-flare { animation: none; } }
+  </style>
+  <defs>
+    <linearGradient id="equator-top" x1="8" y1="4" x2="53" y2="35" gradientUnits="userSpaceOnUse"><stop stop-color="#ffffff" stop-opacity=".96"/><stop offset=".26" stop-color="#77848f" stop-opacity=".18"/><stop offset=".56" stop-color="#ffffff" stop-opacity=".76"/><stop offset="1" stop-color="#53606c" stop-opacity=".16"/></linearGradient>
+    <linearGradient id="equator-bottom" x1="8" y1="31" x2="53" y2="61" gradientUnits="userSpaceOnUse"><stop stop-color="#687581" stop-opacity=".18"/><stop offset=".35" stop-color="#ffffff" stop-opacity=".72"/><stop offset=".72" stop-color="#35424d" stop-opacity=".17"/><stop offset="1" stop-color="#ffffff" stop-opacity=".76"/></linearGradient>
+    <linearGradient id="equator-edge" x1="8" y1="5" x2="55" y2="58" gradientUnits="userSpaceOnUse"><stop stop-color="#ffffff"/><stop offset=".3" stop-color="#687581"/><stop offset=".57" stop-color="#ffffff"/><stop offset="1" stop-color="#33404b"/></linearGradient>
+    <clipPath id="equator-clip"><path d="M51 16L43 23A15 15 0 1 0 43 41L51 48A25 25 0 1 1 51 16Z"/></clipPath>
+    <filter id="equator-shadow" x="-35%" y="-30%" width="180%" height="190%"><feDropShadow dx="1" dy="5" stdDeviation="3" flood-color="#15202a" flood-opacity=".21"/></filter>
+  </defs>
+  <ellipse cx="160" cy="210" rx="76" ry="10" fill="#25313c" opacity=".1"/>
+  <ellipse cx="160" cy="203" rx="48" ry="5" fill="#ffffff" opacity=".56"/>
+  <g transform="translate(64 24) scale(3)" filter="url(#equator-shadow)">
+    <path d="M51 16L43 23A15 15 0 1 0 43 41L51 48A25 25 0 1 1 51 16Z" fill="#3b4854" opacity=".15" transform="translate(1.7 2.2)"/>
+    <g class="upper-plane">
+      <path d="M51 16L43 23A15 15 0 1 0 43 41L51 48A25 25 0 1 1 51 16Z" fill="url(#equator-top)" clip-path="url(#equator-clip)"/>
+      <path d="M0 0H64V32H0Z" fill="url(#equator-top)" clip-path="url(#equator-clip)"/>
+    </g>
+    <g class="lower-plane">
+      <path d="M0 32H64V64H0Z" fill="url(#equator-bottom)" clip-path="url(#equator-clip)"/>
+    </g>
+    <path d="M51 16L43 23A15 15 0 1 0 43 41L51 48A25 25 0 1 1 51 16Z" fill="none" stroke="url(#equator-edge)" stroke-width=".72"/>
+    <g clip-path="url(#equator-clip)">
+      <path d="M1 3L19 2 12 31-3 31Z" fill="#ffffff" opacity=".24"/>
+      <path d="M1 33L12 33 20 63-3 56Z" fill="#283540" opacity=".07"/>
+      <path d="M24 1L33 1 29 31 19 31Z" fill="#ffffff" opacity=".19"/>
+      <path d="M20 33L29 33 34 63 25 63Z" fill="#ffffff" opacity=".23"/>
+      <rect x="3" y="31.4" width="51" height="1.2" fill="#1e2b36" opacity=".16"/>
+      <rect class="equator-flare" x="4" y="31.7" width="48" height=".5" fill="#ffffff" opacity=".82"/>
+    </g>
+    <path d="M51 16L43 23M43 41L51 48" fill="none" stroke="#ffffff" stroke-width=".72" stroke-linecap="round" opacity=".7"/>
+    <path d="M16 11A25 25 0 0 0 7 27" fill="none" stroke="#ffffff" stroke-width="1.05" stroke-linecap="round" opacity=".68"/>
+    <path d="M9 45A25 25 0 0 0 25 56" fill="none" stroke="#45525e" stroke-width=".4" stroke-linecap="round" opacity=".56"/>
+  </g>
+</svg>
