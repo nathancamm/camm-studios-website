@@ -320,14 +320,18 @@ p {
   width: 32px;
   height: 32px;
   place-items: center;
+  overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.88);
 }
 
 .brand__mark img {
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  mix-blend-mode: multiply;
+  transform: scale(1.18);
 }
 
 .brand__product {

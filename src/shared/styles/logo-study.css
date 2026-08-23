@@ -51,10 +51,6 @@ body:has(.logo-study-page)::before {
   background: var(--study-panel);
 }
 
-.logo-study-page .brand__mark img {
-  filter: grayscale(1) brightness(0.24);
-}
-
 .logo-study-page .menu-toggle span:not(.sr-only) {
   background: var(--study-ink);
 }
@@ -118,7 +114,7 @@ body:has(.logo-study-page)::before {
   transform: translateY(-4px);
 }
 
-.logo-concept[data-recommended] {
+.logo-concept[data-selected] {
   grid-column: 1 / -1;
 }
 
@@ -163,7 +159,7 @@ body:has(.logo-study-page)::before {
   transform: translateY(-4px) rotateY(-3deg);
 }
 
-.logo-concept[data-recommended] .logo-concept__stage img {
+.logo-concept[data-selected] .logo-concept__stage img {
   width: min(54%, 520px);
 }
 
@@ -293,11 +289,11 @@ body:has(.logo-study-page)::before {
     grid-template-columns: 1fr;
   }
 
-  .logo-concept[data-recommended] {
+  .logo-concept[data-selected] {
     grid-column: auto;
   }
 
-  .logo-concept[data-recommended] .logo-concept__stage img,
+  .logo-concept[data-selected] .logo-concept__stage img,
   .logo-concept__stage img {
     width: min(72%, 420px);
   }

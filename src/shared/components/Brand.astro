@@ -1,5 +1,5 @@
 ---
-import mark from '../assets/brand/mark.png';
+import mark from '../assets/brand/concepts/vertebra-lock.webp';
 
 interface Props {
   product?: string;
@@ -9,7 +9,7 @@ const { product } = Astro.props;
 ---
 
 <a class="brand" href="/" aria-label={`${product ?? 'Camm Studios'} home`}>
-  <span class="brand__mark"><img src={mark.src} width="32" height="32" alt="" /></span>
+  <span class="brand__mark"><img src={mark.src} width="32" height="32" alt="" decoding="async" /></span>
   <span class="brand__name">Camm Studios</span>
   {product && <span class="brand__product">/ {product}</span>}
 </a>
