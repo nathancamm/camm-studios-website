@@ -3,7 +3,7 @@ export const companySite = {
   url: 'https://www.cammstudios.com',
   email: 'info@cammstudios.com',
   description:
-    'Camm Studios finds overlooked consumer problems and builds focused native apps that improve through real use.',
+    'Camm Studios is an independent studio building small, focused iOS apps, including Bronzed and Stellar.',
 };
 
 export const appSites = {
