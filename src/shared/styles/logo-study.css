@@ -155,6 +155,7 @@ body:has(.logo-study-page)::before {
   width: min(72%, 420px);
   height: auto;
   filter: drop-shadow(0 28px 30px rgba(27, 34, 43, 0.16));
+  mix-blend-mode: multiply;
   transition: transform 700ms var(--ease);
 }
 
