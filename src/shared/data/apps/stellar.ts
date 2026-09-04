@@ -1,9 +1,9 @@
 import icon from '../../assets/product/stellar-icon.png';
 import screenshot from '../../assets/product/stellar-screenshot.png';
-import instrumentArt from '../../assets/art/products/stellar-star-symbol.webp';
-import methodArt from '../../assets/art/guides/stellar-369-orbit.webp';
-import affirmationArt from '../../assets/art/guides/stellar-affirmation-resonator.webp';
-import visionBoardArt from '../../assets/art/guides/stellar-vision-constellation.webp';
+import instrumentArt from '../../assets/art/crystal/stellar-orbit.webp';
+import methodArt from '../../assets/art/crystal/stellar-369.webp';
+import affirmationArt from '../../assets/art/crystal/stellar-affirmation.webp';
+import visionBoardArt from '../../assets/art/crystal/stellar-vision.webp';
 import type { AppDefinition } from '../app-definition';
 
 const stellar: AppDefinition = {

@@ -21,7 +21,7 @@ const { Content } = await render(post);
 const relatedPosts = (await getCollection('blog', ({ data }) => data.app === app.target && !data.draft && data.slug !== post.data.slug))
   .sort((a, b) => b.data.publicationDate.valueOf() - a.data.publicationDate.valueOf())
   .slice(0, 2);
-const canonical = new URL(`/blog/${post.data.slug}`, Astro.site);
+const canonical = new URL(`/blog/${post.data.slug}/`, Astro.site);
 const guideArt = app.guideArt[post.data.slug];
 const socialAsset = await getImage({ src: guideArt, width: 1200, format: 'webp', quality: 88 });
 const socialImage = new URL(socialAsset.src, Astro.site);
@@ -44,7 +44,7 @@ const structuredData = [
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: app.name, item: new URL('/', Astro.site).toString() },
-      { '@type': 'ListItem', position: 2, name: 'Guides', item: new URL('/blog', Astro.site).toString() },
+      { '@type': 'ListItem', position: 2, name: 'Guides', item: new URL('/blog/', Astro.site).toString() },
       { '@type': 'ListItem', position: 3, name: post.data.title, item: canonical.toString() },
     ],
   },

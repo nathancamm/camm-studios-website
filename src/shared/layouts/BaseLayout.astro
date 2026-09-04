@@ -1,7 +1,7 @@
 ---
 import '@fontsource-variable/manrope';
 import '../styles/global.css';
-import mark from '../assets/brand/concepts/vertebra-lock.webp';
+import mark from '../assets/brand/crystal/snake.webp';
 import bronzedFavicon from '../assets/product/bronzed-favicon.png';
 import stellarFavicon from '../assets/product/stellar-favicon.png';
 
@@ -24,7 +24,9 @@ const {
   themeClass = '',
   structuredData,
 } = Astro.props;
-const canonicalUrl = canonical.toString();
+const normalizedCanonical = new URL(canonical.toString());
+if (!normalizedCanonical.pathname.endsWith('/')) normalizedCanonical.pathname += '/';
+const canonicalUrl = normalizedCanonical.toString();
 const imageUrl = image?.toString();
 const target = process.env.SITE_TARGET;
 const favicon = target === 'bronzed' ? bronzedFavicon.src : target === 'stellar' ? stellarFavicon.src : mark.src;
@@ -36,7 +38,7 @@ const rssUrl = target === 'bronzed' || target === 'stellar' ? new URL('/rss.xml'
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f7f9fc" />
+    <meta name="theme-color" content="#ffffff" />
     <meta name="color-scheme" content="light" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>

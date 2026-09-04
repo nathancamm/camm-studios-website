@@ -1,9 +1,9 @@
 import icon from '../../assets/product/bronzed-icon.png';
 import screenshot from '../../assets/product/bronzed-screenshot.png';
-import instrumentArt from '../../assets/art/products/bronzed-solar-symbol.webp';
-import uvIndexArt from '../../assets/art/guides/bronzed-uv-scale.webp';
-import cloudyDayArt from '../../assets/art/guides/bronzed-cloud-filter.webp';
-import sunscreenArt from '../../assets/art/guides/bronzed-spf-shield.webp';
+import instrumentArt from '../../assets/art/crystal/bronzed-solar.webp';
+import uvIndexArt from '../../assets/art/crystal/bronzed-uv.webp';
+import cloudyDayArt from '../../assets/art/crystal/bronzed-cloud.webp';
+import sunscreenArt from '../../assets/art/crystal/bronzed-spf.webp';
 import type { AppDefinition } from '../app-definition';
 
 const bronzed: AppDefinition = {

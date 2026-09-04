@@ -25,9 +25,7 @@
 .legal__header h1 {
   max-width: 680px;
   margin-bottom: var(--spacing-200);
-  color: transparent;
-  background: linear-gradient(90deg, #0d141b, #62707d);
-  background-clip: text;
+  color: var(--ink);
   font-size: 60px;
   line-height: 1;
 }

@@ -11,6 +11,11 @@ function setMenu(open: boolean) {
   const label = menuButton.querySelector<HTMLElement>('.sr-only');
   if (label) label.textContent = open ? 'Close menu' : 'Open menu';
   html.classList.toggle('menu-open', open);
+  document
+    .querySelectorAll<HTMLElement>('main, .site-footer')
+    .forEach((element) => {
+      element.inert = open;
+    });
 }
 
 menuButton?.addEventListener('click', () => {
@@ -22,7 +27,31 @@ menuPanel?.querySelectorAll('a').forEach((link) => {
 });
 
 document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') setMenu(false);
+  if (
+    !menuButton ||
+    !menuPanel ||
+    menuButton.getAttribute('aria-expanded') !== 'true'
+  )
+    return;
+  if (event.key === 'Escape') {
+    setMenu(false);
+    menuButton.focus();
+  } else if (event.key === 'Tab') {
+    const links = [...menuPanel.querySelectorAll<HTMLAnchorElement>('a[href]')];
+    const first = menuButton;
+    const last = links.at(-1) ?? menuButton;
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+});
+
+window.matchMedia('(min-width: 901px)').addEventListener('change', (event) => {
+  if (event.matches) setMenu(false);
 });
 
 function splitWords(element: HTMLElement, className: string) {
@@ -39,28 +68,41 @@ function splitWords(element: HTMLElement, className: string) {
   element.dataset.wordsReady = 'true';
 }
 
-document.querySelectorAll<HTMLElement>('[data-word-reveal]').forEach((element) => {
-  splitWords(element, 'word');
-});
+document
+  .querySelectorAll<HTMLElement>('[data-word-reveal]')
+  .forEach((element) => {
+    splitWords(element, 'word');
+  });
 
-const readingSections = [...document.querySelectorAll<HTMLElement>('[data-reading-reveal]')];
+const readingSections = [
+  ...document.querySelectorAll<HTMLElement>('[data-reading-reveal]'),
+];
 readingSections.forEach((element) => splitWords(element, 'reading-word'));
 
 if (reduceMotion.matches || !('IntersectionObserver' in window)) {
   html.classList.add('reduce-motion');
-  document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((element) => element.classList.add('is-visible'));
-  document.querySelectorAll<HTMLElement>('.reading-word').forEach((word) => word.classList.add('is-lit'));
+  document
+    .querySelectorAll<HTMLElement>('[data-reveal]')
+    .forEach((element) => element.classList.add('is-visible'));
+  document
+    .querySelectorAll<HTMLElement>('.reading-word')
+    .forEach((word) => word.classList.add('is-lit'));
 } else {
   html.classList.add('motion-ready');
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add('is-visible');
-      revealObserver.unobserve(entry.target);
-    });
-  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      });
+    },
+    { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+  );
 
-  document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((element) => revealObserver.observe(element));
+  document
+    .querySelectorAll<HTMLElement>('[data-reveal]')
+    .forEach((element) => revealObserver.observe(element));
 
   let readingScheduled = false;
   const updateReading = () => {
@@ -69,10 +111,15 @@ if (reduceMotion.matches || !('IntersectionObserver' in window)) {
     readingSections.forEach((section) => {
       const bounds = section.getBoundingClientRect();
       const distance = Math.max(1, startLine - endLine + bounds.height * 0.22);
-      const progress = Math.max(0, Math.min(1, (startLine - bounds.top) / distance));
+      const progress = Math.max(
+        0,
+        Math.min(1, (startLine - bounds.top) / distance),
+      );
       const words = [...section.querySelectorAll<HTMLElement>('.reading-word')];
       const activeCount = Math.round(progress * words.length);
-      words.forEach((word, index) => word.classList.toggle('is-lit', index < activeCount));
+      words.forEach((word, index) =>
+        word.classList.toggle('is-lit', index < activeCount),
+      );
     });
     readingScheduled = false;
   };
@@ -87,3 +134,12 @@ if (reduceMotion.matches || !('IntersectionObserver' in window)) {
   window.addEventListener('resize', scheduleReading, { passive: true });
   scheduleReading();
 }
+
+const motionToggle =
+  document.querySelector<HTMLButtonElement>('.motion-toggle');
+motionToggle?.addEventListener('click', () => {
+  const paused = html.classList.toggle('motion-paused');
+  motionToggle.setAttribute('aria-pressed', String(paused));
+  motionToggle.textContent = paused ? 'Resume motion' : 'Pause motion';
+  window.dispatchEvent(new Event('camm:motionchange'));
+});
