@@ -9,3 +9,6 @@ output/playwright/
 .vscode/
 .idea/
 .claude/
+output/blender/
+__pycache__/
+*.pyc
