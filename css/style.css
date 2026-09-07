@@ -3,17 +3,17 @@
    ============================================ */
 
 :root {
-  --bg-main: #edf1f7;
+  --bg-main: #eef0f3;
   --bg-panel: #fcfdff;
-  --bg-inset: #e6edf8;
-  --bg-stellar: #f1f5ff;
-  --bg-bronzed: #fff7ed;
+  --bg-inset: #e5e9ef;
+  --bg-stellar: #f0f3f7;
+  --bg-bronzed: #faf7f2;
   --glass-bg: #fcfdff;
-  --glass-bg-hover: #f1f5ff;
-  --glass-border: #d4ddea;
-  --text-dark: #182438;
-  --text-muted: #536176;
-  --text-accent: #355ac4;
+  --glass-bg-hover: #f0f3f7;
+  --glass-border: #d8dde5;
+  --text-dark: #1b2028;
+  --text-muted: #58616e;
+  --text-accent: #475c78;
   --button-bg: #15191f;
   --motion-ease: cubic-bezier(0.32, 0.72, 0, 1);
 
@@ -345,13 +345,13 @@ h3 {
 
 .card-back {
   transform: translateZ(-80px) rotateY(-10deg) rotateX(5deg);
-  background: #c4d4f4;
+  background: #c8ced8;
   animation: float-card-back 7s ease-in-out infinite alternate;
 }
 
 .card-mid {
   transform: translateZ(-30px) rotateY(-5deg) rotateX(2deg);
-  background: #dde7fa;
+  background: #e1e5eb;
   animation: float-card-mid 6s ease-in-out infinite alternate-reverse;
 }
 
@@ -363,7 +363,7 @@ h3 {
   justify-content: center;
   gap: 24px;
   animation: float-card-front 8s ease-in-out infinite alternate;
-  background: var(--bg-inset) url('/images/stellar-satin.webp') center / cover no-repeat;
+  background: var(--bg-inset) url('/images/stellar-orbit.svg') center / cover no-repeat;
 }
 
 .card-front::after {
