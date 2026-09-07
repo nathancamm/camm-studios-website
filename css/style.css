@@ -1,33 +1,29 @@
 /* ============================================
-   Camm Studios — Clean, Premium Light Y2K Tech
+   Camm Studios visual system.
    ============================================ */
 
 :root {
-  /* Colors - Clean Light Theme */
-  --bg-main: #f5f6f8;
-  /* Very light grey-blue background */
-  --bg-panel: #ffffff;
-  /* Pure white for panels */
-
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-bg-hover: rgba(255, 255, 255, 0.9);
-  --glass-border: rgba(220, 225, 232, 0.8);
-
-  /* Text */
-  --text-dark: #111418;
-  /* Near black for primary text */
-  --text-muted: #5e6a78;
-  /* Professional grey-blue for secondary text */
-  --text-accent: #0f172a;
-  /* Deep slate */
+  --bg-main: #edf1f7;
+  --bg-panel: #fcfdff;
+  --bg-inset: #e6edf8;
+  --bg-stellar: #f1f5ff;
+  --bg-bronzed: #fff7ed;
+  --glass-bg: #fcfdff;
+  --glass-bg-hover: #f1f5ff;
+  --glass-border: #d4ddea;
+  --text-dark: #182438;
+  --text-muted: #536176;
+  --text-accent: #355ac4;
+  --button-bg: #15191f;
+  --motion-ease: cubic-bezier(0.32, 0.72, 0, 1);
 
   /* Shadows */
-  --shadow-soft: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
-  --shadow-hover: 0 20px 40px -10px rgba(0, 0, 0, 0.08);
+  --shadow-soft: 0 2px 4px rgba(26, 47, 85, 0.02), 0 16px 40px -24px rgba(26, 47, 85, 0.2);
+  --shadow-hover: 0 4px 8px rgba(26, 47, 85, 0.04), 0 24px 48px -24px rgba(26, 47, 85, 0.24);
 
   /* Radii */
   --radius-pill: 100px;
-  --radius-blob: 40px;
+  --radius-blob: 32px;
   --radius-card: 24px;
 
   --max-width: 1100px;
@@ -58,7 +54,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Very subtle background blur/gradient */
+/* Background decorations do not affect document geometry. */
 .bg-blobs {
   position: fixed;
   top: 0;
@@ -68,10 +64,11 @@ body {
   z-index: -2;
   pointer-events: none;
   overflow: hidden;
-  background: radial-gradient(circle at 50% 0%, #ffffff 0%, var(--bg-main) 100%);
+  background: var(--bg-main);
 }
 
 .blob {
+  display: none;
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
@@ -126,19 +123,17 @@ h3 {
 /* Glassmorphism & Panels */
 .glass-panel {
   background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
   box-shadow: var(--shadow-soft);
   position: relative;
-  transition: all 0.3s ease;
+  transition: background-color 300ms var(--motion-ease), box-shadow 300ms var(--motion-ease), transform 300ms var(--motion-ease);
 }
 
 .white-panel {
   background: var(--bg-panel);
   border: 1px solid var(--glass-border);
   box-shadow: var(--shadow-soft);
-  transition: all 0.3s ease;
+  transition: background-color 300ms var(--motion-ease), box-shadow 300ms var(--motion-ease), transform 300ms var(--motion-ease);
 }
 
 .pill {
@@ -168,7 +163,7 @@ h3 {
 .nav {
   padding: 16px 32px;
   border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--bg-panel);
 }
 
 .nav-inner {
@@ -209,16 +204,28 @@ h3 {
 }
 
 .nav-links a {
+  position: relative;
   color: var(--text-muted);
   font-weight: 500;
   text-decoration: none;
   font-size: 0.95rem;
-  transition: color 0.2s;
+  transition: color 200ms var(--motion-ease);
 }
 
 .nav-links a:hover,
 .nav-links a.active {
-  color: var(--text-dark);
+  color: var(--text-accent);
+}
+
+.nav-links a.active::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  left: calc(50% - 2px);
+  bottom: -10px;
+  border-radius: 50%;
+  background: currentColor;
 }
 
 .nav-toggle {
@@ -242,6 +249,8 @@ h3 {
 }
 
 .main-hero {
+  background: var(--bg-panel);
+  box-shadow: var(--shadow-soft), inset 0 0 0 5px var(--bg-panel);
   padding: 80px 40px;
   border-radius: var(--radius-blob);
   display: flex;
@@ -258,9 +267,9 @@ h3 {
   font-size: 0.8rem;
   font-weight: 500;
   letter-spacing: 0.05em;
-  color: var(--text-muted);
+  color: var(--text-accent);
   border: 1px solid var(--glass-border);
-  background: white;
+  background: var(--bg-stellar);
   border-radius: var(--radius-pill);
   margin-bottom: 32px;
   width: fit-content;
@@ -271,7 +280,7 @@ h3 {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #000;
+  background: var(--text-accent);
 }
 
 .main-hero p {
@@ -324,48 +333,25 @@ h3 {
   left: 0;
   width: 100%;
   height: 100%;
-  border-radius: 30px;
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 24px;
+  background: var(--bg-inset);
+  border: 1px solid var(--glass-border);
   box-shadow:
-    0 25px 50px -12px rgba(0, 0, 0, 0.15),
+    0 25px 50px -12px rgba(29, 54, 98, 0.22),
     inset 0 1px 1px rgba(255, 255, 255, 0.9);
   overflow: hidden;
   transform-style: preserve-3d;
 }
 
-/* Shimmer effect inside the card */
-.floating-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -150%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(to right,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.6) 50%,
-      rgba(255, 255, 255, 0) 100%);
-  transform: skewX(-20deg);
-  pointer-events: none;
-  animation: shimmer 6s infinite;
-}
-
 .card-back {
   transform: translateZ(-80px) rotateY(-10deg) rotateX(5deg);
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: #c4d4f4;
   animation: float-card-back 7s ease-in-out infinite alternate;
 }
 
 .card-mid {
   transform: translateZ(-30px) rotateY(-5deg) rotateX(2deg);
-  background: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: #dde7fa;
   animation: float-card-mid 6s ease-in-out infinite alternate-reverse;
 }
 
@@ -377,7 +363,7 @@ h3 {
   justify-content: center;
   gap: 24px;
   animation: float-card-front 8s ease-in-out infinite alternate;
-  background: rgba(255, 255, 255, 0.65);
+  background: var(--bg-inset) url('/images/stellar-satin.webp') center / cover no-repeat;
 }
 
 .card-front::after {
@@ -387,19 +373,19 @@ h3 {
   font-size: 1.25rem;
   letter-spacing: 0.15em;
   color: var(--text-dark);
-  opacity: 0.7;
+  opacity: 1;
   transform: translateZ(20px);
 }
 
 .card-icon {
   width: 96px;
   height: 96px;
-  background: white;
+  background: var(--bg-panel);
   border-radius: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(30, 52, 91, 0.06), 0 16px 32px -8px rgba(30, 52, 91, 0.24);
   border: 1px solid var(--glass-border);
   transform: translateZ(50px);
 }
@@ -458,17 +444,6 @@ h3 {
   }
 }
 
-@keyframes shimmer {
-  0% {
-    left: -150%;
-  }
-
-  20%,
-  100% {
-    left: 200%;
-  }
-}
-
 .btn {
   display: inline-flex;
   align-items: center;
@@ -480,11 +455,11 @@ h3 {
   text-decoration: none;
   border: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 300ms var(--motion-ease), box-shadow 300ms var(--motion-ease), transform 300ms var(--motion-ease);
 }
 
 .btn-black {
-  background: var(--text-dark);
+  background: var(--button-bg);
   color: white;
   border-radius: var(--radius-pill);
 }
@@ -496,7 +471,7 @@ h3 {
 }
 
 .btn-outline {
-  background: white;
+  background: var(--bg-panel);
   color: var(--text-dark);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-pill);
@@ -535,6 +510,15 @@ h3 {
   min-height: 380px;
 }
 
+.app-card[href='/apps/manifest/'] {
+  background: var(--bg-stellar);
+}
+
+.app-card[href='/apps/bronzed/'] {
+  background: var(--bg-bronzed);
+  border-color: #e6dace;
+}
+
 .app-card:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-hover);
@@ -562,11 +546,12 @@ h3 {
   align-items: center;
   justify-content: center;
   font-size: 2rem;
-  background: #f8fafc;
+  background: var(--bg-panel);
   border: 1px solid var(--glass-border);
 }
 
 .app-feature-badge {
+  background: var(--bg-panel);
   font-size: 0.75rem;
   font-weight: 500;
   color: var(--text-muted);
@@ -608,12 +593,12 @@ h3 {
   border: 1px solid var(--glass-border);
   padding: 8px 16px;
   border-radius: var(--radius-pill);
-  background: white;
-  transition: background 0.2s;
+  background: var(--bg-panel);
+  transition: background-color 200ms var(--motion-ease);
 }
 
 .meta-link:hover {
-  background: #f8fafc;
+  background: var(--bg-inset);
 }
 
 /* Dashboard Style Card (Thermio inspired) */
@@ -732,7 +717,7 @@ h3 {
 
 /* Legal and Support */
 .legal-content {
-  background: white;
+  background: var(--bg-panel);
   border-radius: var(--radius-card);
   padding: 60px;
   border: 1px solid var(--glass-border);
@@ -772,7 +757,7 @@ h3 {
 }
 
 .support-card {
-  background: white;
+  background: var(--bg-panel);
   padding: 32px;
   border-radius: var(--radius-card);
   border: 1px solid var(--glass-border);
@@ -783,7 +768,7 @@ h3 {
 .support-icon {
   font-size: 2rem;
   margin-bottom: 24px;
-  background: #f8fafc;
+  background: var(--bg-stellar);
   width: 64px;
   height: 64px;
   display: flex;
@@ -806,7 +791,7 @@ h3 {
 }
 
 .faq-section {
-  background: white;
+  background: var(--bg-panel);
   padding: 60px;
   border-radius: var(--radius-card);
   border: 1px solid var(--glass-border);
@@ -918,7 +903,7 @@ h3 {
   width: 48px;
   height: 48px;
   border-radius: 12px;
-  background: #f8fafc;
+  background: var(--bg-stellar);
   border: 1px solid var(--glass-border);
   display: flex;
   align-items: center;
@@ -947,6 +932,39 @@ a {
 .legal-content a {
   color: var(--text-dark);
   text-decoration: underline;
+}
+
+.support-icon svg,
+.feature-icon svg {
+  stroke: var(--text-accent);
+}
+
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--text-accent);
+  outline-offset: 4px;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.faq-item summary:hover {
+  color: var(--text-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
 /* ============================================
@@ -988,7 +1006,13 @@ a {
 
   .nav-links li a:hover,
   .nav-links li a.active {
-    background: #f8fafc;
+    background: var(--bg-stellar);
+  }
+
+  .nav-links a.active::after {
+    left: auto;
+    right: 24px;
+    bottom: calc(50% - 2px);
   }
 
   .nav-wrapper {
