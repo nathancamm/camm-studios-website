@@ -37,3 +37,10 @@ Create three Vercel projects from this repository. Configure each project with i
 | Stellar | `stellar` | `npm run build:stellar` | `dist/stellar` |
 
 Assign `www.cammstudios.com`, `bronzed.cammstudios.com`, and `stellar.cammstudios.com` to their matching projects. Keep `cammstudios.com` on the company project so its host redirect and legacy legal routes resolve directly.
+
+## Public copy
+
+Use verified public facts about Camm Studios and its products.
+Do not invent team size, process, company status, or corporate framing.
+Keep internal tools and research methods out of public pages.
+Recheck product claims against the matching app before publishing.
