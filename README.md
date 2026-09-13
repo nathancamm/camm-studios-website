@@ -27,6 +27,13 @@ Static HTML/CSS — no build step required.
 **Vercel:** Connect this repo, set root directory to `/`, deploy.
 **Netlify:** Connect this repo, publish directory `.`, deploy.
 
+## Public copy
+
+Use verified public facts about Camm Studios and its products.
+Do not invent team size, process, company status, or corporate framing.
+Keep internal tools and research methods out of public pages.
+Recheck product claims against the matching app before publishing.
+
 ## Local Development
 
 ```bash
