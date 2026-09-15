@@ -1,4 +1,6 @@
 ---
+import GlassFooter from './GlassFooter';
+
 interface Props {
   product?: string;
 }
@@ -6,13 +8,10 @@ interface Props {
 const { product } = Astro.props;
 ---
 
-<footer class="site-footer">
+<GlassFooter client:visible>
   <div class="footer__top">
-    <p class="eyebrow">Camm Studios / Independent app studio</p>
-    <p class="footer__line">Small apps.<br />Built with care.<br />Made to last.</p>
-  </div>
-  <div class="footer__bottom">
-    <p>© {new Date().getFullYear()} Camm Studios</p>
+    <div class="footer__identity"><p class="eyebrow">Camm Studios / Independent app studio</p>
+    <p class="footer__line">Small apps.<br />Built with care.<br />Made to last.</p></div>
     <nav aria-label="Footer navigation">
       {product && <a href="/">{product}</a>}
       <a href="/support">Support</a>
@@ -23,4 +22,5 @@ const { product } = Astro.props;
         : <><a href="https://bronzed.cammstudios.com">Bronzed</a><a href="https://stellar.cammstudios.com">Stellar</a></>}
     </nav>
   </div>
-</footer>
+  <div class="footer__bottom"><p>© {new Date().getFullYear()} Camm Studios</p></div>
+</GlassFooter>

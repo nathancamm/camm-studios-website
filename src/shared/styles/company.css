@@ -103,66 +103,6 @@
 .company-hero__actions .text-link {
   font-size: 12px;
 }
-.company-hero__object {
-  position: absolute;
-  inset: 168px 0 80px;
-  min-width: 0;
-}
-.company-hero__object .three-scene {
-  position: absolute;
-  inset: 0;
-  min-height: 0;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-  background: transparent;
-}
-.company-hero__object .three-scene__fallback img {
-  width: 48%;
-  margin-left: auto;
-  object-fit: contain;
-}
-.company-hero__object .motion-toggle {
-  top: auto;
-  bottom: 16px;
-  left: auto;
-  right: var(--gutter);
-}
-.company-hero__object .three-scene__fallback::after {
-  display: none;
-}
-.instrument-orbit {
-  position: absolute;
-  left: 50%;
-  top: 58%;
-  width: 78%;
-  aspect-ratio: 1;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) rotateX(66deg) rotateZ(-20deg);
-  box-shadow:
-    0 0 0 36px rgba(130, 145, 162, 0.025),
-    0 0 0 72px rgba(130, 145, 162, 0.018);
-}
-.object-coordinate {
-  position: absolute;
-  z-index: 3;
-  font:
-    9px/1.5 'SFMono-Regular',
-    Consolas,
-    monospace;
-  letter-spacing: 0.12em;
-  color: var(--paper-dim);
-}
-.object-coordinate--top {
-  right: 0;
-  top: 18%;
-}
-.object-coordinate--bottom {
-  right: 0;
-  bottom: 12%;
-  writing-mode: vertical-rl;
-}
 .studio-intro {
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -464,15 +404,6 @@
   .company-hero__actions {
     gap: 24px;
   }
-  .company-hero__object {
-    position: relative;
-    inset: auto;
-    height: 340px;
-    margin: 0;
-  }
-  .company-hero__object .three-scene__fallback img {
-    width: 100%;
-  }
   .hero-footer {
     font-size: 8px;
     align-items: start;
@@ -587,3 +518,54 @@
     transform: none;
   }
 }
+
+/* Video-led studio composition. */
+.liquid-studio .company-hero { min-height: 100svh; padding-top: 128px; grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; }
+.liquid-studio .company-hero__copy { align-self: center; padding-block: 96px; }
+.liquid-studio .company-hero h1 { width: auto; max-width: 100%; font-size: clamp(56px, 7.4vw, 112px); line-height: 1.02; letter-spacing: -.065em; }
+.liquid-studio .company-hero .hero-line:last-child { color: #fff; }
+.liquid-studio .company-hero__lede { max-width: 390px; font-size: 17px; }
+.liquid-studio .hero-meta, .liquid-studio .hero-footer { font-family: var(--font-sans); font-size: 10px; color: var(--paper-dim); }
+.liquid-studio :is(.studio-intro, .operate-section, .systems-section, .company-faq) { width: min(calc(100% - 48px), 1280px); margin-inline: auto; background: rgba(10,25,26,.5); }
+.liquid-studio .studio-intro { padding: 64px 48px; border: 0; border-radius: 24px 24px 0 0; margin-top: 96px; }
+.liquid-studio .operate-section { padding: 0 48px 48px; border-radius: 0 0 24px 24px; }
+.liquid-studio .systems-section { padding: 64px 0; border: 0; border-radius: 24px; margin-top: 48px; }
+.liquid-studio .systems-heading h2 span { color: #fff; }
+.liquid-studio .technology-object img { max-height: 320px; mix-blend-mode: normal; filter: url('#artwork-alpha'); }
+.liquid-studio .technology-object h3 { font-size: 24px; }
+.liquid-studio .app-portal { background: rgba(10,25,26,.46); backdrop-filter: blur(8px); border-radius: 24px; }
+.liquid-studio .app-portal__art { mix-blend-mode: normal; filter: url('#artwork-alpha'); animation: none; }
+.liquid-studio .app-portal__top, .liquid-studio .app-portal__domain { font-family: var(--font-sans); }
+.liquid-studio .company-faq { padding: 48px; border-radius: 24px; }
+.liquid-studio .company-close { text-align: center; border: 0; padding-block: 128px 0; }
+.liquid-studio .company-close h2 { font-size: clamp(72px, 11vw, 150px); }
+.liquid-studio .company-close > a { margin-inline: auto; max-width: 350px; font-size: 20px; }
+@media (max-width: 900px) {
+  .liquid-studio .company-hero__copy { padding-block: 96px 72px; }
+  .liquid-studio .company-hero h1 { font-size: clamp(42px, 8.4vw, 72px); }
+  .liquid-studio .studio-intro { padding: 40px 24px; }
+  .liquid-studio .operate-section { padding: 0 24px 32px; }
+  .liquid-studio .company-faq { padding: 32px 24px; }
+  .liquid-studio .systems-section { padding-block: 40px; }
+}
+@media (max-width: 640px) {
+  .liquid-studio .company-hero { padding-top: 100px; }
+  .liquid-studio .company-hero__copy { padding-block: 72px 24px; }
+  .liquid-studio .company-hero__actions { gap: 18px; }
+  .liquid-studio .hero-meta { font-size: 8px; }
+  .liquid-studio :is(.studio-intro, .operate-section, .systems-section, .company-faq) { width: calc(100% - 32px); }
+  .liquid-studio .studio-intro { margin-top: 48px; }
+  .liquid-studio .loop-step h3 { font-size: 19px; }
+  .liquid-studio .portfolio-guides > span { display: block; }
+  .liquid-studio .company-close { padding-top: 80px; }
+}
+.liquid-studio .company-hero__copy { text-align: center; display: flex; flex-direction: column; align-items: center; }
+.liquid-studio .company-hero h1 { font-size: clamp(44px, 6.2vw, 88px); }
+.liquid-studio .company-hero__lede { max-width: 450px; }
+.liquid-studio .company-hero__actions { justify-content: center; }
+.liquid-studio .technology-object { mix-blend-mode: normal; }
+@media (max-width: 640px) {
+  .liquid-studio .company-hero h1 { font-size: clamp(36px, 9vw, 52px); }
+  .liquid-studio .company-hero__copy { padding-block: 88px; }
+}
+.liquid-studio .company-hero .hero-line { animation: none; }

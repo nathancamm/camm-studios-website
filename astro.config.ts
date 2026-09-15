@@ -1,4 +1,6 @@
 import { defineConfig } from 'astro/config';
+import react from '@astrojs/react';
+import tailwindcss from '@tailwindcss/vite';
 
 const targets = {
   company: 'https://www.cammstudios.com',
@@ -18,6 +20,7 @@ const appData = target === 'stellar'
   : './src/shared/data/apps/bronzed.ts';
 
 export default defineConfig({
+  integrations: [react()],
   site: targets[target as keyof typeof targets],
   srcDir: source,
   outDir: `./dist/${target}`,
@@ -29,6 +32,7 @@ export default defineConfig({
     format: 'directory',
   },
   vite: {
+    plugins: [tailwindcss()],
     resolve: {
       alias: {
         '@shared': new URL('./src/shared', import.meta.url).pathname,

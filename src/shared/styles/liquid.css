@@ -1,0 +1,178 @@
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@source "../components";
+
+@font-face {
+    font-family: "Helvetica Regular";
+    src: url("https://db.onlinewebfonts.com/t/a64ff11d2c24584c767f6257e880dc65.eot");
+    src: url("https://db.onlinewebfonts.com/t/a64ff11d2c24584c767f6257e880dc65.eot?#iefix")format("embedded-opentype"),
+    url("https://db.onlinewebfonts.com/t/a64ff11d2c24584c767f6257e880dc65.woff2")format("woff2"),
+    url("https://db.onlinewebfonts.com/t/a64ff11d2c24584c767f6257e880dc65.woff")format("woff"),
+    url("https://db.onlinewebfonts.com/t/a64ff11d2c24584c767f6257e880dc65.ttf")format("truetype"),
+    url("https://db.onlinewebfonts.com/t/a64ff11d2c24584c767f6257e880dc65.svg#Helvetica Regular")format("svg");
+}
+
+@theme {
+  --font-sans: "Helvetica Regular", Helvetica, Arial, sans-serif;
+}
+
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.01);
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: none;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 20%,
+    rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%,
+    rgba(255,255,255,0.15) 80%, rgba(255,255,255,0.45) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Shared across all three sites; the video remains the visual anchor. */
+html.liquid-studio {
+  --canvas: #10191b;
+  --ink: #fff;
+  --black: #10191b;
+  --paper: #fff;
+  --paper-muted: #e0e5e3;
+  --paper-dim: #c0cbc8;
+  --line: rgba(255,255,255,.16);
+  --line-strong: rgba(255,255,255,.3);
+  --surface: rgba(15,28,28,.44);
+  --surface-raised: rgba(255,255,255,.06);
+  --surface-hover: rgba(255,255,255,.12);
+  --accent: #e0e9e5;
+  --accent-ink: #e0e9e5;
+  --signal-soft: rgba(255,255,255,.2);
+  --focus: #fff;
+  --dot: transparent;
+  --max: 1376px;
+  --radius-sm: 24px;
+  --radius-md: 24px;
+  font-family: var(--font-sans);
+  color-scheme: dark;
+  background: #10191b;
+}
+.liquid-studio body { background: transparent; font-family: var(--font-sans); }
+.liquid-studio ::selection { color: #fff; background: rgba(255,255,255,.2); }
+.liquid-studio main { position: relative; z-index: 1; min-height: 80vh; }
+.liquid-studio main :is(section, [id]) { scroll-margin-top: 110px; }
+.video-backdrop { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse at 65% 20%, #526561, #10191b 80%); }
+.video-backdrop video { width: 100%; height: 100%; object-fit: cover; }
+.video-scrim { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(4,13,15,.48), rgba(4,13,15,.18)), linear-gradient(0deg, rgba(4,13,15,.45), transparent 55%); }
+.video-control { position: fixed; right: 24px; bottom: 24px; z-index: 60; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; color: white; background: rgba(8,20,22,.6); cursor: pointer; }
+.liquid-studio h1, .liquid-studio h2, .liquid-studio h3 { font-weight: 400; }
+.liquid-studio .eyebrow { font-family: var(--font-sans); color: var(--paper-dim); font-size: 11px; letter-spacing: .13em; }
+.liquid-studio .site-header { inset: 20px 24px auto; width: auto; border: 1px solid rgba(255,255,255,.2); border-radius: 22px; background: rgba(12,27,28,.22); backdrop-filter: blur(16px); padding-inline: 28px; }
+.liquid-studio .nav-island { min-height: 68px; }
+.liquid-studio .nav-links a { font-size: 12px; }
+.liquid-studio .nav-links a > span { font-size: 9px; margin-right: 4px; opacity: .6; }
+.liquid-studio .brand { font-size: 16px; font-weight: 400; gap: 12px; }
+.liquid-studio .brand__mark { border: 0; background: transparent; border-radius: 0; }
+.liquid-studio .button { border-radius: 999px; font-size: 13px; font-weight: 400; min-height: 48px; padding-inline: 25px; }
+.liquid-studio .button--light, .liquid-studio .button--store { background: rgba(255,255,255,.92); color: #152320; border-color: transparent; }
+.liquid-studio .button:hover { background: rgba(255,255,255,.14); color: #fff; border-color: rgba(255,255,255,.5); }
+.liquid-studio .text-link { font-weight: 400; }
+.liquid-studio .reading-word { color: rgba(255,255,255,.65); }
+.liquid-studio .reading-word.is-lit { color: #fff; }
+/* The same edge treatment on panels, with a denser tint behind long copy. */
+.liquid-studio :is(.product-index, .product-story, .privacy-panel, .guide-card, .post-card, .article-grid, .legal__body, .logo-concept, .related-guides a, .editorial-note) {
+  position: relative;
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 24px;
+  background: rgba(10,25,26,.56);
+  backdrop-filter: blur(12px);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.12);
+}
+.liquid-studio :is(.product-index, .product-story, .download-panel, .article-cta) { width: min(calc(100% - 48px), 1280px); margin-inline: auto; }
+.liquid-studio :is(.download-panel, .article-cta) { background: rgba(15,30,29,.34); border: 1px solid var(--line); border-radius: 24px; backdrop-filter: blur(6px); }
+.liquid-studio .legal { gap: 64px; }
+.liquid-studio .legal__body { padding: 40px; max-width: none; line-height: 1.8; }
+.liquid-studio .legal__body h2:first-child { border-top: 0; padding-top: 0; }
+.liquid-studio .article-grid { margin-top: 48px; padding: 48px; gap: 64px; width: min(calc(100% - 48px), 1280px); }
+.liquid-studio .editorial-note { padding: 40px; }
+.liquid-studio :is(.three-scene, .product-stage, .post-card__visual, .article-signal, .logo-concept__stage) { background: rgba(255,255,255,.025); box-shadow: none; }
+.liquid-studio :is(.three-scene__fallback::after, .product-stage::after, .post-card__visual::after) { background: none; }
+.liquid-studio :is(.product-stage__art, .post-card__art, .article-signal__art, .guide-card__art, .three-scene__fallback img, .logo-concept__stage img) { mix-blend-mode: normal; filter: url('#artwork-alpha'); }
+.liquid-studio .post-card__body { padding: 32px; }
+.liquid-studio .post-card:hover .post-card__art, .liquid-studio .product-stage:hover .product-stage__art { filter: url('#artwork-alpha'); }
+.liquid-studio .not-found h1 { color: #fff; background: none; }
+.liquid-studio .motion-toggle { background: rgba(12,27,28,.7); color: white; }
+.liquid-studio .glass-footer { position: relative; z-index: 1; width: min(calc(100% - 48px), 1280px); margin: 128px auto 32px; padding: 40px; border-radius: 24px; color: var(--paper-muted); }
+.liquid-studio .footer__top { grid-template-columns: 5fr 7fr; gap: 48px; padding-bottom: 48px; align-items: start; }
+.liquid-studio .footer__top .eyebrow { font-size: 12px; max-width: 240px; color: #fff; }
+.liquid-studio .footer__line { font-size: clamp(32px, 4vw, 54px); line-height: 1.12; letter-spacing: -.045em; color: #fff; }
+.liquid-studio .footer__bottom { padding-top: 24px; border-top: 1px solid var(--line); font-size: 11px; }
+.liquid-studio .footer__bottom nav { gap: 24px; }
+.liquid-studio .footer__bottom nav a { padding-block: 8px; }
+.liquid-studio .article-cta .button--store { color: #152320; background: white; }
+.liquid-studio .guide-card { overflow: hidden; padding: 24px; }
+.liquid-studio .app-hero__object .three-scene { backdrop-filter: blur(4px); }
+@media (max-width: 900px) {
+  .liquid-studio .site-header { inset: 12px 16px auto; padding-inline: 18px; border-radius: 20px; backdrop-filter: none; background: rgba(12,27,28,.88); }
+  .liquid-studio .nav-island { min-height: 60px; }
+  .liquid-studio .nav-panel { background: #132623; border-radius: 20px; }
+  .liquid-studio .nav-links a { font-size: 28px; }
+  .liquid-studio .nav-links a > span { font-size: 12px; }
+  .liquid-studio .article-grid { gap: 32px; padding: 24px; }
+  .liquid-studio .post-card:first-child .post-card__body { padding: 28px; }
+  .liquid-studio .legal { gap: 32px; }
+  .liquid-studio .footer__top { gap: 32px; }
+}
+@media (max-width: 640px) {
+  .liquid-studio { --gutter: 24px; }
+  .liquid-studio .brand { font-size: 14px; gap: 8px; }
+  .liquid-studio .brand__product { font-size: 12px; }
+  .liquid-studio .legal__body { padding: 24px; }
+  .liquid-studio :is(.product-index, .product-story, .download-panel, .article-cta, .article-grid) { width: calc(100% - 32px); }
+  .liquid-studio .editorial-note { padding: 24px; gap: 16px; }
+  .liquid-studio .glass-footer { width: calc(100% - 32px); margin-top: 80px; padding: 24px; }
+  .liquid-studio .footer__top { grid-template-columns: 1fr; padding-bottom: 32px; }
+  .liquid-studio .footer__bottom nav { gap: 16px; }
+  .liquid-studio .video-control { right: 18px; bottom: 18px; }
+  .liquid-studio .app-hero { padding-top: 100px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .video-backdrop video { visibility: hidden; }
+  .liquid-studio .glass-footer { transform: none !important; opacity: 1 !important; }
+}
+.liquid-studio .footer__top > nav { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-content: start; padding-top: 4px; }
+.liquid-studio .footer__top > nav a { font-size: 13px; padding-block: 8px; text-decoration: none; transition: color .2s; }
+.liquid-studio .footer__top > nav a:hover { color: #fff; }
+.liquid-studio .footer__identity .eyebrow { max-width: none; margin-bottom: 24px; }
+.liquid-studio .footer__line { font-size: 36px; }
+@media (max-width: 640px) {
+  .liquid-studio .footer__top > nav { gap: 16px; }
+}
+.liquid-studio :is(.technology-object, .post-card__visual, .article-signal, .logo-concept__stage, .three-scene__fallback) { mix-blend-mode: normal; }
+.liquid-studio .footer__top { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+.liquid-studio .footer__identity { grid-column: span 5; }
+.liquid-studio .footer__top > nav { grid-column: span 7; }
+@media (max-width: 640px) {
+  .liquid-studio .footer__identity, .liquid-studio .footer__top > nav { grid-column: 1 / -1; }
+}
+/* Remove the white studio matte in the browser while retaining the original asset files. */
+.artwork-filters { position: absolute; pointer-events: none; }
+.liquid-studio :is(.technology-object, .post-card__visual, .article-signal, .logo-concept__stage, .three-scene__fallback) { mix-blend-mode: normal; }
+.liquid-studio :is(.technology-object img, .app-portal__art, .product-stage__art, .post-card__art, .article-signal__art, .guide-card__art, .three-scene__fallback img, .logo-concept__stage img),
+.liquid-studio .post-card:hover .post-card__art,
+.liquid-studio .product-stage:hover .product-stage__art { mix-blend-mode: normal; filter: url('#artwork-alpha'); }
+html:not(.has-js) .glass-footer { opacity: 1 !important; transform: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .video-control { display: none; }
+}

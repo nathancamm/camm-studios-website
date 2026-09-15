@@ -17,6 +17,12 @@ npm run dev:stellar
 
 The development commands use Astro's default port. Run one target at a time or pass a different port.
 
+## Design
+
+All three sites share a video background, Helvetica typography, and liquid-glass panels and footers. Astro keeps page content static; React handles video controls and the Motion footer. Tailwind CSS v4 supplies the shared utility styles without resetting existing page typography.
+
+The supplied CloudFront video and Helvetica font are loaded remotely. Reduced-motion visitors receive a still background, playback can be paused, and unavailable media falls back to a dark background. Decorative artwork uses an SVG alpha filter to remove its white matte without modifying source files.
+
 ## Verification
 
 ```bash

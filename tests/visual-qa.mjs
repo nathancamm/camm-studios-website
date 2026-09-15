@@ -32,10 +32,14 @@ async function assertAnimatedHeadingReadable(page, label) {
   );
 }
 
-async function assertLightTheme(page, label) {
+async function assertGlassTheme(page, label) {
   const palette = await page.evaluate(() => {
     const body = getComputedStyle(document.body);
-    return { background: body.backgroundColor, color: body.color };
+    return {
+      background: getComputedStyle(document.documentElement).backgroundColor,
+      color: body.color,
+      theme: document.documentElement.classList.contains('liquid-studio'),
+    };
   });
   const channels = (value) =>
     value
@@ -44,13 +48,14 @@ async function assertLightTheme(page, label) {
       .map(Number) ?? [];
   const background = channels(palette.background);
   const color = channels(palette.color);
+  assert.ok(palette.theme, `${label} is missing the shared glass theme`);
   assert.ok(
-    background.length === 3 && background.every((channel) => channel >= 240),
-    `${label} does not have a cool white background: ${palette.background}`,
+    background.length === 3 && background.every((channel) => channel <= 40),
+    `${label} does not have a dark fallback background: ${palette.background}`,
   );
   assert.ok(
-    color.length === 3 && color.every((channel) => channel <= 40),
-    `${label} does not use dark graphite text: ${palette.color}`,
+    color.length === 3 && color.every((channel) => channel >= 240),
+    `${label} does not use white text: ${palette.color}`,
   );
 }
 
@@ -77,36 +82,24 @@ try {
         .evaluateAll((elements) =>
           elements.forEach((element) => element.classList.add('is-visible')),
         );
-      if (site.name === 'company' && width === 1440) {
-        await page.locator('.three-scene.is-rendered').waitFor();
-        await page.waitForTimeout(900);
-        await page.screenshot({ path: `${output}company-arrival.png` });
-        await page.waitForTimeout(1400);
-        await page.screenshot({ path: `${output}company-folding.png` });
-        await page.waitForTimeout(3300);
-      } else {
-        await page.waitForTimeout(site.name === 'company' ? 5600 : 1300);
-      }
-
+      await page.waitForTimeout(1300);
+      assert.equal(await page.locator('.video-backdrop video').count(), 1);
+      assert.equal(await page.locator('footer.liquid-glass').count(), 1);
       assert.equal(
         await page.locator('canvas[data-three-scene]').count(),
-        1,
-        `${site.name} is missing its Three.js scene at ${width}px`,
+        site.name === 'company' ? 0 : 1,
+        `${site.name} has an unexpected Three.js scene count at ${width}px`,
       );
-      await page.locator('[data-three-frame]').waitFor({ state: 'visible' });
-      assert.ok(
-        await page
-          .locator('[data-three-frame]')
-          .evaluate((element) => element.classList.contains('is-rendered')),
-        `${site.name} WebGL scene did not render at ${width}px`,
-      );
+      if (site.name !== 'company') {
+        await page.locator('[data-three-frame].is-rendered').waitFor();
+      }
       assert.deepEqual(
         runtimeErrors,
         [],
         `${site.name} logged runtime errors at ${width}px`,
       );
       await assertAnimatedHeadingReadable(page, `${site.name} at ${width}px`);
-      await assertLightTheme(page, `${site.name} at ${width}px`);
+      await assertGlassTheme(page, `${site.name} at ${width}px`);
 
       const overflow = await page.evaluate(
         () =>
@@ -185,12 +178,40 @@ try {
       }
 
       if (width === 1440) {
-        await page.getByRole('button', { name: 'Pause motion' }).click();
+        await page.waitForFunction(() => {
+          const video = document.querySelector('.video-backdrop video');
+          return video && !video.paused && video.readyState >= 2;
+        });
+        await page.getByRole('button', { name: 'Pause background video' }).click();
+        await page.waitForFunction(() => document.querySelector('.video-backdrop video').paused);
+        const pausedTime = await page.locator('video').evaluate((video) => video.currentTime);
+        await page.waitForTimeout(250);
+        assert.equal(
+          await page.locator('video').evaluate((video) => video.currentTime),
+          pausedTime,
+          `${site.name} video advanced while paused`,
+        );
+        await page.getByRole('button', { name: 'Play background video' }).click();
+        await page.waitForFunction((time) => {
+          const video = document.querySelector('.video-backdrop video');
+          return !video.paused && video.currentTime !== time;
+        }, pausedTime);
+        await page.getByRole('button', { name: 'Pause background video' }).waitFor();
+      }
+
+      if (width === 1440 && site.name !== 'company') {
+        await page.getByRole('button', { name: 'Pause motion', exact: true }).click();
         assert.equal(
           await page.locator('.motion-toggle').getAttribute('aria-pressed'),
           'true',
         );
         const canvas = page.locator('canvas[data-three-scene]');
+        // Mask the video behind the transparent canvas so it cannot fake canvas motion.
+        const originalBackground = await canvas.evaluate((element) => {
+          const original = element.style.backgroundColor;
+          element.style.backgroundColor = '#10191b';
+          return original;
+        });
         const pausedFrame = await canvas.screenshot();
         await page.waitForTimeout(250);
         assert.deepEqual(
@@ -198,13 +219,16 @@ try {
           pausedFrame,
           `${site.name} did not pause its canvas`,
         );
-        await page.getByRole('button', { name: 'Resume motion' }).click();
+        await page.getByRole('button', { name: 'Resume motion', exact: true }).click();
         await page.waitForTimeout(650);
         assert.notDeepEqual(
           await canvas.screenshot(),
           pausedFrame,
           `${site.name} did not resume its canvas`,
         );
+        await canvas.evaluate((element, background) => {
+          element.style.backgroundColor = background;
+        }, originalBackground);
       }
 
       await page.screenshot({
@@ -220,46 +244,42 @@ try {
     reducedMotion: 'reduce',
   });
   const reducedPage = await reducedContext.newPage();
-  await reducedPage.goto(sites[0].url, { waitUntil: 'networkidle' });
-  const hiddenReveals = await reducedPage
-    .locator('[data-reveal]')
-    .evaluateAll(
-      (elements) =>
-        elements.filter(
-          (element) => Number.parseFloat(getComputedStyle(element).opacity) < 1,
-        ).length,
-    );
-  assert.equal(hiddenReveals, 0, 'Reduced motion left hidden content');
-  const dimReadingWords = await reducedPage
-    .locator('.reading-word')
-    .evaluateAll(
-      (elements) =>
-        elements.filter(
-          (element) => getComputedStyle(element).color !== 'rgb(17, 24, 32)',
-        ).length,
-    );
-  assert.equal(
-    dimReadingWords,
-    0,
-    'Reduced motion left the reading reveal incomplete',
-  );
-  assert.ok(
-    await reducedPage
-      .locator('[data-three-frame]')
-      .evaluate(
-        (element) =>
-          element.classList.contains('is-rendered') ||
-          element.classList.contains('is-unavailable'),
-      ),
-    'Reduced motion did not resolve the static Three.js frame',
-  );
+  for (const site of sites) {
+    await reducedPage.goto(site.url, { waitUntil: 'networkidle' });
+    await reducedPage.waitForFunction(() => document.querySelector('.video-backdrop video').paused);
+    assert.equal(await reducedPage.locator('.video-control').isVisible(), false,
+      `${site.name} exposes a video control under reduced motion`);
+    const hiddenReveals = await reducedPage
+      .locator('[data-reveal]')
+      .evaluateAll((elements) => elements.filter(
+        (element) => Number.parseFloat(getComputedStyle(element).opacity) < 1,
+      ).length);
+    assert.equal(hiddenReveals, 0, `${site.name} reduced motion left hidden content`);
+    const dimReadingWords = await reducedPage
+      .locator('.reading-word')
+      .evaluateAll((elements) => elements.filter(
+        (element) => getComputedStyle(element).color !== 'rgb(255, 255, 255)',
+      ).length);
+    assert.equal(dimReadingWords, 0,
+      `${site.name} reduced motion left the reading reveal incomplete`);
+    if (site.name !== 'company') {
+      await reducedPage.waitForFunction(() => {
+        const frame = document.querySelector('[data-three-frame]');
+        return frame.classList.contains('is-rendered') || frame.classList.contains('is-unavailable');
+      });
+    }
+    await reducedPage.locator('footer').scrollIntoViewIfNeeded();
+    assert.equal(await reducedPage.locator('footer').evaluate(
+      (element) => getComputedStyle(element).opacity,
+    ), '1', `${site.name} reduced motion hid the footer`);
+  }
   await reducedContext.close();
 
   const recoveryContext = await browser.newContext({
     viewport: { width: 1440, height: 900 },
   });
   const recoveryPage = await recoveryContext.newPage();
-  await recoveryPage.goto(sites[0].url, { waitUntil: 'networkidle' });
+  await recoveryPage.goto(sites[1].url, { waitUntil: 'networkidle' });
   await recoveryPage.locator('.three-scene.is-rendered').waitFor();
   await recoveryPage.evaluate(() => {
     const canvas = document.querySelector('canvas');
@@ -283,22 +303,25 @@ try {
     viewport: { width: 390, height: 900 },
   });
   const staticPage = await staticContext.newPage();
-  await staticPage.goto(sites[0].url, { waitUntil: 'networkidle' });
-  assert.ok(
-    await staticPage.locator('.three-scene__fallback img').isVisible(),
-    'No-JavaScript fallback is missing',
-  );
-  assert.ok(
-    await staticPage
-      .locator('.three-scene__fallback img')
-      .evaluate((image) => image.complete && image.naturalWidth > 0),
-    'No-JavaScript poster did not load',
-  );
-  assert.equal(
-    await staticPage.locator('.motion-toggle').isVisible(),
-    false,
-    'No-JavaScript page exposes a dead motion button',
-  );
+  for (const site of sites) {
+    await staticPage.goto(site.url, { waitUntil: 'networkidle' });
+    const footer = staticPage.locator('footer');
+    await footer.scrollIntoViewIfNeeded();
+    assert.ok(await footer.isVisible(), `${site.name} no-JavaScript footer is missing`);
+    assert.equal(await footer.evaluate((element) => getComputedStyle(element).opacity),
+      '1', `${site.name} no-JavaScript footer is transparent`);
+    assert.ok(await footer.getByRole('link', { name: 'Support', exact: true }).isVisible(),
+      `${site.name} no-JavaScript footer navigation is missing`);
+    if (site.name !== 'company') {
+      const poster = staticPage.locator('.three-scene__fallback img');
+      await poster.scrollIntoViewIfNeeded();
+      assert.ok(await poster.isVisible(), `${site.name} no-JavaScript fallback is missing`);
+      assert.ok(await poster.evaluate((image) => image.complete && image.naturalWidth > 0),
+        `${site.name} no-JavaScript poster did not load`);
+      assert.equal(await staticPage.locator('.motion-toggle').isVisible(), false,
+        `${site.name} no-JavaScript page exposes a dead motion button`);
+    }
+  }
   await staticContext.close();
 
   const detailRoutes = [
@@ -376,7 +399,7 @@ try {
         page,
         `${detail.site.name}${detail.route} at ${width}px`,
       );
-      await assertLightTheme(
+      await assertGlassTheme(
         page,
         `${detail.site.name}${detail.route} at ${width}px`,
       );

@@ -3,7 +3,6 @@ import {
   AmbientLight,
   AnimationMixer,
   Box3,
-  CanvasTexture,
   MeshBasicMaterial,
   PlaneGeometry,
   Vector3,
@@ -167,7 +166,6 @@ class SceneRuntime {
   private ready = false;
   private contextLost = false;
   private pausedAt?: number;
-  private backdropTexture?: CanvasTexture;
   private startedAt: number;
 
   constructor(canvas: HTMLCanvasElement) {
@@ -207,31 +205,6 @@ class SceneRuntime {
     accentRim.position.set(4.2, 4.8, 3.2);
     this.scene.add(key, graphiteRim, accentRim);
 
-    {
-      const pattern = document.createElement('canvas');
-      pattern.width = pattern.height = 1024;
-      const context = pattern.getContext('2d');
-      if (context) {
-        context.fillStyle = '#ffffff';
-        context.fillRect(0, 0, 1024, 1024);
-        context.fillStyle = '#dce0e5';
-        for (let x = 0; x < 1024; x += 16) {
-          for (let y = 0; y < 1024; y += 16) {
-            context.beginPath();
-            context.arc(x, y, 0.8, 0, Math.PI * 2);
-            context.fill();
-          }
-        }
-      }
-      this.backdropTexture = new CanvasTexture(pattern);
-      this.backdropTexture.colorSpace = SRGBColorSpace;
-      const backdrop = new Mesh(
-        new PlaneGeometry(24, 24),
-        new MeshBasicMaterial({ map: this.backdropTexture, toneMapped: false }),
-      );
-      backdrop.position.z = -4;
-      this.scene.add(backdrop);
-    }
     this.world = buildWorld(this.name);
     this.scene.add(this.world.group);
     this.startedAt = performance.now();
@@ -403,7 +376,6 @@ class SceneRuntime {
       this.onContextRestored,
     );
     this.disposeMeshes();
-    this.backdropTexture?.dispose();
     this.environment.dispose();
     this.renderer.dispose();
   }

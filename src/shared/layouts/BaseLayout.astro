@@ -1,7 +1,8 @@
 ---
-import '@fontsource-variable/manrope';
 import '../styles/global.css';
-import mark from '../assets/brand/crystal/snake.webp';
+import '../styles/liquid.css';
+import VideoBackground from '../components/VideoBackground';
+import mark from '../assets/brand/crystal/01-precision.webp';
 import bronzedFavicon from '../assets/product/bronzed-favicon.png';
 import stellarFavicon from '../assets/product/stellar-favicon.png';
 
@@ -34,12 +35,12 @@ const rssUrl = target === 'bronzed' || target === 'stellar' ? new URL('/rss.xml'
 ---
 
 <!doctype html>
-<html lang="en" class={themeClass}>
+<html lang="en" class:list={[themeClass, "liquid-studio"]}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#ffffff" />
-    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#10191b" />
+    <meta name="color-scheme" content="dark" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -73,6 +74,15 @@ const rssUrl = target === 'bronzed' || target === 'stellar' ? new URL('/rss.xml'
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
+    <svg class="artwork-filters" width="0" height="0" aria-hidden="true" focusable="false">
+      <defs>
+        <filter id="artwork-alpha" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%">
+          <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -1 -1 -1 0 3" />
+          <feComposite in2="SourceGraphic" operator="in" />
+        </filter>
+      </defs>
+    </svg>
+    <VideoBackground client:load />
     <slot />
     <script>
       import '../scripts/site';

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@shared/layouts/BaseLayout.astro';
 import Nav from '@shared/components/Nav.astro';
+import Footer from '@shared/components/Footer.astro';
 import precision from '@shared/assets/brand/crystal/01-precision.webp';
 import prism from '@shared/assets/brand/crystal/02-prism.webp';
 import strata from '@shared/assets/brand/crystal/03-strata.webp';
@@ -25,6 +26,7 @@ const concepts = [
         <div class="logo-concept__body"><div><p class="eyebrow">Direction 0{index + 1}</p><h2>{concept.name}</h2></div><p>{concept.description}</p><a href={concept.image.src} download>Download render <span aria-hidden="true">↘</span></a></div>
       </article>)}
     </section>
-    <footer class="logo-study__footer"><p>Private identity study · Excluded from search engines</p><a href="/">View the animated snake on the website ↗</a></footer>
+    <footer class="logo-study__footer"><p>Private identity study · Excluded from search engines</p><a href="/">View the website ↗</a></footer>
   </main>
+  <Footer />
 </BaseLayout>

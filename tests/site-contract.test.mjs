@@ -174,7 +174,8 @@ test('company shows proprietary names without exposing operational details', () 
     company,
     /keyword research|marketing attribution|data layer|system-node__detail|Planned/i,
   );
-  assert.match(company, /data-three-scene="monogram"/);
+  assert.doesNotMatch(company, /data-three-scene="monogram"/);
+  assert.match(company, /<video/);
   assert.doesNotMatch(
     company,
     /keyword opportunities|prediction model|portfolio scoring/i,
@@ -279,7 +280,7 @@ test('each target emits only the large artwork it actually renders', () => {
   );
 });
 
-test('the cinematic layer includes a reduced motion path and a canvas fallback', () => {
+test('the cinematic layer includes reduced motion and a muted video background', () => {
   const scene = readFileSync(
     join(root, 'src/shared/scripts/three-scenes.ts'),
     'utf8',
@@ -288,7 +289,7 @@ test('the cinematic layer includes a reduced motion path and a canvas fallback',
 
   assert.match(scene, /prefers-reduced-motion:\s*reduce/);
   assert.match(scene, /IntersectionObserver/);
-  assert.match(company, /<canvas[^>]+aria-label=/i);
+  assert.match(company, /<video[^>]+muted/i);
 });
 
 test('legacy app legal routes redirect permanently to final subdomains', () => {
@@ -336,4 +337,18 @@ test('legacy app legal routes redirect permanently to final subdomains', () => {
     lastLegacyIndex < apexRuleIndex,
     'Apex host redirect would create a chain before legacy legal redirects',
   );
+});
+
+test('every page uses the shared video and glass footer while retaining static content', () => {
+  for (const [target, files] of Object.entries(routeFiles)) {
+    for (const file of files.filter((path) => path.endsWith('.html'))) {
+      const html = readFileSync(join(root, 'dist', target, file), 'utf8');
+      assert.match(html, /<html[^>]+liquid-studio/, `${target}/${file} misses the theme`);
+      assert.match(html, /hf_20260723_145606_ab143199-b593-4941-bb1b-9afca215416b\.mp4/);
+      assert.match(html, /<footer[^>]+liquid-glass/);
+      assert.match(html, /<main[^>]+id="main"/);
+      assert.match(html, /id="artwork-alpha"/);
+      assert.match(html, /Small apps\.<br\s*\/?>(?:<!--.*?-->)?Built with care\./);
+    }
+  }
 });
