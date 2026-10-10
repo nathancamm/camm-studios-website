@@ -11,6 +11,11 @@ Static website for [Camm Studios](https://cammstudios.com) iOS apps.
 - **/apps/manifest/** — Manifest app landing page
 - **/apps/manifest/privacy.html** — Manifest privacy policy
 - **/apps/manifest/terms.html** — Manifest terms of service
+- **/apps/mp3-converter/support** — MP3 Converter support and FAQs
+- **/apps/mp3-converter/privacy** — MP3 Converter privacy policy
+- **/apps/mp3-converter/terms** — MP3 Converter terms of use
+
+MP3 Converter pages use `apps/mp3-converter/<page>/index.html` so they serve at extensionless URLs without a site-wide `cleanUrls` change. Use root-relative links (`/css/style.css`) in these pages. MP3 Converter has no landing page or homepage card yet.
 
 ## Adding a New App
 
