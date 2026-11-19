@@ -6,7 +6,8 @@ const target = process.env.SITE_TARGET as AppTarget;
 
 export const GET: APIRoute = async ({ site }) => {
   const posts = await getCollection('blog', ({ data }) => data.app === target && !data.draft);
-  const staticRoutes = ['/', '/blog/', '/support/', '/privacy/', '/terms/'];
+  // Privacy and terms redirect to the company site (see _redirects.ts).
+  const staticRoutes = ['/', '/blog/', '/support/'];
   const staticUrls = staticRoutes.map((route) => `<url><loc>${new URL(route, site)}</loc></url>`);
   const articleUrls = posts.map((post) => `<url><loc>${new URL(`/blog/${post.data.slug}/`, site)}</loc><lastmod>${post.data.updatedDate.toISOString()}</lastmod></url>`);
   const urls = [...staticUrls, ...articleUrls].join('');

@@ -37,7 +37,7 @@ const bronzed: AppDefinition = {
     },
     {
       title: 'A timer that stays with you',
-      body: 'Run a session from your Lock Screen, Dynamic Island, or Apple Watch without losing track of time.',
+      body: 'Follow a session from your Lock Screen or Dynamic Island without losing track of time.',
     },
     {
       title: 'Progress without guesswork',
