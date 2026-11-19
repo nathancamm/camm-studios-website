@@ -8,7 +8,6 @@ const root = new URL('..', import.meta.url).pathname;
 const routeFiles = {
   company: [
     'index.html',
-    'logo-study/index.html',
     'support/index.html',
     'privacy/index.html',
     'terms/index.html',
@@ -180,20 +179,6 @@ test('company shows proprietary names without exposing operational details', () 
     company,
     /keyword opportunities|prediction model|portfolio scoring/i,
   );
-});
-
-test('five clear glass logo concepts have downloadable artwork', () => {
-  const study = readFileSync(
-    join(root, 'dist/company/logo-study/index.html'),
-    'utf8',
-  );
-  assert.equal(
-    (study.match(/<article class="logo-concept(?:"|\s)/g) ?? []).length,
-    5,
-  );
-  assert.equal((study.match(/ download(?:[ >])/g) ?? []).length, 5);
-  assert.match(study, /noindex, nofollow/);
-  assert.doesNotMatch(study, /robotic|serpent/i);
 });
 
 test('the primary Blender model is a valid, bounded glTF binary', () => {
