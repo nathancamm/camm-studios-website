@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 
-const routes = ['/', '/support/', '/privacy/', '/terms/'];
+// /privacy/ and /terms/ redirect to the legal pages in legacy/company.
+const routes = ['/', '/support/', '/privacy-policy/', '/terms-of-service/'];
 
 export const GET: APIRoute = ({ site }) => {
   const urls = routes.map((route) => `<url><loc>${new URL(route, site)}</loc></url>`).join('');
