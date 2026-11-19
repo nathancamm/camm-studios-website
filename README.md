@@ -32,17 +32,27 @@ npm test
 
 `npm test` builds all targets and verifies routes, canonical URLs, product links, and permanent legacy redirects.
 
+## Bronzed on Cloudflare
+
+`bronzed.cammstudios.com` is an assets-only Cloudflare Worker named `bronzed-site`, configured in `cloudflare.config.ts`. The `cammstudios.com` zone is on Cloudflare, and the Worker's custom domain creates the DNS record.
+
+```bash
+cf auth login          # once per machine
+npm run deploy:bronzed # build:bronzed, then cf deploy ./dist/bronzed
+```
+
+The app links to its privacy policy and terms on the company site (`www.cammstudios.com/apps/bronzed/`). Until those documents move to the subdomain, the generated `_redirects` file sends `/privacy` and `/terms` there with a 302, and the sitemap leaves them out. When the company site moves to this repository, delete `src/targets/app/pages/[redirects].ts` first, or those rules will loop with the legacy redirects in `vercel.json`.
+
 ## Vercel projects
 
-Create three Vercel projects from this repository. Configure each project with its own environment value, build command, and output directory.
+The company and Stellar sites deploy as Vercel projects from this repository. Bronzed deploys to Cloudflare (above). Configure each project with its own environment value, build command, and output directory.
 
 | Project | `SITE_TARGET` | Build command | Output directory |
 | --- | --- | --- | --- |
 | Company | `company` | `npm run build:company` | `dist/company` |
-| Bronzed | `bronzed` | `npm run build:bronzed` | `dist/bronzed` |
 | Stellar | `stellar` | `npm run build:stellar` | `dist/stellar` |
 
-Assign `www.cammstudios.com`, `bronzed.cammstudios.com`, and `stellar.cammstudios.com` to their matching projects. Keep `cammstudios.com` on the company project so its host redirect and legacy legal routes resolve directly.
+Assign `www.cammstudios.com` and `stellar.cammstudios.com` to their matching projects. Keep `cammstudios.com` on the company project so its host redirect and legacy legal routes resolve directly.
 
 ## Public copy
 

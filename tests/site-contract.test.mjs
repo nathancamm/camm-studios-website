@@ -352,3 +352,31 @@ test('every page uses the shared video and glass footer while retaining static c
     }
   }
 });
+
+test('app legal routes on Cloudflare point to the documents the apps link to', () => {
+  const legalBase = {
+    bronzed: 'https://www.cammstudios.com/apps/bronzed',
+    stellar: 'https://www.cammstudios.com/apps/manifest',
+  };
+
+  for (const [target, base] of Object.entries(legalBase)) {
+    const rules = new Map(
+      readFileSync(join(root, 'dist', target, '_redirects'), 'utf8')
+        .trim()
+        .split('\n')
+        .map((line) => {
+          const [source, destination, code] = line.split(' ');
+          return [source, { destination, code }];
+        }),
+    );
+
+    for (const document of ['privacy', 'terms']) {
+      for (const source of [`/${document}`, `/${document}/`]) {
+        assert.deepEqual(rules.get(source), {
+          destination: `${base}/${document}.html`,
+          code: '302',
+        });
+      }
+    }
+  }
+});
