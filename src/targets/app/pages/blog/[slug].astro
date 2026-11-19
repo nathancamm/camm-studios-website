@@ -1,0 +1,99 @@
+---
+import { getCollection, render } from 'astro:content';
+import { getImage, Image } from 'astro:assets';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '@shared/layouts/BaseLayout.astro';
+import Nav from '@shared/components/Nav.astro';
+import Footer from '@shared/components/Footer.astro';
+import StoreButton from '@shared/components/StoreButton.astro';
+import app from '@app-data';
+import type { AppTarget } from '@shared/data/app-definition';
+import '@shared/styles/blog.css';
+
+export const getStaticPaths = (async () => {
+  const target = process.env.SITE_TARGET as AppTarget;
+  const posts = await getCollection('blog', ({ data }) => data.app === target && !data.draft);
+  return posts.map((post) => ({ params: { slug: post.data.slug }, props: { post } }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const relatedPosts = (await getCollection('blog', ({ data }) => data.app === app.target && !data.draft && data.slug !== post.data.slug))
+  .sort((a, b) => b.data.publicationDate.valueOf() - a.data.publicationDate.valueOf())
+  .slice(0, 2);
+const canonical = new URL(`/blog/${post.data.slug}/`, Astro.site);
+const guideArt = app.guideArt[post.data.slug];
+const socialAsset = await getImage({ src: guideArt, width: 1200, format: 'webp', quality: 88 });
+const socialImage = new URL(socialAsset.src, Astro.site);
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.data.title,
+    description: post.data.summary,
+    datePublished: post.data.publicationDate.toISOString(),
+    dateModified: post.data.updatedDate.toISOString(),
+    image: socialImage.toString(),
+    mainEntityOfPage: canonical.toString(),
+    author: { '@type': 'Organization', name: 'Camm Studios', url: 'https://www.cammstudios.com' },
+    publisher: { '@type': 'Organization', name: 'Camm Studios', url: 'https://www.cammstudios.com' },
+    keywords: post.data.keywords.join(', '),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: app.name, item: new URL('/', Astro.site).toString() },
+      { '@type': 'ListItem', position: 2, name: 'Guides', item: new URL('/blog/', Astro.site).toString() },
+      { '@type': 'ListItem', position: 3, name: post.data.title, item: canonical.toString() },
+    ],
+  },
+];
+---
+
+<BaseLayout title={`${post.data.title} — ${app.name}`} description={post.data.summary} canonical={canonical} image={socialImage} themeClass={app.themeClass} structuredData={structuredData}>
+  <Nav product={app.name} links={[{ href: '/', label: app.name }, { href: '/blog', label: 'Guides' }, { href: '/support', label: 'Support' }]} storeUrl={app.storeUrl} />
+  <main id="main">
+    <header class="article-hero shell">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">{app.name}</a><span>/</span><a href="/blog">Guides</a><span>/</span><span>Article</span></nav>
+      <div class="article-hero__grid">
+        <div>
+          <p class="eyebrow" data-reveal>{app.name} guide</p>
+          <h1 data-word-reveal>{post.data.title}</h1>
+        </div>
+        <div class="article-hero__summary" data-reveal>
+          <p>{post.data.summary}</p>
+          <div><span>{post.data.publicationDate.toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</span><span>{Math.max(4, Math.round((post.body?.length ?? 3600) / 900))} minute read</span></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="article-signal shell" aria-hidden="true" data-reveal>
+      <span>{post.data.keywords[0]}</span>
+      <Image class="article-signal__art" src={guideArt} alt="" width={1200} quality={90} loading="eager" />
+      <span>{app.name} / {post.data.publicationDate.getFullYear()}</span>
+    </div>
+
+    <div class="article-grid shell">
+      <aside class="article-aside">
+        <div><p>Published by</p><strong>Camm Studios</strong></div>
+        <div><p>Product</p><a href="/">{app.name} ↗</a></div>
+        <div><p>Updates</p><a href="/rss.xml">RSS feed ↗</a></div>
+      </aside>
+      <article class="article-body">
+        <Content />
+        {post.data.sources.length > 0 && <section class="article-sources"><h2>Sources</h2><ul>{post.data.sources.map((source) => <li><a href={source.url}>{source.label}</a></li>)}</ul></section>}
+      </article>
+    </div>
+
+    <section class="related-guides shell" aria-labelledby="related-title">
+      <header><p class="eyebrow">Keep reading</p><h2 id="related-title">Related {app.name} guides.</h2></header>
+      <div>{relatedPosts.map((related) => <a href={`/blog/${related.data.slug}`}><span>{related.data.keywords[0]}</span><h3>{related.data.title}</h3><p>Read guide ↗</p></a>)}</div>
+    </section>
+
+    <section class="article-cta">
+      <div class="shell"><div><p class="eyebrow">Try the product</p><h2>{app.target === 'bronzed' ? 'Bring live UV context with you.' : 'Give your daily ritual a place to live.'}</h2></div><StoreButton href={app.storeUrl} label={`Download ${app.name}`} /></div>
+    </section>
+  </main>
+  <Footer product={app.name} />
+</BaseLayout>

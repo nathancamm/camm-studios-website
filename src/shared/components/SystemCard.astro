@@ -1,0 +1,32 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+type SystemKind = 'artemis' | 'atlas' | 'morpheus' | 'chronos';
+
+interface Props {
+  name: string;
+  role: string;
+  description: string;
+  kind: SystemKind;
+  art: ImageMetadata;
+  status?: string;
+}
+
+const { name, role, description, kind, art, status } = Astro.props;
+---
+
+<article class="system-card" data-system={kind} data-reveal>
+  <header class="system-card__header">
+    <div>
+      <h3>{name}</h3>
+      <p>{role}</p>
+    </div>
+    {status && <span>{status}</span>}
+  </header>
+  <div class="system-card__visual" aria-hidden="true">
+    <Image class="system-card__art" src={art} alt="" width={1200} quality={88} loading="lazy" />
+    <span class="system-card__measure">{name.toUpperCase()} / INTERNAL TOOL</span>
+  </div>
+  <p class="system-card__description">{description}</p>
+</article>

@@ -1,0 +1,15 @@
+---
+import BaseLayout from '@shared/layouts/BaseLayout.astro';
+import Nav from '@shared/components/Nav.astro';
+import Footer from '@shared/components/Footer.astro';
+---
+
+<BaseLayout title="Page not found — Camm Studios" description="This page could not be found." canonical={new URL('/404', Astro.site)} robots="noindex, follow">
+  <Nav links={[{ href: '/', label: 'Company' }, { href: '/support', label: 'Support' }]} />
+  <main id="main" class="shell not-found">
+    <p class="eyebrow">404 / Signal lost</p>
+    <h1>This path does not lead anywhere useful.</h1>
+    <a class="button button--light" href="/">Return home</a>
+  </main>
+  <Footer />
+</BaseLayout>

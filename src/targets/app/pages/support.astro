@@ -1,0 +1,18 @@
+---
+import LegalLayout from '@shared/layouts/LegalLayout.astro';
+import app from '@app-data';
+---
+
+<LegalLayout title={`Support — ${app.name}`} description={`Help and support for ${app.name}.`} canonical={new URL('/support', Astro.site)} heading={`${app.name} support`} product={app.name}>
+  <h2>How can we help?</h2>
+  <p>Email <a href="mailto:info@cammstudios.com">info@cammstudios.com</a>. We aim to reply within 24 hours.</p>
+  <h2>What to include</h2>
+  <p>Tell us your device model, iOS version, app version, and what happened. A screenshot can help, but remove sensitive information first.</p>
+  {app.target === 'bronzed' ? (
+    <><h2>Health and sun safety</h2><p>Bronzed does not provide medical advice. For a medical concern, unusual skin reaction, or urgent health issue, contact a qualified clinician or local emergency service.</p></>
+  ) : (
+    <><h2>Wellbeing support</h2><p>Stellar is a reflection tool, not mental health care. If you need urgent help, contact a qualified health professional or local emergency service.</p></>
+  )}
+  <h2>Subscriptions and refunds</h2>
+  <p>Apple handles App Store billing. Manage a subscription in your Apple ID settings or <a href="https://reportaproblem.apple.com/">request a refund from Apple</a>.</p>
+</LegalLayout>

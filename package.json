@@ -1,0 +1,60 @@
+{
+  "name": "camm-studios-website",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "SITE_TARGET=company astro dev",
+    "dev:bronzed": "SITE_TARGET=bronzed astro dev",
+    "dev:stellar": "SITE_TARGET=stellar astro dev",
+    "build": "astro build",
+    "build:company": "SITE_TARGET=company astro build",
+    "build:bronzed": "SITE_TARGET=bronzed astro build",
+    "build:stellar": "SITE_TARGET=stellar astro build",
+    "build:all": "npm run build:company && npm run build:bronzed && npm run build:stellar",
+    "deploy:company": "npm run build:company && SITE_TARGET=company cf deploy ./dist/company",
+    "deploy:bronzed": "npm run build:bronzed && SITE_TARGET=bronzed cf deploy ./dist/bronzed",
+    "check:company": "SITE_TARGET=company astro check",
+    "check:bronzed": "SITE_TARGET=bronzed astro check",
+    "check:stellar": "SITE_TARGET=stellar astro check",
+    "check:all": "npm run check:company && npm run check:bronzed && npm run check:stellar",
+    "test": "npm run build:all && node --test tests/site-contract.test.mjs",
+    "test:contracts": "node --test tests/site-contract.test.mjs",
+    "test:visual": "node tests/visual-qa.mjs",
+    "preview:company": "SITE_TARGET=company astro preview",
+    "preview:bronzed": "SITE_TARGET=bronzed astro preview",
+    "preview:stellar": "SITE_TARGET=stellar astro preview"
+  },
+  "dependencies": {
+    "@astrojs/react": "^6.0.5",
+    "@astrojs/rss": "4.0.19",
+    "@fontsource-variable/manrope": "5.3.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "7.2.2",
+    "lucide-react": "^1.46.0",
+    "motion": "^13.3.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "tailwindcss": "^4.3.3",
+    "three": "^0.185.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@playwright/test": "1.62.1",
+    "@types/node": "24.3.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.185.4",
+    "cf": "1.0.0-rc.1",
+    "sharp": "0.35.3",
+    "typescript": "5.9.3"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "sharp@0.35.3": true,
+    "fsevents@2.3.3": true
+  }
+}

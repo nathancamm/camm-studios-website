@@ -1,0 +1,13 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "exclude": ["node_modules", "dist", "output"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "paths": {
+      "@shared/*": ["src/shared/*"],
+      "@app-data": ["src/shared/data/apps/bronzed.ts"]
+    }
+  }
+}

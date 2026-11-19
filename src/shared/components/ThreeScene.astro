@@ -1,0 +1,47 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+type SceneName = 'monogram' | 'bronzed' | 'stellar';
+
+interface Props {
+  scene: SceneName;
+  label: string;
+  poster: ImageMetadata;
+  accent?: string;
+  class?: string;
+}
+
+const {
+  scene,
+  label,
+  poster,
+  accent = '#ffffff',
+  class: className = '',
+} = Astro.props;
+---
+
+<div class:list={['three-scene', className]} data-three-frame>
+  <button class="motion-toggle" type="button" aria-pressed="false">Pause motion</button>
+  <canvas
+    data-three-scene={scene}
+    data-accent={accent}
+    aria-label={label}
+    role="img"
+  >{label}</canvas>
+  <div class="three-scene__fallback" aria-hidden="true">
+    <Image src={poster} alt="" width={1200} quality={88} loading="eager" />
+  </div>
+</div>
+
+<script>
+  const loadScene = () => import('../scripts/three-scenes');
+  const idleWindow = window as unknown as {
+    requestIdleCallback?: (callback: IdleRequestCallback, options?: IdleRequestOptions) => number;
+  };
+  if (idleWindow.requestIdleCallback) {
+    idleWindow.requestIdleCallback(() => void loadScene(), { timeout: 1200 });
+  } else {
+    setTimeout(() => void loadScene(), 0);
+  }
+</script>

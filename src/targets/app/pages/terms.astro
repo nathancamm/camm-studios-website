@@ -1,0 +1,42 @@
+---
+import LegalLayout from '@shared/layouts/LegalLayout.astro';
+import app from '@app-data';
+const isBronzed = app.target === 'bronzed';
+---
+
+<LegalLayout title={`Terms of Service — ${app.name}`} description={`Terms governing your use of ${app.name}.`} canonical={new URL('/terms', Astro.site)} heading="Terms of Service" updated="August 16, 2026" product={app.name}>
+  <h2>Acceptance and eligibility</h2>
+  <p>These terms apply to <strong>{app.appStoreTitle}</strong>. By using the app, you agree to them and the Camm Studios Terms of Service. You must be at least 18 years old.</p>
+  <h2>About {app.name}</h2>
+  {isBronzed ? (
+    <p>Bronzed is a sun companion that combines your inputs with UV and weather conditions to provide outdoor time estimates, a timer, history, progress tools, and general sun guidance.</p>
+  ) : (
+    <p>Stellar is a personal growth app with affirmations, a 369 journal, vision boards, reminders, and progress cues.</p>
+  )}
+  {isBronzed ? (
+    <>
+      <h2>Health and safety</h2>
+      <p><strong>UV exposure can damage skin and increase the risk of skin cancer. No tan from UV exposure is risk free.</strong></p>
+      <p>Bronzed provides estimates and general information. It is not a medical device and does not provide medical advice. It cannot prevent sunburn. UV and weather can change quickly. Skin response also varies.</p>
+      <p>Follow official guidance. Seek shade, wear protective clothing, a broad brim hat and sunglasses, and use broad spectrum sunscreen. Ask a doctor before intentional sun exposure if you have sensitive skin, a history of skin cancer, take photosensitizing medication, or have a relevant condition.</p>
+      <p>You remain responsible for decisions about sun exposure and use Bronzed at your own risk.</p>
+    </>
+  ) : (
+    <>
+      <h2>Personal growth content</h2>
+      <p>Affirmations and the 369 method are reflection and habit building tools. They are not medical, psychological, financial, or professional advice. Stellar does not guarantee that repetition or manifestation practices will create any outcome.</p>
+      <p>If you experience mental health difficulties, seek support from a qualified professional. Use the app at your own discretion.</p>
+    </>
+  )}
+  <h2>Subscriptions</h2>
+  <p>Some features require a subscription. Apple processes payments. Current plans, local prices, trial terms, and renewal details appear before purchase.</p>
+  <p>A subscription renews unless you cancel it through Apple before the renewal date. Cancellation takes effect at the end of the current period. Apple handles refund requests.</p>
+  <h2>Your content and data</h2>
+  <p>You retain ownership of content you create. Personal content is stored locally as described in the Privacy Policy. You are responsible for device backups. We may be unable to recover content after deletion, device loss, failure, or reset.</p>
+  <h2>Permitted use and ownership</h2>
+  <p>You may use the app for personal, noncommercial purposes. You must not reverse engineer, copy, modify, distribute, disrupt, misuse, or gain unauthorized access to it. Camm Studios owns the app, supplied content, design, and software.</p>
+  <h2>Warranties and liability</h2>
+  <p>The app is provided as available, without warranties to the extent allowed by law. We do not guarantee uninterrupted or error free operation. To the maximum extent allowed by law, Camm Studios is not liable for indirect, incidental, special, or consequential loss arising from app use.</p>
+  <h2>Changes, law, and contact</h2>
+  <p>We may update these terms and will change the date above. The laws of Victoria, Australia govern them. If one provision is unenforceable, the others remain in effect. Email questions to <a href="mailto:info@cammstudios.com">info@cammstudios.com</a>.</p>
+</LegalLayout>
