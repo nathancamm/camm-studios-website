@@ -26,7 +26,8 @@ const products = {
   stellar: {
     name: 'Stellar',
     appStoreTitle: 'Stellar — Mantra & Ritual',
-    url: 'https://stellar.cammstudios.com',
+    // stellar.cammstudios.com is not deployed yet, so Stellar links to the App Store.
+    url: 'https://apps.apple.com/app/id6759896200',
     icon: stellarIcon,
     portalArt: stellarPortalArt,
   },
@@ -94,9 +95,9 @@ const questions = [
       <header class="section-heading--wide"><div><p class="eyebrow">03 / Our portfolio</p><h2 id="apps-title">Different needs.<br />The same care.</h2></div><p>Focused iOS apps, each with a world of its own.</p></header>
       <div class="apps-grid">
         <a class="app-portal app-portal--bronzed" href="https://bronzed.cammstudios.com"><div class="app-portal__top"><span>01 / Time outdoors</span><span>↗</span></div><Image class="app-portal__art" src={products.bronzed.portalArt} alt="" width={800} quality={85} loading="lazy" /><div class="app-portal__identity"><Image src={products.bronzed.icon} alt="" width={80} height={80} format="webp" /><div><h3>Bronzed</h3><p>Tan timer & UV index</p></div><span aria-hidden="true">↗</span></div><div class="app-portal__domain">bronzed.cammstudios.com <span>Explore the app</span></div></a>
-        <a class="app-portal app-portal--stellar" href="https://stellar.cammstudios.com"><div class="app-portal__top"><span>02 / Daily reflection</span><span>↗</span></div><Image class="app-portal__art" src={products.stellar.portalArt} alt="" width={800} quality={85} loading="lazy" /><div class="app-portal__identity"><Image src={products.stellar.icon} alt="" width={80} height={80} format="webp" /><div><h3>Stellar</h3><p>Affirmations & journaling</p></div><span aria-hidden="true">↗</span></div><div class="app-portal__domain">stellar.cammstudios.com <span>Explore the app</span></div></a>
+        <a class="app-portal app-portal--stellar" href={products.stellar.url}><div class="app-portal__top"><span>02 / Daily reflection</span><span>↗</span></div><Image class="app-portal__art" src={products.stellar.portalArt} alt="" width={800} quality={85} loading="lazy" /><div class="app-portal__identity"><Image src={products.stellar.icon} alt="" width={80} height={80} format="webp" /><div><h3>Stellar</h3><p>Affirmations & journaling</p></div><span aria-hidden="true">↗</span></div><div class="app-portal__domain">App Store <span>View the app</span></div></a>
       </div>
-      <div class="portfolio-guides"><span>More to discover</span><p>Practical reading, written for each app.</p><a href="https://bronzed.cammstudios.com/blog/">Bronzed guides ↗</a><a href="https://stellar.cammstudios.com/blog/">Stellar guides ↗</a></div>
+      <div class="portfolio-guides"><span>More to discover</span><p>Practical reading, written for each app.</p><a href="https://bronzed.cammstudios.com/blog/">Bronzed guides ↗</a></div>
     </section>
 
     <section class="company-faq shell liquid-glass" aria-labelledby="faq-title"><header><p class="eyebrow">04 / A little more context</p><h2 id="faq-title">Good questions.</h2></header><div class="faq-list">{questions.map(([question, answer], index) => <details><summary><span>0{index + 1}</span>{question}</summary><p>{answer}</p></details>)}</div></section>

@@ -32,8 +32,6 @@ const imageUrl = image?.toString();
 const target = process.env.SITE_TARGET;
 const favicon = target === 'bronzed' ? bronzedFavicon.src : target === 'stellar' ? stellarFavicon.src : mark.src;
 const rssUrl = target === 'bronzed' || target === 'stellar' ? new URL('/rss.xml', Astro.site) : undefined;
-// Bronzed deploys to Cloudflare, where Vercel's analytics scripts do not exist.
-const loadsVercelAnalytics = target !== 'bronzed';
 ---
 
 <!doctype html>
@@ -61,19 +59,6 @@ const loadsVercelAnalytics = target !== 'bronzed';
     {imageUrl && <meta name="twitter:image" content={imageUrl} />}
     {structuredData && (
       <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
-    )}
-    {loadsVercelAnalytics && (
-      <script is:inline>
-        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-        if (window.location.hostname.endsWith('cammstudios.com')) {
-          for (const source of ['/_vercel/insights/script.js', '/_vercel/speed-insights/script.js']) {
-            const script = document.createElement('script');
-            script.src = source;
-            script.defer = true;
-            document.head.appendChild(script);
-          }
-        }
-      </script>
     )}
   </head>
   <body>

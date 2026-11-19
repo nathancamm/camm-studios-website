@@ -292,51 +292,95 @@ test('the cinematic layer includes reduced motion and a muted video background',
   assert.match(company, /<video[^>]+muted/i);
 });
 
-test('legacy app legal routes redirect permanently to final subdomains', () => {
-  const config = JSON.parse(readFileSync(join(root, 'vercel.json'), 'utf8'));
-  const redirects = new Map(
-    config.redirects.map((redirect) => [redirect.source, redirect]),
+function filesUnder(dir, prefix = '') {
+  return readdirSync(join(dir, prefix), { withFileTypes: true }).flatMap((entry) =>
+    entry.isDirectory()
+      ? filesUnder(dir, join(prefix, entry.name))
+      : [join(prefix, entry.name)],
   );
+}
 
-  const groups = [
-    ['bronzed', 'privacy', 'https://bronzed.cammstudios.com/privacy'],
-    ['bronzed', 'terms', 'https://bronzed.cammstudios.com/terms'],
-    ['manifest', 'privacy', 'https://stellar.cammstudios.com/privacy'],
-    ['manifest', 'terms', 'https://stellar.cammstudios.com/terms'],
+function redirectRules(target) {
+  return new Map(
+    readFileSync(join(root, 'dist', target, '_redirects'), 'utf8')
+      .trim()
+      .split('\n')
+      .map((line) => {
+        const [source, destination, code] = line.split(' ');
+        return [source, { destination, code }];
+      }),
+  );
+}
+
+test('company serves the legal pages the apps link to, byte for byte', () => {
+  const legacyDir = join(root, 'legacy/company');
+  const linkedFromApps = [
+    'apps/bronzed/privacy.html',
+    'apps/bronzed/terms.html',
+    'apps/manifest/privacy.html',
+    'apps/manifest/terms.html',
+    'apps/mp3-converter/privacy/index.html',
+    'apps/mp3-converter/support/index.html',
+    'apps/mp3-converter/terms/index.html',
+    'privacy-policy.html',
+    'terms-of-service.html',
   ];
+  const legacyFiles = filesUnder(legacyDir);
 
-  for (const [app, document, destination] of groups) {
-    for (const host of ['cammstudios.com', 'www.cammstudios.com']) {
-      for (const suffix of ['.html', '', '/']) {
-        const source = `/apps/${app}/${document}${suffix}`;
-        const redirect = redirects.get(source);
-        assert.ok(redirect, `Missing redirect for https://${host}${source}`);
-        assert.equal(redirect.destination, destination);
-        assert.equal(redirect.permanent, true);
-        assert.ok(
-          !redirect.destination.includes('?'),
-          `Redirect should let Vercel preserve the original query for ${source}`,
-        );
-      }
+  for (const file of linkedFromApps) {
+    assert.ok(legacyFiles.includes(file), `legacy/company is missing ${file}`);
+  }
+  for (const file of legacyFiles) {
+    assert.deepEqual(
+      readFileSync(join(root, 'dist/company', file)),
+      readFileSync(join(legacyDir, file)),
+      `dist/company/${file} differs from legacy/company/${file}`,
+    );
+  }
+});
+
+test('no page loads Vercel-only scripts', () => {
+  for (const target of Object.keys(routeFiles)) {
+    const outDir = join(root, 'dist', target);
+    for (const file of filesUnder(outDir).filter((path) => path.endsWith('.html'))) {
+      assert.doesNotMatch(
+        readFileSync(join(outDir, file), 'utf8'),
+        /_vercel\//,
+        `${target}/${file} loads a Vercel script`,
+      );
     }
   }
+});
 
-  const apexRuleIndex = config.redirects.findIndex((redirect) =>
-    redirect.has?.some((condition) => condition.type === 'host'),
-  );
-  const lastLegacyIndex = Math.max(
-    ...groups.flatMap(([app, document]) =>
-      ['.html', '', '/'].map((suffix) =>
-        config.redirects.findIndex(
-          (redirect) => redirect.source === `/apps/${app}/${document}${suffix}`,
-        ),
-      ),
-    ),
-  );
-  assert.ok(
-    lastLegacyIndex < apexRuleIndex,
-    'Apex host redirect would create a chain before legacy legal redirects',
-  );
+test('company redirects old routes to their current homes', () => {
+  const rules = redirectRules('company');
+  const expected = {
+    '/index.html': ['/', '301'],
+    '/support.html': ['/support/', '301'],
+    '/privacy': ['/privacy-policy/', '302'],
+    '/privacy/': ['/privacy-policy/', '302'],
+    '/terms': ['/terms-of-service/', '302'],
+    '/terms/': ['/terms-of-service/', '302'],
+    '/apps/bronzed': ['https://bronzed.cammstudios.com/', '301'],
+    '/apps/bronzed/': ['https://bronzed.cammstudios.com/', '301'],
+    '/apps/bronzed/index.html': ['https://bronzed.cammstudios.com/', '301'],
+  };
+
+  for (const [source, [destination, code]] of Object.entries(expected)) {
+    assert.deepEqual(rules.get(source), { destination, code }, source);
+  }
+  for (const { destination } of rules.values()) {
+    if (destination.startsWith('/')) {
+      const path = destination.slice(1);
+      const candidates = path.endsWith('/') || path === ''
+        ? [`${path}index.html`, `${path.slice(0, -1)}.html`]
+        : [path];
+      assert.ok(
+        candidates.some((candidate) => existsSync(join(root, 'dist/company', candidate))),
+        `company redirect target ${destination} does not exist`,
+      );
+    }
+  }
 });
 
 test('every page uses the shared video and glass footer while retaining static content', () => {
@@ -360,15 +404,7 @@ test('app legal routes on Cloudflare point to the documents the apps link to', (
   };
 
   for (const [target, base] of Object.entries(legalBase)) {
-    const rules = new Map(
-      readFileSync(join(root, 'dist', target, '_redirects'), 'utf8')
-        .trim()
-        .split('\n')
-        .map((line) => {
-          const [source, destination, code] = line.split(' ');
-          return [source, { destination, code }];
-        }),
-    );
+    const rules = redirectRules(target);
 
     for (const document of ['privacy', 'terms']) {
       for (const source of [`/${document}`, `/${document}/`]) {
