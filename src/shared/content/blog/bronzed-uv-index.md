@@ -61,3 +61,5 @@ A tan is a response to UV damage. There is no risk free way to tan through UV ex
 Check the forecast before you go outside, then keep watching conditions. When the UV Index reaches 3, follow official sun protection guidance. If you have a history of skin cancer, unusual sensitivity, or a health concern, ask a qualified clinician for advice.
 
 Bronzed turns the live UV reading and personal context into a time estimate. Treat that estimate as one input, never as a guarantee.
+
+To see how each UV level changes the estimate for your skin type, use the [sunburn calculator](/sunburn-calculator/).

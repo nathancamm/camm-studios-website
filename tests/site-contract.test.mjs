@@ -21,6 +21,7 @@ const routeFiles = {
     'blog/uv-index-explained/index.html',
     'blog/cloudy-day-uv/index.html',
     'blog/sunscreen-spf-and-uv-index/index.html',
+    'sunburn-calculator/index.html',
     'support/index.html',
     'privacy/index.html',
     'terms/index.html',
@@ -154,6 +155,44 @@ test('metadata and structured data match each public surface', () => {
   assert.match(bronzed, /"@type":"MobileApplication"/);
   assert.match(stellarPost, /"@type":"BlogPosting"/);
   assert.match(stellarPost, /"@type":"BreadcrumbList"/);
+});
+
+test('the sunburn calculator ships on Bronzed only, with its search metadata', () => {
+  const page = readFileSync(
+    join(root, 'dist/bronzed/sunburn-calculator/index.html'),
+    'utf8',
+  );
+  const title = page.match(/<title>([^<]+)<\/title>/)?.[1] ?? '';
+  assert.match(title, /sunburn calculator/i);
+  assert.ok(title.length >= 50 && title.length <= 60, `title is ${title.length} characters`);
+  assert.equal((page.match(/<h1[\s>]/g) ?? []).length, 1);
+  for (const type of ['WebApplication', 'BreadcrumbList', 'FAQPage']) {
+    assert.match(page, new RegExp(`"@type":"${type}"`));
+  }
+  assert.match(page, /<meta property="og:image" content="https:\/\/bronzed\.cammstudios\.com\//);
+  assert.match(page, /https:\/\/apps\.apple\.com\/app\/id6788585058/);
+  assert.match(page, /Guidance, not a guarantee/);
+  assert.doesNotMatch(page, /safe tanning|safe time|safe to tan/i);
+  assert.match(
+    readFileSync(join(root, 'dist/bronzed/sitemap.xml'), 'utf8'),
+    /<loc>https:\/\/bronzed\.cammstudios\.com\/sunburn-calculator\/<\/loc>/,
+  );
+  for (const file of ['index.html', 'blog/index.html', 'blog/uv-index-explained/index.html']) {
+    assert.match(
+      readFileSync(join(root, 'dist/bronzed', file), 'utf8'),
+      /href="\/sunburn-calculator\/"/,
+      `bronzed/${file} does not link to the calculator`,
+    );
+  }
+
+  assert.ok(!existsSync(join(root, 'dist/stellar/sunburn-calculator')));
+  for (const file of filesUnder(join(root, 'dist/stellar')).filter((path) => /\.(?:html|xml)$/.test(path))) {
+    assert.doesNotMatch(
+      readFileSync(join(root, 'dist/stellar', file), 'utf8'),
+      /sunburn-calculator/,
+      `stellar/${file} mentions the Bronzed calculator`,
+    );
+  }
 });
 
 test('product pages use the live locale neutral App Store links', () => {

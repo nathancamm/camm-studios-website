@@ -7,6 +7,7 @@ import Nav from '@shared/components/Nav.astro';
 import Footer from '@shared/components/Footer.astro';
 import StoreButton from '@shared/components/StoreButton.astro';
 import app from '@app-data';
+import { appNavLinks } from '@shared/data/app-nav';
 import type { AppTarget } from '@shared/data/app-definition';
 import '@shared/styles/blog.css';
 
@@ -52,7 +53,7 @@ const structuredData = [
 ---
 
 <BaseLayout title={`${post.data.title} — ${app.name}`} description={post.data.summary} canonical={canonical} image={socialImage} themeClass={app.themeClass} structuredData={structuredData}>
-  <Nav product={app.name} links={[{ href: '/', label: app.name }, { href: '/blog', label: 'Guides' }, { href: '/support', label: 'Support' }]} storeUrl={app.storeUrl} />
+  <Nav product={app.name} links={appNavLinks(app)} storeUrl={app.storeUrl} />
   <main id="main">
     <header class="article-hero shell">
       <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">{app.name}</a><span>/</span><a href="/blog">Guides</a><span>/</span><span>Article</span></nav>

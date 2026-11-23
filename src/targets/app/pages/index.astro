@@ -7,6 +7,7 @@ import Footer from '@shared/components/Footer.astro';
 import StoreButton from '@shared/components/StoreButton.astro';
 import ThreeScene from '@shared/components/ThreeScene.astro';
 import app from '@app-data';
+import { appToolLink, sunburnCalculatorPath } from '@shared/data/app-nav';
 import '@shared/styles/app.css';
 
 const canonical = new URL('/', Astro.site);
@@ -53,7 +54,7 @@ const readingStatement = app.target === 'bronzed'
 >
   <Nav
     product={app.name}
-    links={[{ href: '#features', label: 'Features' }, { href: '/blog', label: 'Guides' }, { href: '/support', label: 'Support' }]}
+    links={[{ href: '#features', label: 'Features' }, ...appToolLink(app), { href: '/blog', label: 'Guides' }, { href: '/support', label: 'Support' }]}
     storeUrl={app.storeUrl}
   />
   <main id="main">
@@ -152,7 +153,10 @@ const readingStatement = app.target === 'bronzed'
     <section class="guides-section shell" aria-labelledby="guides-title">
       <header class="section-heading section-heading--row">
         <div><p class="eyebrow">Practical guides / 05</p><h2 id="guides-title">Built for the questions people already ask.</h2></div>
-        <a class="text-link" href="/blog">View all guides <span>↗</span></a>
+        <div class="section-heading__links">
+          {app.target === 'bronzed' && <a class="text-link" href={sunburnCalculatorPath}>Sunburn calculator <span>↗</span></a>}
+          <a class="text-link" href="/blog">View all guides <span>↗</span></a>
+        </div>
       </header>
       <div class="guide-grid">
         {posts.map((post, index) => (
