@@ -56,6 +56,6 @@ That remains true on a cloudy day. If UV reaches unprotected skin, tanning and o
 
 ## Treat app estimates as information, not protection
 
-Bronzed can bring local UV, weather, cloud cover, and personal settings into one time estimate. That estimate cannot prevent sunburn, account for every change in conditions, or guarantee how an individual will respond.
+Bronzed can bring local UV, weather, cloud cover, and personal settings into one time estimate. The [sunburn calculator](/sunburn-calculator/) shows how much cloud cover changes it. That estimate cannot prevent sunburn, account for every change in conditions, or guarantee how an individual will respond.
 
 Use it as a prompt to check the UV and plan your time, never as a replacement for shade, clothing, a hat, sunglasses, sunscreen, or official advice.

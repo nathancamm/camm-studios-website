@@ -1,0 +1,279 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getImage } from 'astro:assets';
+import BaseLayout from '@shared/layouts/BaseLayout.astro';
+import Nav from '@shared/components/Nav.astro';
+import Footer from '@shared/components/Footer.astro';
+import StoreButton from '@shared/components/StoreButton.astro';
+import app from '@app-data';
+import { appNavLinks, sunburnCalculatorPath } from '@shared/data/app-nav';
+import {
+  burnTimeMinutes,
+  describeConditions,
+  describeUvTable,
+  formatBurnTime,
+  skinTypes,
+  spfOptions,
+  uvLevels,
+  uvRange,
+  type BurnTimeInput,
+} from '@shared/lib/burn-time';
+import '@shared/styles/blog.css';
+import '@shared/styles/calculator.css';
+
+// Bronzed only: Stellar builds from the same pages folder.
+export const getStaticPaths = (() =>
+  process.env.SITE_TARGET === 'bronzed'
+    ? [{ params: { calculator: sunburnCalculatorPath.slice(1, -1) } }]
+    : []) satisfies GetStaticPaths;
+
+const canonical = new URL(sunburnCalculatorPath, Astro.site);
+const title = 'Sunburn Calculator: UV Index Burn Time by Skin Type';
+const description =
+  'How long until you burn? Estimate burn time from the UV index, your skin type and cloud cover. Free sunburn calculator using the same maths as the Bronzed app.';
+const updated = new Date('2026-11-23');
+const socialAsset = await getImage({ src: app.instrumentArt, width: 1200, format: 'webp', quality: 86 });
+const socialImage = new URL(socialAsset.src, Astro.site);
+
+const initial: BurnTimeInput = { skinType: 2, uvIndex: 8, spf: 0, cloudCover: 0 };
+const initialMinutes = burnTimeMinutes(initial);
+const atUv8 = skinTypes
+  .map((type) => `${formatBurnTime(burnTimeMinutes({ ...initial, skinType: type.value }))} for type ${type.numeral}`)
+  .join(', ');
+
+const uvSources = [
+  { label: 'Australia (BoM)', url: 'https://www.bom.gov.au/australia/uv/' },
+  { label: 'US (EPA)', url: 'https://www.epa.gov/sunsafety/uv-index-1' },
+  {
+    label: 'Worldwide (WHO app)',
+    url: 'https://www.who.int/news/item/21-06-2022-sunsmart-global-uv-app-helps-protect-you-from-the-dangers-of-the-sun-and-promotes-public-health',
+  },
+];
+
+const faqs = [
+  {
+    question: 'How long does it take to burn at UV 8?',
+    answer: `Without sunscreen and under a clear sky, the estimate at UV 8 is ${atUv8.replace(/, (?=[^,]*$)/, ' and ')}. Reflection, altitude and some medicines can shorten these times.`,
+  },
+  {
+    question: 'Does sunscreen change how long until I burn?',
+    answer:
+      'The main estimate assumes no sunscreen. When you pick an SPF, the calculator also shows the app\'s estimate with sunscreen, which multiplies the time without sunscreen by the SPF. Real protection is usually much lower: most people apply far less than the tested amount, and sweat, swimming and towelling remove it. Reapply every two hours.',
+  },
+  {
+    question: 'How long should you stay in the sun to tan?',
+    answer:
+      'No amount of tanning is safe: a tan is the skin\'s response to UV damage. This calculator estimates the time before burn risk, not a target. WHO and Cancer Council Australia recommend sun protection whenever the UV index is 3 or above.',
+  },
+  {
+    question: 'Can you get sunburnt on a cloudy day?',
+    answer:
+      'Yes. UV can be strong on cool or cloudy days. In this estimate, full cloud cover lengthens the time by a third at most. If your UV reading already accounts for cloud, set cloud cover to 0%.',
+  },
+  {
+    question: 'When should I use sun protection?',
+    answer:
+      'When the UV index is 3 or above. WHO and Cancer Council Australia recommend shade, protective clothing, a broad-brimmed hat, sunglasses and broad-spectrum sunscreen.',
+  },
+];
+
+const sources = [
+  { label: 'World Health Organization — The ultraviolet (UV) index', url: 'https://www.who.int/news-room/questions-and-answers/item/radiation-the-ultraviolet-%28uv%29-index' },
+  { label: 'Cancer Council Australia — UV Index', url: 'https://www.cancer.org.au/cancer-information/causes-and-prevention/sun-safety/uv-index' },
+  { label: 'Cancer Council Australia — Sunscreen fact sheet', url: 'https://www.cancer.org.au/about-us/policy-and-advocacy/prevention/uv-radiation/related-resources/fact-sheet-sunscreen' },
+  { label: 'US EPA — The UV Index', url: 'https://www.epa.gov/sunsafety/uv-index-1' },
+  { label: 'Bureau of Meteorology — UV Index forecast', url: 'https://www.bom.gov.au/australia/uv/' },
+];
+
+const publisher = { '@type': 'Organization', name: 'Camm Studios', url: 'https://www.cammstudios.com' };
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Sunburn calculator',
+    url: canonical.toString(),
+    description,
+    image: socialImage.toString(),
+    applicationCategory: 'HealthApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'Requires JavaScript',
+    isAccessibleForFree: true,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'AUD' },
+    dateModified: updated.toISOString(),
+    publisher,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: app.name, item: new URL('/', Astro.site).toString() },
+      { '@type': 'ListItem', position: 2, name: 'Sunburn calculator', item: canonical.toString() },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+  },
+];
+---
+
+<BaseLayout title={title} description={description} canonical={canonical} image={socialImage} themeClass={app.themeClass} structuredData={structuredData}>
+  <Nav product={app.name} links={appNavLinks(app)} storeUrl={app.storeUrl} />
+  <main id="main">
+    <header class="article-hero calc-hero shell">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">{app.name}</a><span>/</span><span aria-current="page">Sunburn calculator</span></nav>
+      <div class="article-hero__grid">
+        <h1>Sunburn calculator: how long until you burn?</h1>
+        <div class="article-hero__summary">
+          <p>At UV index 8, fair skin (type II) has an estimated {formatBurnTime(initialMinutes)} before burn risk without sunscreen. Very fair skin (type I) has {formatBurnTime(burnTimeMinutes({ ...initial, skinType: 1 }))}. Enter your UV index and skin type for your estimate.</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="calc" aria-label="Calculator">
+      <form class="calc__panel" data-burn-calculator>
+        <fieldset class="calc__inputs" data-calc-inputs disabled>
+          <legend class="sr-only">Your conditions</legend>
+
+          <div class="calc__field">
+            <label class="calc__label" for="calc-uv">UV index</label>
+            <input class="calc__number" id="calc-uv" name="uv" type="number" inputmode="decimal" min={uvRange.min} max={uvRange.max} step="any" value={initial.uvIndex} required aria-describedby="calc-uv-error calc-uv-sources" />
+            <p class="calc__error" id="calc-uv-error" data-calc-error="uv" hidden>Enter a UV index from {uvRange.min} to {uvRange.max}.</p>
+            <p class="calc__sources" id="calc-uv-sources">Today's UV: {uvSources.map((source) => <a href={source.url}>{source.label}</a>)}</p>
+          </div>
+
+          <fieldset class="calc__group">
+            <legend class="calc__label">Skin type</legend>
+            <div class="calc__skin">
+              {skinTypes.map((type) => (
+                <label class="calc__option calc__option--skin">
+                  <input type="radio" name="skin" value={type.value} checked={type.value === initial.skinType} />
+                  <span class="calc__option-title">Type {type.numeral}</span>
+                  <span>{type.skin}</span>
+                  <span>{type.burns}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset class="calc__group">
+            <legend class="calc__label">Sunscreen</legend>
+            <div class="calc__spf">
+              {spfOptions.map((spf) => (
+                <label class="calc__option calc__option--spf">
+                  <input type="radio" name="spf" value={spf} checked={spf === initial.spf} />
+                  <span class="calc__option-title">{spf > 0 ? `SPF ${spf}` : 'None'}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <div class="calc__field">
+            <label class="calc__label" for="calc-cloud">Cloud cover (%)</label>
+            <input class="calc__number" id="calc-cloud" name="cloud" type="number" inputmode="decimal" min="0" max="100" step="any" value={initial.cloudCover * 100} required aria-describedby="calc-cloud-error calc-cloud-note" />
+            <p class="calc__error" id="calc-cloud-error" data-calc-error="cloud" hidden>Enter cloud cover from 0 to 100.</p>
+            <p class="calc__hint" id="calc-cloud-note">Use 0% if your UV reading already includes cloud.</p>
+          </div>
+        </fieldset>
+
+        <div class="calc__output">
+          <div class="calc__result" aria-live="polite" aria-atomic="true">
+            <p class="calc__label">Estimated time before burn risk</p>
+            <p class="calc__value" data-calc-value>{formatBurnTime(initialMinutes)}</p>
+            <p class="calc__context" data-calc-context>{describeConditions(initial)}</p>
+          </div>
+          <p class="calc__note" data-calc-with-spf hidden></p>
+          <p class="calc__note" data-calc-protection>UV 3 or above: use shade, clothing, a hat, sunglasses and sunscreen.</p>
+          <p class="calc__note calc__note--strong">Guidance, not a guarantee.</p>
+          <noscript><p class="calc__note">Turn on JavaScript to change the inputs. The reference table below covers every skin type.</p></noscript>
+
+          <table class="calc-table">
+            <caption data-calc-caption>{describeUvTable(initial)}</caption>
+            <thead><tr><th scope="col">UV index</th><th scope="col">Estimate</th></tr></thead>
+            <tbody>
+              {uvLevels.map((uv) => (
+                <tr data-calc-row={uv} aria-current={uv === initial.uvIndex ? 'true' : undefined}>
+                  <th scope="row">{uv}</th>
+                  <td>{formatBurnTime(burnTimeMinutes({ ...initial, uvIndex: uv }))}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </section>
+
+    <section class="calc-reference shell" aria-labelledby="reference-title">
+      <h2 id="reference-title">Burn time by skin type and UV index</h2>
+      <p>Estimated minutes before burn risk, with no sunscreen and a clear sky.</p>
+      <table class="calc-table calc-table--matrix">
+        <caption class="sr-only">Estimated minutes before burn risk by UV index and skin type, with no sunscreen and a clear sky</caption>
+        <thead>
+          <tr><th scope="col">UV</th>{skinTypes.map((type) => <th scope="col"><span class="sr-only">Type </span>{type.numeral}</th>)}</tr>
+        </thead>
+        <tbody>
+          {uvLevels.map((uv) => (
+            <tr>
+              <th scope="row">{uv}</th>
+              {skinTypes.map((type) => <td>{Math.trunc(burnTimeMinutes({ skinType: type.value, uvIndex: uv, spf: 0, cloudCover: 0 }))}</td>)}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    <div class="article-grid shell">
+      <aside class="article-aside">
+        <div><p>Published by</p><strong>Camm Studios</strong></div>
+        <div><p>Product</p><a href="/">{app.name} ↗</a></div>
+        <div><p>Updated</p><strong>{updated.toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</strong></div>
+      </aside>
+      <article class="article-body">
+        <h2>How the estimate works</h2>
+        <p>The calculator uses the same maths as the Bronzed app. It starts from a typical time to first redness at UV index 6: 10, 15, 25, 35, 50 and 60 minutes for skin types I to VI.</p>
+        <p>That time is scaled by the UV index and multiplied by the SPF, with no sunscreen counted as 1. Cloud lengthens it by up to a third. The result is then cut to 80% as a margin.</p>
+        <p class="calc-formula"><code>minutes = base × SPF × 6 ÷ UV ÷ (1 − 0.25 × cloud) × 0.8</code></p>
+        <p>In the app, the same calculation uses live UV and cloud cover from Apple Weather.</p>
+
+        <h2>What changes your result</h2>
+        <p>The estimate cannot see your surroundings or your health. You can burn sooner with:</p>
+        <ul>
+          <li>Reflection from sand, snow and water.</li>
+          <li>Altitude, where UV is stronger.</li>
+          <li>Medicines that make skin more sensitive to sunlight.</li>
+          <li>Sweat, swimming and towelling, which remove sunscreen.</li>
+          <li>Thin or patchy sunscreen. Most people apply far less than the tested amount.</li>
+        </ul>
+        <p>Sun protection is recommended whenever the UV index is 3 or above: seek shade, wear protective clothing, a broad-brimmed hat and sunglasses, and use broad-spectrum sunscreen. Reapply sunscreen every two hours.</p>
+        <p>A tan is a response to UV damage. This estimate is guidance, not a guarantee, and not medical advice.</p>
+
+        <h2>Questions</h2>
+        {faqs.map((faq) => (
+          <>
+            <h3>{faq.question}</h3>
+            <p>{faq.answer}</p>
+          </>
+        ))}
+
+        <section class="article-sources">
+          <h2>Sources</h2>
+          <ul>{sources.map((source) => <li><a href={source.url}>{source.label}</a></li>)}</ul>
+        </section>
+      </article>
+    </div>
+
+    <section class="article-cta">
+      <div class="shell"><div><p class="eyebrow">{app.name} for iPhone</p><h2>Get this estimate with live UV.</h2></div><StoreButton href={app.storeUrl} label={`Download ${app.name}`} /></div>
+    </section>
+  </main>
+  <Footer product={app.name} />
+</BaseLayout>
+
+<script>
+  import '@shared/scripts/burn-calculator';
+</script>

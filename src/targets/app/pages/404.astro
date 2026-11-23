@@ -3,10 +3,11 @@ import BaseLayout from '@shared/layouts/BaseLayout.astro';
 import Nav from '@shared/components/Nav.astro';
 import Footer from '@shared/components/Footer.astro';
 import app from '@app-data';
+import { appNavLinks } from '@shared/data/app-nav';
 ---
 
 <BaseLayout title={`Page not found — ${app.name}`} description="This page could not be found." canonical={new URL('/404', Astro.site)} robots="noindex, follow" themeClass={app.themeClass}>
-  <Nav product={app.name} links={[{ href: '/', label: app.name }, { href: '/blog', label: 'Guides' }, { href: '/support', label: 'Support' }]} storeUrl={app.storeUrl} />
+  <Nav product={app.name} links={appNavLinks(app)} storeUrl={app.storeUrl} />
   <main id="main" class="shell not-found">
     <p class="eyebrow">404 / Signal lost</p>
     <h1>This path has left the ritual.</h1>

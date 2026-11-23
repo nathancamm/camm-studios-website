@@ -5,6 +5,7 @@ import BaseLayout from '@shared/layouts/BaseLayout.astro';
 import Nav from '@shared/components/Nav.astro';
 import Footer from '@shared/components/Footer.astro';
 import app from '@app-data';
+import { appNavLinks } from '@shared/data/app-nav';
 import '@shared/styles/blog.css';
 
 const posts = (await getCollection('blog', ({ data }) => data.app === app.target && !data.draft))
@@ -22,7 +23,7 @@ const socialAsset = await getImage({ src: app.icon, width: 512, format: 'webp', 
   image={new URL(socialAsset.src, Astro.site)}
   themeClass={app.themeClass}
 >
-  <Nav product={app.name} links={[{ href: '/', label: app.name }, { href: '/blog', label: 'Guides' }, { href: '/support', label: 'Support' }]} storeUrl={app.storeUrl} />
+  <Nav product={app.name} links={appNavLinks(app)} storeUrl={app.storeUrl} />
   <main id="main" class="blog-index shell">
     <header class="blog-index__header">
       <div>

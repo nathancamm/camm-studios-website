@@ -59,4 +59,4 @@ A tan is evidence of UV damage. Sunscreen reduces exposure when used correctly; 
 
 Bronzed considers live UV, weather, cloud cover, skin type, and a chosen SPF when producing a time estimate. An app cannot know exactly how much sunscreen you applied, whether it has rubbed off, how conditions have shifted, or how your skin will respond.
 
-Treat the estimate as general information. Keep following official sun protection advice, respond to changing conditions, and leave the sun if you are concerned about your exposure.
+The [sunburn calculator](/sunburn-calculator/) shows the same estimate with and without sunscreen. Treat it as general information. Keep following official sun protection advice, respond to changing conditions, and leave the sun if you are concerned about your exposure.

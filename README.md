@@ -30,7 +30,11 @@ npm run check:all
 npm test
 ```
 
-`npm test` builds all targets and verifies routes, canonical URLs, product links, legal pages and redirects.
+`npm test` runs the unit tests, builds all targets and verifies routes, canonical URLs, product links, legal pages and redirects.
+
+## Sunburn calculator
+
+`bronzed.cammstudios.com/sunburn-calculator/` ports the Bronzed app's estimate to `src/shared/lib/burn-time.ts`. The source is `Shared/BronzedCalculator.swift` and `Shared/SkinType.swift` in the `tan` repository. Keep the constants and order of operations identical, and update the port and `tests/burn-time.test.ts` whenever the app's maths changes. The web version has no daylight cap, because it has no location or sunset time.
 
 ## Deployment
 
