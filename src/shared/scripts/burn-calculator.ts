@@ -3,6 +3,7 @@ import {
   describeConditions,
   describeUvTable,
   formatBurnTime,
+  spfLabel,
   uvRange,
   type BurnTimeInput,
   type SkinType,
@@ -18,7 +19,7 @@ function initCalculator(form: HTMLFormElement) {
   const find = <T extends HTMLElement>(selector: string) => form.querySelector<T>(selector)!;
   const value = find('[data-calc-value]');
   const context = find('[data-calc-context]');
-  const withoutSpf = find('[data-calc-without-spf]');
+  const withSpf = find('[data-calc-with-spf]');
   const protection = find('[data-calc-protection]');
   const caption = find('[data-calc-caption]');
   const rows = [...form.querySelectorAll<HTMLTableRowElement>('[data-calc-row]')];
@@ -41,17 +42,19 @@ function initCalculator(form: HTMLFormElement) {
     if (uvIndex === null || cloudPercent === null) {
       value.textContent = '—';
       context.textContent = 'No estimate. Check the inputs.';
-      withoutSpf.hidden = true;
+      withSpf.hidden = true;
       protection.hidden = true;
       return;
     }
 
-    const input: BurnTimeInput = { skinType, uvIndex, spf, cloudCover: cloudPercent / 100 };
+    // The headline is always the time without sunscreen. Sunscreen multiplies it by the SPF in the
+    // app's maths, which reaches many hours at high UV, so it is shown only as a qualified second line.
+    const input: BurnTimeInput = { skinType, uvIndex, spf: 0, cloudCover: cloudPercent / 100 };
     value.textContent = formatBurnTime(burnTimeMinutes(input));
     context.textContent = uvIndex > 0 ? describeConditions(input) : 'No estimate at UV 0.';
 
-    withoutSpf.hidden = !(spf > 1 && uvIndex > 0);
-    withoutSpf.textContent = `Without sunscreen: ${formatBurnTime(burnTimeMinutes({ ...input, spf: 0 }))}. With sunscreen, this assumes the tested amount, reapplied every two hours.`;
+    withSpf.hidden = !(spf > 1 && uvIndex > 0);
+    withSpf.textContent = `With ${spfLabel(spf)} at the tested amount: ${formatBurnTime(burnTimeMinutes({ ...input, spf }))}. Most people apply less, so real protection is lower. Reapply every two hours.`;
     protection.hidden = uvIndex < 3;
 
     caption.textContent = describeUvTable(input);

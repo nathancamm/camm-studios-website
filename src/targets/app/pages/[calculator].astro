@@ -28,9 +28,9 @@ export const getStaticPaths = (() =>
     : []) satisfies GetStaticPaths;
 
 const canonical = new URL(sunburnCalculatorPath, Astro.site);
-const title = 'Sunburn Calculator: How Long Until You Burn? — Bronzed';
+const title = 'Sunburn Calculator: UV Index Burn Time by Skin Type';
 const description =
-  'Estimate how long until you burn from the UV index, your skin type, cloud cover and SPF. Free sunburn calculator using the same maths as the Bronzed app.';
+  'How long until you burn? Estimate burn time from the UV index, your skin type and cloud cover. Free sunburn calculator using the same maths as the Bronzed app.';
 const updated = new Date('2026-11-23');
 const socialAsset = await getImage({ src: app.instrumentArt, width: 1200, format: 'webp', quality: 86 });
 const socialImage = new URL(socialAsset.src, Astro.site);
@@ -58,7 +58,12 @@ const faqs = [
   {
     question: 'Does sunscreen change how long until I burn?',
     answer:
-      'In this estimate, SPF multiplies the time without sunscreen, so SPF 30 gives 30 times as long. Real protection is usually lower: most people apply far less sunscreen than the tested amount, and sweat, swimming and towelling remove it. Reapply every two hours.',
+      'The main estimate assumes no sunscreen. When you pick an SPF, the calculator also shows the app\'s estimate with sunscreen, which multiplies the time without sunscreen by the SPF. Real protection is usually much lower: most people apply far less than the tested amount, and sweat, swimming and towelling remove it. Reapply every two hours.',
+  },
+  {
+    question: 'How long should you stay in the sun to tan?',
+    answer:
+      'No amount of tanning is safe: a tan is the skin\'s response to UV damage. This calculator estimates the time before burn risk, not a target. WHO and Cancer Council Australia recommend sun protection whenever the UV index is 3 or above.',
   },
   {
     question: 'Can you get sunburnt on a cloudy day?',
@@ -182,7 +187,7 @@ const structuredData = [
             <p class="calc__value" data-calc-value>{formatBurnTime(initialMinutes)}</p>
             <p class="calc__context" data-calc-context>{describeConditions(initial)}</p>
           </div>
-          <p class="calc__note" data-calc-without-spf hidden></p>
+          <p class="calc__note" data-calc-with-spf hidden></p>
           <p class="calc__note" data-calc-protection>UV 3 or above: use shade, clothing, a hat, sunglasses and sunscreen.</p>
           <p class="calc__note calc__note--strong">Guidance, not a guarantee.</p>
           <noscript><p class="calc__note">Turn on JavaScript to change the inputs. The reference table below covers every skin type.</p></noscript>
